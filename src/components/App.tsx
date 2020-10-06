@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Landing from './Landing';
+import Landing from './landing';
 
 const Body = styled.div`
   display: flex;
@@ -13,11 +13,15 @@ const Body = styled.div`
   font-family: 'Roboto', sans-serif;
 `;
 
+// TODO
+function onSelectGame(): void {
+  return;
+}
 
 function App() {
   return (
     <Body>
-      <Landing />
+      <Landing onSelectGame={onSelectGame} />
     </Body>
   );
 }

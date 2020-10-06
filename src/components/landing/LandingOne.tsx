@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Main = styled.main``;
 const Title = styled.h1`
   font-family: 'Playfair Display', serif;
   font-size: 48px;
@@ -21,7 +20,11 @@ const Subtitle = styled.h2`
 const titleText = "Welcome to Type Hangul";
 const subtitleText = "어서 오세요";
 
-function Landing() {
+interface LandingProps {
+  onFinish: Dispatch<SetStateAction<boolean>>;
+}
+
+function LandingOne(props: LandingProps) {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
 
@@ -31,13 +34,19 @@ function Landing() {
     if (title.length === titleText.length) {
       typewriteSubtitle(subtitle, setSubtitle);
     }
+
+    if (subtitle.length === subtitleText.length) {
+      setTimeout(() => {
+        props.onFinish(true);
+      }, 500);
+    }
   }, [title, subtitle]);
 
   return (
-    <Main>
+    <>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
-    </Main>
+    </>
   );
 }
 
@@ -57,4 +66,4 @@ function typewriteSubtitle(subtitle: string, setSubtitle: Dispatch<SetStateActio
   }
 }
 
-export default Landing;
+export default LandingOne;
