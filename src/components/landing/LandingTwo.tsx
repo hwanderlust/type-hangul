@@ -9,7 +9,6 @@ const titleDuration = titleText.length * 100;
 const gameOptionTwoDelay = titleDuration + 750;
 const gameOptionThreeDelay = titleDuration + (750 * 2);
 
-const Main = styled.main``;
 const Container = styled.div`
   display: flex;
   align-items: flex-end;
@@ -47,7 +46,7 @@ function LandingTwo(props: NextProps) {
   }, titleDuration + gameOptionTwoDelay + gameOptionThreeDelay);
 
   return (
-    <Main>
+    <main>
       <Title>{title}</Title>
 
       <Container>
@@ -64,7 +63,7 @@ function LandingTwo(props: NextProps) {
         <GameOption>Jump</GameOption>
         <GameDesc>Type the words on the closest platform to escape the burning fire</GameDesc>
       </ContainerThree>
-    </Main>
+    </main>
   );
 }
 

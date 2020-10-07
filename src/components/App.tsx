@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from 'styled-components';
 
-import { Game } from '../helpers';
 import Landing from './landing';
 
 const About = lazy(() => import("./static/About"));
@@ -18,12 +17,6 @@ const Body = styled.div`
   font-family: 'Roboto', sans-serif;
 `;
 
-// TODO
-function onSelectGame(game: Game): void {
-  console.log(`game`, game);
-  return;
-}
-
 function App() {
   return (
     <BrowserRouter>
@@ -31,7 +24,7 @@ function App() {
         <Switch>
 
           <Route exact path="/">
-            <Landing onSelectGame={onSelectGame} />
+            <Landing />
           </Route>
 
           {/* TODO add proper fallback */}

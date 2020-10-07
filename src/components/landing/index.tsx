@@ -3,13 +3,8 @@ import React, { useState } from 'react';
 import LandingOne from "./LandingOne";
 import LandingTwo from "./LandingTwo";
 import LandingThree from "./LandingThree";
-import { Game } from '../../helpers';
 
-interface LandingProps {
-  onSelectGame: (game: Game) => void;
-}
-
-function Landing(props: LandingProps) {
+function Landing() {
   const [finishedLandingOne, triggerLandingTwo] = useState(false);
   const [finishedLandingTwo, triggerLandingThree] = useState(false);
 
@@ -19,7 +14,7 @@ function Landing(props: LandingProps) {
 
       {finishedLandingOne && !finishedLandingTwo && <LandingTwo onFinish={triggerLandingThree} />}
 
-      {finishedLandingTwo && <LandingThree onSelectGame={props.onSelectGame} />}
+      {finishedLandingTwo && <LandingThree />}
     </>
   );
 }

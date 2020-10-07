@@ -1,16 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import img from "../../images/logo.png";
+import logo from "../../images/logo.png";
 
-const Container = styled.div``;
-const Image = styled.img``;
+const Button = styled(Link)`
+  display: block;
+`;
 
 function Logo() {
   return (
-    <Container>
-      <Image src={img} alt="a 'T' with the Korean ㅎ as a logo" />
-    </Container>
+    <Button to="/">
+      <img src={logo} alt="a 'T' with the Korean ㅎ as a logo" />
+    </Button>
   );
 }
 

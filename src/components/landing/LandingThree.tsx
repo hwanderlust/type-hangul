@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { Link, useHistory } from "react-router-dom";
+import styled, { keyframes } from 'styled-components';
 
 import apeach from "../../images/apeach-btn.png";
 import { Disclosure } from "../common";
-import { Game, fadeIn, } from "../../helpers";
+import { fadeIn, } from "../../helpers";
 
 import Navigation from "./Navigation";
 import { Title, typewriteByLetter } from "./helpers";
+
+const rotate = keyframes`
+  0% { transform: translateX(-25px) translateY(-50%); }
+  50% { transform: translateX(-25px) translateY(-50%) rotate(5deg); }
+  100% { transform: translateX(-25px) translateY(-50%); }
+`;
 
 const titleText = "어느 게임을 하고 싶어요?";
 const Main = styled.main`
@@ -22,7 +29,6 @@ const Container = styled.form`
   animation-delay: ${titleText.length * 100}ms;
   animation-fill-mode: forwards;
 `;
-const Option = styled.div``;
 const Radio = styled.input.attrs(props => ({
   type: "radio",
   name: "game",
@@ -45,7 +51,7 @@ const Radio = styled.input.attrs(props => ({
   
   &:focus, &:active {
     &:checked::before {
-      outline: 1px solid black;
+      animation: ${rotate} 1s ease infinite;
     }
   }
 `;
@@ -58,22 +64,15 @@ const Submit = styled.input.attrs(props => ({
 interface GameOptionProps {
   description: string;
 }
-const GameName = styled.button`
+const CustomLink = styled(Link)`
   font-family: 'Playfair Display', serif;
   font-size: 48px;
   font-weight: 400;
-  margin: 0;
   color: #FFF;
-  background-color: transparent;
-  border: none;
-  outline: none;
+  text-decoration: none;
 
   &:hover {
     color: black;
-  }
-  
-  &:active, &:focus {
-    outline: 1px solid black;
   }
 
   &::after {
@@ -87,27 +86,21 @@ const GameName = styled.button`
   }
 `;
 
-interface LandingThreeProps {
-  onSelectGame: (game: Game) => void;
-}
-function LandingThree(props: LandingThreeProps) {
+type Game = "run" | "pop" | "jump";
+
+function LandingThree() {
   const [title, setTitle] = useState("");
   const [selectedGame, setGame] = useState("run");
   const [showSecondaryComponents, toggleSecondaryComponents] = useState(false);
+  const history = useHistory();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement | HTMLInputElement>): void {
     e.preventDefault();
-    props.onSelectGame(selectedGame as Game);
+    history.push(`/game/${selectedGame as Game}`);
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     setGame(e.currentTarget.value);
-  }
-
-  function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: Game): void {
-    e.preventDefault();
-    setGame(value);
-    props.onSelectGame(value);
   }
 
   typewriteByLetter(titleText, [title, setTitle]);
@@ -122,33 +115,42 @@ function LandingThree(props: LandingThreeProps) {
       <Container onSubmit={handleSubmit}>
         <Submit onClick={handleSubmit} />
 
-        <Option>
-          <Radio value="run" checked={selectedGame === "run"} onChange={handleChange} autoFocus />
-          <GameName
-            description={selectedGame === "run" ? "Type the given words to help your character clear obstacles" : ""}
-            onClick={e => handleClick(e, "run")}
-          >
+        <div>
+          <Radio
+            value="run"
+            checked={selectedGame === "run"}
+            onChange={handleChange}
+            autoFocus />
+          <CustomLink
+            to="/game/run"
+            description={selectedGame === "run" ? "Type the given words to help your character clear obstacles" : ""}>
             Run
-        </GameName>
-        </Option>
+          </CustomLink>
+        </div>
 
-        <Option>
-          <Radio value="pop" checked={selectedGame === "pop"} onChange={handleChange} />
-          <GameName
-            description={selectedGame === "pop" ? "Type the floating words to avoid the bubbles from hitting the ground" : ""}
-            onClick={e => handleClick(e, "pop")}>
+        <div>
+          <Radio
+            value="pop"
+            checked={selectedGame === "pop"}
+            onChange={handleChange} />
+          <CustomLink
+            to="/game/pop"
+            description={selectedGame === "pop" ? "Type the floating words to avoid the bubbles from hitting the ground" : ""}>
             Pop
-        </GameName>
-        </Option>
+          </CustomLink>
+        </div>
 
-        <Option>
-          <Radio value="jump" checked={selectedGame === "jump"} onChange={handleChange} />
-          <GameName
-            description={selectedGame === "jump" ? "Type the words on the closest platform to escape the burning fire" : ""}
-            onClick={e => handleClick(e, "jump")}>
+        <div>
+          <Radio
+            value="jump"
+            checked={selectedGame === "jump"}
+            onChange={handleChange} />
+          <CustomLink
+            to="/game/jump"
+            description={selectedGame === "jump" ? "Type the words on the closest platform to escape the burning fire" : ""}>
             Jump
-          </GameName>
-        </Option>
+          </CustomLink>
+        </div>
 
       </Container>
 
