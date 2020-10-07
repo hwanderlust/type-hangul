@@ -5,31 +5,45 @@ import { NextProps, typewriteByLetter } from './helpers';
 
 const Title = styled.h1`
   font-family: 'Playfair Display', serif;
-  font-size: 48px;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
   margin-bottom: 0;
+`;
+const Left = styled.span`
+  font-size: 36px;
+  color: white;
+  letter-spacing: -0.05em;
+`;
+const Right = styled.span`
+  font-size: 72px;
+  letter-spacing: 0.05em;
 `;
 const Subtitle = styled.h2`
   font-family: 'Nanum Pen Script', cursive;
   font-size: 48px;
   font-weight: 200;
+  text-align: right;
   color: #FFF;
   margin-top: 0;
-  width: 200px;
 `;
 
-const titleText = "Welcome to Type Hangul";
+const titleLeft = "Welcome to";
+const titleRight = "Type Hangul";
 const subtitleText = "어서 오세요";
 
 function LandingOne(props: NextProps) {
-  const [title, setTitle] = useState("");
+  const [leftText, setLeft] = useState("");
+  const [rightText, setRight] = useState("");
   const [subtitle, setSubtitle] = useState("");
 
-  typewriteByLetter(titleText, [title, setTitle]);
+  typewriteByLetter(titleLeft, [leftText, setLeft]);
 
   useEffect(() => {
-    if (title.length === titleText.length) {
+    if (leftText.length === titleLeft.length) {
+      typewriteByLetter(titleRight, [rightText, setRight]);
+    }
+
+    if (rightText.length === titleRight.length) {
       typewriteByLetter(subtitleText, [subtitle, setSubtitle]);
     }
 
@@ -38,11 +52,14 @@ function LandingOne(props: NextProps) {
         props.onFinish(true);
       }, 500);
     }
-  }, [title, subtitle]);
+  }, [leftText, rightText, subtitle]);
 
   return (
     <main>
-      <Title>{title}</Title>
+      <Title>
+        <Left>{leftText}</Left>
+        <Right>{rightText}</Right>
+      </Title>
       <Subtitle>{subtitle}</Subtitle>
     </main>
   );
