@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+document.body.style.margin = "0";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

@@ -1,6 +1,9 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { NextProps, typewriteByLetter } from './helpers';
+
+const Main = styled.main``;
 const Title = styled.h1`
   font-family: 'Playfair Display', serif;
   font-size: 48px;
@@ -20,19 +23,15 @@ const Subtitle = styled.h2`
 const titleText = "Welcome to Type Hangul";
 const subtitleText = "어서 오세요";
 
-interface LandingProps {
-  onFinish: Dispatch<SetStateAction<boolean>>;
-}
-
-function LandingOne(props: LandingProps) {
+function LandingOne(props: NextProps) {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
 
-  typewriteTitle(title, setTitle);
+  typewriteByLetter(titleText, [title, setTitle]);
 
   useEffect(() => {
     if (title.length === titleText.length) {
-      typewriteSubtitle(subtitle, setSubtitle);
+      typewriteByLetter(subtitleText, [subtitle, setSubtitle]);
     }
 
     if (subtitle.length === subtitleText.length) {
@@ -43,27 +42,11 @@ function LandingOne(props: LandingProps) {
   }, [title, subtitle]);
 
   return (
-    <>
+    <Main>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
-    </>
+    </Main>
   );
-}
-
-function typewriteTitle(title: string, setTitle: Dispatch<SetStateAction<string>>): void {
-  for (let index = 0; index < titleText.length; index++) {
-    setTimeout(() => {
-      setTitle(title.concat(titleText.split("").splice(title.length, 1).join()));
-    }, 100);
-  }
-}
-
-function typewriteSubtitle(subtitle: string, setSubtitle: Dispatch<SetStateAction<string>>): void {
-  for (let index = 0; index < subtitleText.length; index++) {
-    setTimeout(() => {
-      setSubtitle(subtitle.concat(subtitleText.split("").splice(subtitle.length, 1).join()))
-    }, 100);
-  }
 }
 
 export default LandingOne;

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { Game } from '../helpers';
 import Landing from './landing';
 
 const Body = styled.div`
@@ -14,7 +15,8 @@ const Body = styled.div`
 `;
 
 // TODO
-function onSelectGame(): void {
+function onSelectGame(game: Game): void {
+  console.log(`game`, game);
   return;
 }
 

@@ -1,22 +1,15 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+import { fadeIn } from "../../helpers";
+import { NextProps, Title, typewriteByLetter } from "./helpers";
 
 const titleText = "게임 3개 있어요";
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
 const titleDuration = titleText.length * 100;
 const gameOptionTwoDelay = titleDuration + 750;
 const gameOptionThreeDelay = titleDuration + (750 * 2);
 
-const Title = styled.h1`
-  font-family: 'Nanum Pen Script', cursive;
-  font-size: 48px;
-  font-weight: 200;
-  margin-bottom: 0;
-  text-align: center;
-`;
+const Main = styled.main``;
 const Container = styled.div`
   display: flex;
   align-items: flex-end;
@@ -44,21 +37,8 @@ const GameDesc = styled.p`
   margin-left: 16px;
 `;
 
-function typewriteByLetter(writeText: string, state: [string, Dispatch<SetStateAction<string>>]): void {
-  const [text, setText] = state;
-
-  for (let index = 0; index < writeText.length; index++) {
-    setTimeout(() => {
-      setText(text.concat(writeText.split("").splice(text.length, 1).join()));
-    }, 100);
-  }
-}
-
-interface LandingTwoProps {
-  onFinish: Dispatch<SetStateAction<boolean>>;
-}
-
-function LandingTwo(props: LandingTwoProps) {
+// TODO: skip altogether? or add a skip button or add a next button and remove timer
+function LandingTwo(props: NextProps) {
   const [title, setTitle] = useState("");
   typewriteByLetter(titleText, [title, setTitle]);
 
@@ -67,7 +47,7 @@ function LandingTwo(props: LandingTwoProps) {
   }, titleDuration + gameOptionTwoDelay + gameOptionThreeDelay);
 
   return (
-    <>
+    <Main>
       <Title>{title}</Title>
 
       <Container>
@@ -84,7 +64,7 @@ function LandingTwo(props: LandingTwoProps) {
         <GameOption>Jump</GameOption>
         <GameDesc>Type the words on the closest platform to escape the burning fire</GameDesc>
       </ContainerThree>
-    </>
+    </Main>
   );
 }
 

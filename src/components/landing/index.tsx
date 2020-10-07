@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import LandingOne from "./LandingOne";
 import LandingTwo from "./LandingTwo";
-
-const Main = styled.main``;
+import LandingThree from "./LandingThree";
+import { Game } from '../../helpers';
 
 interface LandingProps {
-  onSelectGame: () => void;
+  onSelectGame: (game: Game) => void;
 }
 
 function Landing(props: LandingProps) {
@@ -15,11 +14,13 @@ function Landing(props: LandingProps) {
   const [finishedLandingTwo, triggerLandingThree] = useState(false);
 
   return (
-    <Main>
+    <>
       {!finishedLandingOne && <LandingOne onFinish={triggerLandingTwo} />}
-      {finishedLandingOne && <LandingTwo onFinish={triggerLandingThree} />}
-      {/* {finishedLandingTwo && <LandingThree onSelectGame={props.onSelectGame} />} */}
-    </Main>
+
+      {finishedLandingOne && !finishedLandingTwo && <LandingTwo onFinish={triggerLandingThree} />}
+
+      {finishedLandingTwo && <LandingThree onSelectGame={props.onSelectGame} />}
+    </>
   );
 }
 
