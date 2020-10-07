@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from 'styled-components';
 
 import { Game } from '../helpers';
-import About from "./static/About";
-import Contact from "./static/Contact";
 import Landing from './landing';
+
+const About = lazy(() => import("./static/About"));
+const Contact = lazy(() => import("./static/Contact"));
 
 const Body = styled.div`
   display: flex;
@@ -33,12 +34,15 @@ function App() {
             <Landing onSelectGame={onSelectGame} />
           </Route>
 
-          <Route exact path="/about">
-            <About />
-          </Route>
-          <Route exact path="/contact">
-            <Contact />
-          </Route>
+          {/* TODO add proper fallback */}
+          <Suspense fallback={() => { }}>
+            <Route exact path="/about">
+              <About />
+            </Route>
+            <Route exact path="/contact">
+              <Contact />
+            </Route>
+          </Suspense>
 
           <Route exact path="/game/run">
 
