@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { NextProps, typewriteByLetter } from './helpers';
 
-const Main = styled.main``;
 const Title = styled.h1`
   font-family: 'Playfair Display', serif;
   font-size: 48px;
@@ -42,10 +41,10 @@ function LandingOne(props: NextProps) {
   }, [title, subtitle]);
 
   return (
-    <Main>
+    <main>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
-    </Main>
+    </main>
   );
 }
 

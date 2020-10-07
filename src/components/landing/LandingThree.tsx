@@ -22,7 +22,6 @@ const Container = styled.form`
   animation-delay: ${titleText.length * 100}ms;
   animation-fill-mode: forwards;
 `;
-const Option = styled.div``;
 const Radio = styled.input.attrs(props => ({
   type: "radio",
   name: "game",
@@ -122,7 +121,7 @@ function LandingThree(props: LandingThreeProps) {
       <Container onSubmit={handleSubmit}>
         <Submit onClick={handleSubmit} />
 
-        <Option>
+        <div>
           <Radio value="run" checked={selectedGame === "run"} onChange={handleChange} autoFocus />
           <GameName
             description={selectedGame === "run" ? "Type the given words to help your character clear obstacles" : ""}
@@ -130,25 +129,25 @@ function LandingThree(props: LandingThreeProps) {
           >
             Run
         </GameName>
-        </Option>
+        </div>
 
-        <Option>
+        <div>
           <Radio value="pop" checked={selectedGame === "pop"} onChange={handleChange} />
           <GameName
             description={selectedGame === "pop" ? "Type the floating words to avoid the bubbles from hitting the ground" : ""}
             onClick={e => handleClick(e, "pop")}>
             Pop
         </GameName>
-        </Option>
+        </div>
 
-        <Option>
+        <div>
           <Radio value="jump" checked={selectedGame === "jump"} onChange={handleChange} />
           <GameName
             description={selectedGame === "jump" ? "Type the words on the closest platform to escape the burning fire" : ""}
             onClick={e => handleClick(e, "jump")}>
             Jump
           </GameName>
-        </Option>
+        </div>
 
       </Container>
 
