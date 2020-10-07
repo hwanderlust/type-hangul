@@ -1,27 +1,21 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 import Landing from './landing';
 
 const About = lazy(() => import("./static/About"));
 const Contact = lazy(() => import("./static/Contact"));
 
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+const Background = styled.div`
   background-color: #FF7D7D;
-  font-family: 'Roboto', sans-serif;
 `;
 
 function App() {
   return (
     <BrowserRouter>
-      <Body>
-        <Switch>
+      <Switch>
+        <Background>
 
           <Route exact path="/">
             <Landing />
@@ -49,8 +43,8 @@ function App() {
           <Route exact path="/game/gameover">
 
           </Route>
-        </Switch>
-      </Body>
+        </Background>
+      </Switch>
     </BrowserRouter>
   );
 }
