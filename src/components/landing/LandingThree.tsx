@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import apeach from "../../images/apeach-btn.png";
 import { Disclosure } from "../common";
@@ -7,6 +7,12 @@ import { Game, fadeIn, } from "../../helpers";
 
 import Navigation from "./Navigation";
 import { Title, typewriteByLetter } from "./helpers";
+
+const rotate = keyframes`
+  0% { transform: translateX(-25px) translateY(-50%); }
+  50% { transform: translateX(-25px) translateY(-50%) rotate(5deg); }
+  100% { transform: translateX(-25px) translateY(-50%); }
+`;
 
 const titleText = "어느 게임을 하고 싶어요?";
 const Main = styled.main`
@@ -44,7 +50,7 @@ const Radio = styled.input.attrs(props => ({
   
   &:focus, &:active {
     &:checked::before {
-      outline: 1px solid black;
+      animation: ${rotate} 1s ease infinite;
     }
   }
 `;
