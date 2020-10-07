@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import * as Common from "../common";
@@ -19,14 +20,21 @@ const Nav = styled.nav`
   align-self: flex-end;
   margin: auto 0;
 `;
-const Button = styled.button`
+const List = styled.ul`
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  width: 130px;
+  margin: 0;
+  padding: 0;
+`;
+const CustomLink = styled(Link)`
   font-family: 'Playfair Display', serif;
   font-size: 16px;
   margin: auto;
-  background-color: transparent;
-  border: none;
   width: 100px;
-  cursor: pointer;
+  text-decoration: none;
+  color: black;
 
   &:hover {
     color: white;
@@ -34,7 +42,6 @@ const Button = styled.button`
 
   &:active, &:focus {
     font-decoration: underline;
-    font-decoration-color: white;
   }
 `;
 
@@ -44,8 +51,10 @@ function Navigation() {
       <Logo />
 
       <Nav>
-        <Button>About</Button>
-        <Button>Contact</Button>
+        <List>
+          <li><CustomLink to="/about">About</CustomLink></li>
+          <li><CustomLink to="/contact">Contact</CustomLink></li>
+        </List>
       </Nav>
     </Container>
   );
