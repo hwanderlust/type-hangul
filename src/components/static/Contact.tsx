@@ -7,9 +7,8 @@ import { Disclosure, Logo, MenuBtn } from "../common";
 const GridLayout = styled.div`
   display: grid;
   grid-template-columns: 48vw 48vw;
-  grid-template-rows: 100px auto 400px auto;
+  grid-template-rows: 100px auto auto auto;
   grid-column-gap: 2vw;
-  grid-row-gap: 5vh;
 
   @media only screen and (max-width: 720px) {
     grid-template-columns: 100%;
@@ -39,6 +38,7 @@ const Title = styled.h1`
 
   @media only screen and (max-width: 720px) {
     grid-area: auto;
+    margin-bottom: 32px;
   }
 `;
 const Image = styled.img`
@@ -80,9 +80,31 @@ const Text = styled.p`
   font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
   color: white;
   width: 75%;
+
+  @media only screen and (max-width: 720px) {
+    margin-top: 0.25rem;
+  }
 `;
 const Highlight = styled.span`
   color: black;
+`;
+
+const MenuBtnFloating = styled(MenuBtn)`
+  display: block;
+  position: absolute;
+  right: 1vw;
+  top: calc(50% - 50px);
+
+  @media only screen and (max-width: 720px) {
+    display: none;
+  }
+`;
+const DisclosureGrid = styled(Disclosure)`
+  grid-area: 4 / 1 / 5 / 3;
+
+  @media only screen and (max-width: 720px) {
+    grid-area: 6 / 1 / 7 / 2;
+  }
 `;
 
 function Contact() {
@@ -110,18 +132,9 @@ function Contact() {
         </section>
       </Container>
 
-      <MenuBtn style={
-        window.innerWidth > 720 ? {
-          display: "block",
-          position: "absolute",
-          right: "1vw",
-          top: `calc(50% - 50px)`,
-        } : { display: "none" }}
-      />
+      <MenuBtnFloating />
 
-      <Disclosure
-        style={window.innerWidth > 720 ? { gridArea: "4 / 1 / 5 / 4" } : { gridArea: "6 / 1 / 7 / 2" }}
-      />
+      <DisclosureGrid />
     </GridLayout>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { fadeIn } from "../../helpers";
+import { StyledProps, fadeIn, } from "../../helpers";
 
 const Container = styled.footer`
   margin-top: 10vh;
@@ -28,13 +28,9 @@ const Text = styled.p`
   }
 `;
 
-interface DisclosureProps {
-  style?: React.CSSProperties;
-}
-
-function Disclosure(props?: DisclosureProps) {
+function Disclosure(props: StyledProps) {
   return (
-    <Container style={props?.style}>
+    <Container {...props}>
       <Line></Line>
       <Text>Disclosure: The use of Kakao characters and images are not intended for commercial use and only for educational purposes. No intentions of copyright infingement whatsoever.</Text>
     </Container>
