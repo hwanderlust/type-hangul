@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { fadeIn } from "../../helpers";
+import { Fonts, fadeIn } from "../../helpers";
 import { NextProps, Title, typewriteByLetter } from "./helpers";
 
 const titleText = "게임 3개 있어요";
@@ -24,7 +24,7 @@ const ContainerThree = styled(Container)`
   animation-delay: ${gameOptionThreeDelay}ms;
 `;
 const GameOption = styled.h2`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: 48px;
   font-weight: 400;
   margin: 0;

@@ -9,6 +9,7 @@ import apeach from "../../images/apeach-sparkly-eyes.png";
 import con from "../../images/con-thinking.png";
 
 import { Disclosure, Logo, MenuBtn } from "../common";
+import { Fonts } from "../../helpers";
 
 const Header = styled.div`
   width: 100vw;
@@ -45,20 +46,20 @@ const Container = styled.main`
   padding: 0 5vw;
 `;
 const Title = styled.h1`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
   font-weight: 400;
   margin-top: 0;
   margin-bottom: 0;
 `;
 const Subtitle = styled.h2`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
   margin-bottom: 0;
   font-weight: 400;
 `;
 const Text = styled.p`
-  font-family: "Roboto", serif;
+  font-family: ${Fonts.roboto};
   font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
   color: white;
   max-width: 720px;
@@ -104,14 +105,14 @@ const CaptionRight = styled(Caption)`
   margin-left: 16px;
 `;
 const Name = styled.h3`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));;
   font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 0;
 `;
 const Intro = styled.p`
-  font-family: "Roboto", serif;
+  font-family: ${Fonts.roboto};
   font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));  
   color: white;
   max-width: 400px;

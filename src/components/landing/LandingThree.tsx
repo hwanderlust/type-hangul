@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 
 import apeach from "../../images/apeach-btn.png";
 import { Disclosure } from "../common";
-import { fadeIn, } from "../../helpers";
+import { Fonts, fadeIn, } from "../../helpers";
 
 import Navigation from "./Navigation";
 import { Title, typewriteByLetter } from "./helpers";
@@ -65,7 +65,7 @@ interface GameOptionProps {
   description: string;
 }
 const CustomLink = styled(Link)`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: 48px;
   font-weight: 400;
   color: #FFF;
@@ -78,7 +78,7 @@ const CustomLink = styled(Link)`
   &::after {
     content: "${(props: GameOptionProps) => props.description}";
     color: black;
-    font-family: 'Roboto', sans-serif;
+    font-family: ${Fonts.roboto};
     font-size: 12px;
     margin-left: 16px;
     position: absolute;

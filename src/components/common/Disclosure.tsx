@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { StyledProps, fadeIn, } from "../../helpers";
+import { Fonts, StyledProps, fadeIn, } from "../../helpers";
 
 const Container = styled.footer`
   margin-top: 10vh;
@@ -18,7 +18,7 @@ const Line = styled.div`
   background-color: black;
 `;
 const Text = styled.p`
-  font-family: "Roboto", serif;
+  font-family: ${Fonts.roboto};
   font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));;
   font-style: italic;
   padding: 2vw;
