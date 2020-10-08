@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import friends from "../../images/friends-posing.jpg";
-import { Fonts } from "../../helpers";
+import { Fonts, Sizes, } from "../../helpers";
 import { Disclosure, Logo, MenuBtn } from "../common";
 
 const GridLayout = styled.div`
@@ -34,7 +34,7 @@ const Title = styled.h1`
   margin-bottom: 0;
   padding-left: 5vw;
   font-family: ${Fonts.playfair};
-  font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
+  font-size: ${Sizes.variable.font.large};
   font-weight: 400;
 
   @media only screen and (max-width: 720px) {
@@ -68,7 +68,7 @@ const Container = styled.main`
 `;
 const Subtitle = styled.h2`
   font-family: ${Fonts.playfair};
-  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+  font-size: ${Sizes.variable.font.medium};
   margin-bottom: 0;
   font-weight: 400;
 
@@ -78,7 +78,7 @@ const Subtitle = styled.h2`
 `;
 const Text = styled.p`
   font-family: ${Fonts.roboto};
-  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  font-size: ${Sizes.variable.font.small};
   color: white;
   width: 75%;
 
