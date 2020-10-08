@@ -66,6 +66,16 @@ const Container = styled.main`
     padding-left: 5vw;
   }
 `;
+const Link = styled.a`
+  text-decoration: none;
+  color: black;
+
+  &:focus {
+    text-decoration: underline;
+    text-decoration-color: black;
+    outline: none;
+  }
+`;
 const Subtitle = styled.h2`
   font-family: ${Fonts.playfair};
   font-size: ${Sizes.variable.font.medium};
@@ -123,13 +133,17 @@ function Contact() {
 
       <Container>
         <section>
-          <Subtitle>Email</Subtitle>
-          <Text>Any questions or concerns can be directed to <Highlight>hwanderlustdev@gmail.com</Highlight>.</Text>
+          <Link href="mailto:hwanderlustdev@gmail.com?subject=Type%20Hangul%20Inquiry">
+            <Subtitle>Email</Subtitle>
+            <Text>Any questions or concerns can be directed to <Highlight>hwanderlustdev@gmail.com</Highlight>.</Text>
+          </Link>
         </section>
 
         <section>
-          <Subtitle>GitHub</Subtitle>
-          <Text>Any requests or issues can be directed to <Highlight>github.com/hwanderlust</Highlight>.</Text>
+          <Link href="https://github.com/hwanderlust">
+            <Subtitle>GitHub</Subtitle>
+            <Text>Any requests or issues can be directed to <Highlight>github.com/hwanderlust</Highlight>.</Text>
+          </Link>
         </section>
       </Container>
 
