@@ -4,8 +4,11 @@ import styled from "styled-components";
 
 import Landing from './landing';
 
-const About = lazy(() => import("./static/About"));
-const Contact = lazy(() => import("./static/Contact"));
+// https://medium.com/hackernoon/lazy-loading-and-preloading-components-in-react-16-6-804de091c82d
+const preloadAbout = import("./static/About");
+const preloadContact = import("./static/Contact");
+const About = lazy(() => preloadAbout);
+const Contact = lazy(() => preloadContact);
 
 const Background = styled.div`
   background-color: #FF7D7D;
