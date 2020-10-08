@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import { StyledProps } from "../../helpers";
 import icon from "../../images/apeach-btn.png";
 
 const Icon = styled.img`
@@ -13,9 +14,9 @@ const Icon = styled.img`
   }
 `;
 
-function MenuBtn() {
+function MenuBtn(props: StyledProps) {
   return (
-    <Icon src={icon} alt="Kakao Friends' Apeach smiling - as a menu icon/button" />
+    <Icon {...props} src={icon} alt="Kakao Friends' Apeach smiling - as a menu icon/button" />
   );
 }
 

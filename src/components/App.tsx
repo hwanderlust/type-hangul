@@ -9,7 +9,6 @@ const Contact = lazy(() => import("./static/Contact"));
 
 const Background = styled.div`
   background-color: #FF7D7D;
-  padding-bottom: 5vh;
   position: relative;
 `;
 

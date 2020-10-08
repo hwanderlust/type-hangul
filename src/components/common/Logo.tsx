@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { StyledProps } from "../../helpers";
 import logo from "../../images/logo.png";
 
 const Button = styled(Link)`
@@ -17,9 +18,9 @@ const Icon = styled.img`
   }
 `;
 
-function Logo() {
+function Logo(props: StyledProps) {
   return (
-    <Button to="/">
+    <Button {...props} to="/">
       <Icon src={logo} alt="a 'T' with the Korean ㅎ as a logo" />
     </Button>
   );
