@@ -13,9 +13,13 @@ const Icon = styled.img`
   }
 `;
 
-function MenuBtn() {
+interface MenuBtnProps {
+  style?: React.CSSProperties;
+}
+
+function MenuBtn(props?: MenuBtnProps) {
   return (
-    <Icon src={icon} alt="Kakao Friends' Apeach smiling - as a menu icon/button" />
+    <Icon style={props?.style} src={icon} alt="Kakao Friends' Apeach smiling - as a menu icon/button" />
   );
 }
 
