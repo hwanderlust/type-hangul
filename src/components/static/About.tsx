@@ -41,6 +41,16 @@ const MenuIcon = styled(MenuBtn)`
     display: block;
   }
 `;
+const MenuBtnFloating = styled(MenuBtn)`
+  display: block;
+  position: fixed;
+  right: 1vw;
+  top: calc(50% - 50px);
+
+  @media only screen and (max-width: 720px) {
+    display: none;
+  }
+`;
 
 const Container = styled.main`
   padding: 0 5vw;
@@ -130,6 +140,8 @@ function About() {
       <Header>
         <Banner />
       </Header>
+
+      <MenuBtnFloating />
 
       <Container>
         <section>
