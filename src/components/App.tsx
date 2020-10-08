@@ -9,20 +9,22 @@ const Contact = lazy(() => import("./static/Contact"));
 
 const Background = styled.div`
   background-color: #FF7D7D;
+  padding-bottom: 5vh;
+  position: relative;
 `;
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Background>
+    <Background>
+      <BrowserRouter>
+        <Switch>
 
           <Route exact path="/">
             <Landing />
           </Route>
 
           {/* TODO add proper fallback */}
-          <Suspense fallback={() => { }}>
+          <Suspense fallback={() => <>Loading...</>} >
             <Route exact path="/about">
               <About />
             </Route>
@@ -43,9 +45,9 @@ function App() {
           <Route exact path="/game/gameover">
 
           </Route>
-        </Background>
-      </Switch>
-    </BrowserRouter>
+        </Switch>
+      </BrowserRouter>
+    </Background>
   );
 }
 

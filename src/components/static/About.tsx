@@ -7,33 +7,130 @@ import friends from "../../images/friends-walking.png";
 import ryan from "../../images/ryan-waving.png";
 import apeach from "../../images/apeach-sparkly-eyes.png";
 import con from "../../images/con-thinking.png";
-import icon from "../../images/apeach-btn.png";
 
-import { Disclosure, Logo } from "../common";
+import { Disclosure, Logo, MenuBtn } from "../common";
 
-const Header = styled.div``;
-const Banner = styled.img``;
-const Title = styled.h1``;
-const Subtitle = styled.h2``;
-const Text = styled.p``;
-const MenuIcon = styled.img``;
-const RyanPole = styled.img``;
-const Friends = styled.img``;
-const Intros = styled.div``;
-const Row = styled.div``;
-const Name = styled.h3``;
-const Intro = styled.p``;
+const Header = styled.div`
+  width: 100vw;
+  height: 300px;
+`;
+const MobileTop = styled.div`
+  display: none;
+
+  @media only screen and (max-width: 720px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+`;
+const Banner = styled.div`
+  background-image: url(${banner});
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+`;
+const MenuIcon = styled(MenuBtn)`
+  display: none;
+
+  @media only screen and (max-width: 720px) {
+    display: block;
+  }
+`;
+
+const Container = styled.main`
+  padding: 0 5vw;
+`;
+const Title = styled.h1`
+  font-family: 'Playfair Display', serif;
+  font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+`;
+const Subtitle = styled.h2`
+  font-family: 'Playfair Display', serif;
+  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+  margin-bottom: 0;
+  font-weight: 400;
+`;
+const Text = styled.p`
+  font-family: "Roboto", serif;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  color: white;
+  max-width: 720px;
+`;
+const RyanPole = styled.img`
+  position: absolute;
+  opacity: 0.3;
+  left: ${Math.sqrt(window.innerWidth / 10) * 5}%;
+  width: calc(150px + (282 - 150) * ((100vw - 300px) / (1440 - 300)));
+`;
+
+const Friends = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+`;
+const FriendsPic = styled.img`
+  margin-left: auto;
+  margin-right: auto;
+
+  @media only screen and (max-width: 900px) {
+    width: 100%;
+  }
+`;
+const Intros = styled.div`
+  margin-top: 32px;
+  max-width: 532px;
+`;
+const Row = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 32px;
+`;
+const Caption = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const CaptionLeft = styled(Caption)`
+  margin-right: 16px;
+`;
+const CaptionRight = styled(Caption)`
+  margin-left: 16px;
+`;
+const Name = styled.h3`
+  font-family: 'Playfair Display', serif;
+  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 0;
+`;
+const Intro = styled.p`
+  font-family: "Roboto", serif;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));  
+  color: white;
+  max-width: 400px;
+  margin-bottom: 0;
+`;
 
 function About() {
+
   return (
     <>
-      <Header>
+      <MobileTop>
         <Logo />
-        <MenuIcon src={icon} alt="Kakao Friends' Apeach smiling - as a menu icon/button" />
-        <Banner src={banner} alt="Kakao friends in a seated position looking happy and friendly" />
+        <MenuIcon />
+      </MobileTop>
+      <Header>
+        <Banner />
       </Header>
 
-      <main>
+      <Container>
         <section>
           <Title>About</Title>
 
@@ -56,6 +153,8 @@ function About() {
             </Text>
           </article>
 
+          <RyanPole src={ryanPole} alt="Kakao Friends' Ryan hanging on a pole leaning left peeking a look" />
+
           <article>
             <Subtitle>Run</Subtitle>
             <Text>
@@ -77,33 +176,37 @@ function About() {
             </Text>
           </article>
 
-          <RyanPole src={ryanPole} alt="Kakao Friends' Ryan hanging on a pole leaning left peeking a look" />
         </section>
 
-        <section>
-          <Friends src={friends} alt="Kakao friends arms-on-shoulders one-by-one in line happily smiling" />
+        <Friends>
+          <FriendsPic src={friends} alt="Kakao friends arms-on-shoulders one-by-one in line happily smiling" />
           <Intros>
             <Row>
               <img src={ryan} alt="Kakao friends' Ryan waving" />
-              <Name>Ryan</Name>
-              <Intro>A male lion whose complex is his absence of a mane</Intro>
+              <CaptionRight>
+                <Name>Ryan</Name>
+                <Intro>A male lion whose complex is his absence of a mane</Intro>
+              </CaptionRight>
             </Row>
 
-
             <Row>
-              <Name>Apeach</Name>
-              <Intro>Mischievous peach that escaped from the peach tree</Intro>
+              <CaptionLeft>
+                <Name>Apeach</Name>
+                <Intro>Mischievous peach that escaped from the peach tree</Intro>
+              </CaptionLeft>
               <img src={apeach} alt="Kakao friends' Apeach drinking something with sparkly eyes" />
             </Row>
 
             <Row>
               <img src={con} alt="Kakao friends' Con in a thinking pose with one of its arms under its chin" />
-              <Name>Con</Name>
-              <Intro>The unidentifiable crocodile created by Muzi by raising a pickled radish and now wants to raise a peach</Intro>
+              <CaptionRight>
+                <Name>Con</Name>
+                <Intro>The unidentifiable crocodile created by Muzi by raising a pickled radish and now wants to raise a peach</Intro>
+              </CaptionRight>
             </Row>
           </Intros>
-        </section>
-      </main>
+        </Friends>
+      </Container>
 
       <Disclosure />
     </>

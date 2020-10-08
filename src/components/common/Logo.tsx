@@ -7,11 +7,20 @@ import logo from "../../images/logo.png";
 const Button = styled(Link)`
   display: block;
 `;
+const Icon = styled.img`
+  height: 100px;
+  transform: translateY(-10%);
+
+  @media only screen and (max-width: 720px) {
+    height: 50px;
+    transform: translateY(-25%);
+  }
+`;
 
 function Logo() {
   return (
     <Button to="/">
-      <img src={logo} alt="a 'T' with the Korean ㅎ as a logo" />
+      <Icon src={logo} alt="a 'T' with the Korean ㅎ as a logo" />
     </Button>
   );
 }
