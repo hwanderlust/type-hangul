@@ -1,26 +1,22 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 import Landing from './landing';
 
 const About = lazy(() => import("./static/About"));
 const Contact = lazy(() => import("./static/Contact"));
 
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+const Background = styled.div`
   background-color: #FF7D7D;
-  font-family: 'Roboto', sans-serif;
+  padding-bottom: 5vh;
+  position: relative;
 `;
 
 function App() {
   return (
-    <BrowserRouter>
-      <Body>
+    <Background>
+      <BrowserRouter>
         <Switch>
 
           <Route exact path="/">
@@ -28,7 +24,7 @@ function App() {
           </Route>
 
           {/* TODO add proper fallback */}
-          <Suspense fallback={() => { }}>
+          <Suspense fallback={() => <>Loading...</>} >
             <Route exact path="/about">
               <About />
             </Route>
@@ -50,8 +46,8 @@ function App() {
 
           </Route>
         </Switch>
-      </Body>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Background>
   );
 }
 

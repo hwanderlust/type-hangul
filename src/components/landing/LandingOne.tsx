@@ -52,7 +52,7 @@ function LandingOne(props: NextProps) {
         props.onFinish(true);
       }, 500);
     }
-  }, [leftText, rightText, subtitle]);
+  }, [props, leftText, rightText, subtitle]);
 
   return (
     <main>

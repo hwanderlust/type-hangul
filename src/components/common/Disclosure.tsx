@@ -5,7 +5,9 @@ import { fadeIn } from "../../helpers";
 
 const Container = styled.footer`
   position: absolute;
-  bottom: 3vh;
+  bottom: 0;
+  margin-top: 10vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   animation: ${fadeIn} 500ms ease-in;
