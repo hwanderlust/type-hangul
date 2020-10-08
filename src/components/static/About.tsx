@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import banner from "../../images/friends-wall.png";
+import banner from "../../images/friends-wall.jpg";
 import ryanPole from "../../images/ryan-pole.png";
-import friends from "../../images/friends-walking.png";
+import friends from "../../images/friends-walking.jpg";
 import ryan from "../../images/ryan-waving.png";
 import apeach from "../../images/apeach-sparkly-eyes.png";
 import con from "../../images/con-thinking.png";
