@@ -11,7 +11,7 @@ import { Title, typewriteByLetter } from "./helpers";
 
 const rotate = keyframes`
   0% { transform: translateX(-25px) translateY(-50%); }
-  50% { transform: translateX(-25px) translateY(-50%) rotate(5deg); }
+  50% { transform: translateX(-25px) translateY(-50%) rotate(10deg); }
   100% { transform: translateX(-25px) translateY(-50%); }
 `;
 
@@ -47,6 +47,7 @@ const Radio = styled.input.attrs(props => ({
     background-size: cover;
     height: 50px;
     width: 50px;
+    filter: drop-shadow(1px 0 5px #000);
   }
   
   &:focus, &:active {

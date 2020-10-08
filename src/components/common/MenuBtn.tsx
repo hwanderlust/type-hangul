@@ -7,6 +7,7 @@ import icon from "../../images/apeach-btn.png";
 const Icon = styled.img`
   width: 100px;
   height: 100px;
+  filter: drop-shadow(1px 0 5px #000);
   
   @media only screen and (max-width: 720px) {
     width: 50px;
