@@ -6,16 +6,28 @@ import { Disclosure, Logo, MenuBtn } from "../common";
 
 const GridLayout = styled.div`
   display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100px auto 400px auto 5vh;
+  grid-template-columns: 48vw 48vw;
+  grid-template-rows: 100px auto 400px auto;
   grid-column-gap: 2vw;
-  height: 100vh;
+  grid-row-gap: 5vh;
 
-  @media only screen and (max-width: 720) {
-    // grid-template-columns: 50% 50%;
-    // grid-template-rows: 200px auto 400px auto 5vh;
+  @media only screen and (max-width: 720px) {
+    grid-template-columns: 100%;
+    grid-template-rows: 75px auto auto auto;
   }
 `;
+const Nav = styled.nav`
+  display: none;
+
+  @media only screen and (max-width: 720px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5vw;
+    width: 95vw;
+  }
+`;
+
 const Title = styled.h1`
   grid-area: 1 / 1 / 3 / 3;
   margin-top: 2vh;
@@ -24,20 +36,22 @@ const Title = styled.h1`
   font-family: 'Playfair Display', serif;
   font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
   font-weight: 400;
+
+  @media only screen and (max-width: 720px) {
+    grid-area: auto;
+  }
 `;
 const Image = styled.img`
-  grid-area: 3 / 1 / 5 / 2;
+  grid-area: 3 / 1 / 4 / 2;
   width: 100%;
   margin: auto 0;
   border-top-right-radius: 100px;
   border-bottom-right-radius: 100px;
 
-  @media only screen and (max-width: 720) {
+  @media only screen and (max-width: 720px) {
+    grid-area: 2 / 1 / 3 / 2;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
   }
 `;
 const Container = styled.main`
@@ -45,12 +59,21 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media only screen and (max-width: 720px) {
+    grid-area: auto;
+    padding-left: 5vw;
+  }
 `;
 const Subtitle = styled.h2`
   font-family: 'Playfair Display', serif;
   font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
   margin-bottom: 0;
   font-weight: 400;
+
+  @media only screen and (max-width: 720px) {
+    margin-top: 0;
+  }
 `;
 const Text = styled.p`
   font-family: "Roboto", serif;
@@ -66,14 +89,12 @@ function Contact() {
   return (
     <GridLayout>
 
-      <Title>Contact</Title>
+      <Nav>
+        <Logo />
+        <MenuBtn />
+      </Nav>
 
-      {/* <Logo /> */}
-      <MenuBtn style={{
-        position: "absolute",
-        right: "1vw",
-        top: `calc(50% - ${window.innerWidth > 720 ? 50 : 25}px)`,
-      }} />
+      <Title>Contact</Title>
 
       <Image src={friends} alt="Kakao friends' posing for a picture with a temple in the background and the skyblue sky" />
 
@@ -89,7 +110,18 @@ function Contact() {
         </section>
       </Container>
 
-      <Disclosure />
+      <MenuBtn style={
+        window.innerWidth > 720 ? {
+          display: "block",
+          position: "absolute",
+          right: "1vw",
+          top: `calc(50% - 50px)`,
+        } : { display: "none" }}
+      />
+
+      <Disclosure
+        style={window.innerWidth > 720 ? { gridArea: "4 / 1 / 5 / 4" } : { gridArea: "6 / 1 / 7 / 2" }}
+      />
     </GridLayout>
   );
 }
