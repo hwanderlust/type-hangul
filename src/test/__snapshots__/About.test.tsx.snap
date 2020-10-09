@@ -1,0 +1,625 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<About/> renders correctly 1`] = `
+Array [
+  .c1 {
+  display: block;
+}
+
+.c2 {
+  height: 100px;
+  -webkit-transform: translateY(-10%);
+  -ms-transform: translateY(-10%);
+  transform: translateY(-10%);
+}
+
+.c4 {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-filter: drop-shadow(1px 0 10px #000);
+  filter: drop-shadow(1px 0 10px #000);
+}
+
+.c4:focus {
+  border: 1px solid white;
+  outline: none;
+}
+
+.c5 {
+  width: 100%;
+  height: 100%;
+}
+
+.c0 {
+  display: none;
+}
+
+.c3 {
+  display: none;
+}
+
+@media screen only and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+  .c2 {
+    height: 50px;
+    -webkit-transform: translateY(-25%);
+    -ms-transform: translateY(-25%);
+    transform: translateY(-25%);
+  }
+}
+
+@media only screen and (max-width:720px) {
+  .c4 {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width:720px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100px;
+    width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media only screen and (max-width:720px) {
+  .c3 {
+    display: block;
+  }
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:900px) {
+
+}
+
+<div
+    className="c0"
+  >
+    <a
+      className="c1"
+      href="/"
+      onClick={[Function]}
+    >
+      <img
+        alt="a 'T' with the Korean ㅎ as a logo"
+        className="c2"
+        src="logo.png"
+      />
+    </a>
+    <div
+      className="c3"
+    >
+      <button
+        className="c4"
+        onClick={[Function]}
+      >
+        <img
+          alt="Kakao Friends' Apeach smiling - as a menu icon/button"
+          className="c5"
+          src="apeach-btn.png"
+        />
+      </button>
+    </div>
+  </div>,
+  .c0 {
+  width: 100vw;
+  height: 300px;
+}
+
+.c1 {
+  background-image: url(friends-wall.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+@media screen only and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:900px) {
+
+}
+
+<div
+    className="c0"
+  >
+    <div
+      className="c1"
+    />
+  </div>,
+  .c1 {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-filter: drop-shadow(1px 0 10px #000);
+  filter: drop-shadow(1px 0 10px #000);
+}
+
+.c1:focus {
+  border: 1px solid white;
+  outline: none;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+}
+
+.c0 {
+  display: block;
+  position: fixed;
+  right: 1vw;
+  top: calc(50% - 50px);
+}
+
+@media screen only and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+  .c1 {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+  .c0 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width:900px) {
+
+}
+
+<div
+    className="c0"
+  >
+    <button
+      className="c1"
+      onClick={[Function]}
+    >
+      <img
+        alt="Kakao Friends' Apeach smiling - as a menu icon/button"
+        className="c2"
+        src="apeach-btn.png"
+      />
+    </button>
+  </div>,
+  .c0 {
+  padding: 0 5vw;
+}
+
+.c1 {
+  font-family: 'Playfair Display',serif;
+  font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.c2 {
+  font-family: 'Playfair Display',serif;
+  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.c3 {
+  font-family: 'Roboto',serif;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  color: white;
+  max-width: 720px;
+}
+
+.c4 {
+  position: absolute;
+  opacity: 0.3;
+  left: 50.59644256269407%;
+  width: calc(150px + (282 - 150) * ((100vw - 300px) / (1440 - 300)));
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.c6 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c7 {
+  margin-top: 32px;
+  max-width: 532px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  margin-bottom: 32px;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c13 {
+  margin-right: 16px;
+}
+
+.c10 {
+  margin-left: 16px;
+}
+
+.c11 {
+  font-family: 'Playfair Display',serif;
+  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.c12 {
+  font-family: 'Roboto',serif;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  color: white;
+  max-width: 400px;
+  margin-bottom: 0;
+}
+
+@media screen only and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:900px) {
+  .c6 {
+    width: 100%;
+  }
+}
+
+<main
+    className="c0"
+  >
+    <section>
+      <h1
+        className="c1"
+      >
+        About
+      </h1>
+      <article>
+        <h2
+          className="c2"
+        >
+          Story
+        </h2>
+        <p
+          className="c3"
+        >
+          These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
+        </p>
+        <p
+          className="c3"
+        >
+          I, the creator, designer and developer, studied Korean over the coarse of a year by myself with textbooks while I taught English in rural Korea and then took 6 months of classes at Sogang University.
+        </p>
+        <p
+          className="c3"
+        >
+          My studies weren’t for higher education nor for a professional reason, but simply because I like the language and what better way to enjoy learning a language and its culture and history than being in its country and among the people.
+        </p>
+        <p
+          className="c3"
+        >
+          I believe with the advancements of technology and translation, the beauty of each and every language is being lost at an extraordinary rate than ever before. It’s fun learning the differences between languages and provides meaningful insight into other cultures and their prospective on life.
+        </p>
+        <p
+          className="c3"
+        >
+          With that said, please have fun and keep learning!
+        </p>
+      </article>
+      <img
+        alt="Kakao Friends' Ryan hanging on a pole leaning left peeking a look"
+        className="c4"
+        src="ryan-pole.png"
+      />
+      <article>
+        <h2
+          className="c2"
+        >
+          Run
+        </h2>
+        <p
+          className="c3"
+        >
+          These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
+        </p>
+      </article>
+      <article>
+        <h2
+          className="c2"
+        >
+          Pop
+        </h2>
+        <p
+          className="c3"
+        >
+          These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
+        </p>
+      </article>
+      <article>
+        <h2
+          className="c2"
+        >
+          Jump
+        </h2>
+        <p
+          className="c3"
+        >
+          These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
+        </p>
+      </article>
+    </section>
+    <section
+      className="c5"
+    >
+      <img
+        alt="Kakao friends arms-on-shoulders one-by-one in line happily smiling"
+        className="c6"
+        src="friends-walking.jpg"
+      />
+      <div
+        className="c7"
+      >
+        <div
+          className="c8"
+        >
+          <img
+            alt="Kakao friends' Ryan waving"
+            src="ryan-waving.png"
+          />
+          <div
+            className="c9 c10"
+          >
+            <h3
+              className="c11"
+            >
+              Ryan
+            </h3>
+            <p
+              className="c12"
+            >
+              A male lion whose complex is his absence of a mane
+            </p>
+          </div>
+        </div>
+        <div
+          className="c8"
+        >
+          <div
+            className="c9 c13"
+          >
+            <h3
+              className="c11"
+            >
+              Apeach
+            </h3>
+            <p
+              className="c12"
+            >
+              Mischievous peach that escaped from the peach tree
+            </p>
+          </div>
+          <img
+            alt="Kakao friends' Apeach drinking something with sparkly eyes"
+            src="apeach-sparkly-eyes.png"
+          />
+        </div>
+        <div
+          className="c8"
+        >
+          <img
+            alt="Kakao friends' Con in a thinking pose with one of its arms under its chin"
+            src="con-thinking.png"
+          />
+          <div
+            className="c9 c10"
+          >
+            <h3
+              className="c11"
+            >
+              Con
+            </h3>
+            <p
+              className="c12"
+            >
+              The unidentifiable crocodile created by Muzi by raising a pickled radish and now wants to raise a peach
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>,
+  .c0 {
+  margin-top: 10vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-animation: hUniol 500ms ease-in;
+  animation: hUniol 500ms ease-in;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  width: 30vw;
+  height: 1px;
+  background-color: black;
+}
+
+.c2 {
+  font-family: 'Roboto',serif;
+  font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));
+  font-style: italic;
+  padding: 2vw;
+}
+
+@media screen only and (max-width:720px) {
+  .c2 {
+    max-width: 500px;
+  }
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:720px) {
+
+}
+
+@media only screen and (max-width:900px) {
+
+}
+
+<footer
+    className="c0"
+  >
+    <div
+      className="c1"
+    />
+    <p
+      className="c2"
+    >
+      Disclosure: The use of Kakao characters and images are not intended for commercial use and only for educational purposes. No intentions of copyright infingement whatsoever.
+    </p>
+  </footer>,
+]
+`;

@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Disclosure/> renders correctly 1`] = `
+.c0 {
+  margin-top: 10vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-animation: hUniol 500ms ease-in;
+  animation: hUniol 500ms ease-in;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  width: 30vw;
+  height: 1px;
+  background-color: black;
+}
+
+.c2 {
+  font-family: 'Roboto',serif;
+  font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));
+  font-style: italic;
+  padding: 2vw;
+}
+
+@media screen only and (max-width:720px) {
+  .c2 {
+    max-width: 500px;
+  }
+}
+
+<footer
+  className="c0"
+>
+  <div
+    className="c1"
+  />
+  <p
+    className="c2"
+  >
+    Disclosure: The use of Kakao characters and images are not intended for commercial use and only for educational purposes. No intentions of copyright infingement whatsoever.
+  </p>
+</footer>
+`;
