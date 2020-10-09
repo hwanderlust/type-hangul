@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { Fonts, Sizes, StyledProps } from "../../helpers";
@@ -121,11 +121,49 @@ const LetterEng = styled(Letter)`
   }
 `;
 
-function KeyboardRow(props: ({ rowLetters: Array<Key> })): JSX.Element {
+// https://stackoverflow.com/questions/29069639/listen-to-keypress-for-document-in-reactjs
+function useEventListener(eventName: string, handler: (e: KeyboardEvent) => void, element = window) {
+  // Create a ref that stores handler
+  const savedHandler = useRef();
+
+  // Update ref.current value if handler changes.
+  // This allows our effect below to always get latest handler ...
+  // ... without us needing to pass it in effect deps array ...
+  // ... and potentially cause effect to re-run every render.
+  useEffect(() => {
+    // @ts-ignore
+    savedHandler.current = handler;
+  }, [handler]);
+
+  useEffect(
+    () => {
+      // Make sure element supports addEventListener
+      const isSupported = element && element.addEventListener;
+      if (!isSupported) return;
+
+      // Create event listener that calls handler function stored in ref
+      // @ts-ignore
+      const eventListener = event => savedHandler.current(event);
+
+      // Add event listener
+      element.addEventListener(eventName, eventListener);
+
+      // Remove event listener on cleanup
+      return () => {
+        element.removeEventListener(eventName, eventListener);
+      };
+    },
+    [eventName, element] // Re-run if eventName or element changes
+  );
+};
+
+const pressed = { backgroundColor: "pink", color: "black" };
+
+function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKeys: Array<string> })): JSX.Element {
   return (
     <Row numOfEl={props.rowLetters.length}>
       {props.rowLetters.map((key, index) => (
-        <Key key={`${key}${index}`}>
+        <Key key={`${key}${index}`} style={props.pressedKeys.length && props.pressedKeys.find(el => el.localeCompare(key.eng) === 0) !== undefined ? pressed : {}}>
           <Contents>
 
             <Top>
@@ -151,11 +189,41 @@ function KeyboardRow(props: ({ rowLetters: Array<Key> })): JSX.Element {
 }
 
 function Keyboard(props: StyledProps) {
+  const [pressedKeys, setKeys] = useState([] as Array<string>);
+
+  function handleDown(e: KeyboardEvent) {
+    if (!pressedKeys.find(el => el.localeCompare(e.key) === 0)) {
+      setKeys([...pressedKeys, e.key]);
+    }
+  }
+
+  function handleUp(e: KeyboardEvent) {
+    const index = pressedKeys.findIndex(el => el.localeCompare(e.key) === 0);
+    if (index !== -1) {
+      const copied = [...pressedKeys];
+      copied.splice(index, 1);
+      setKeys(copied);
+    }
+  }
+
+  useEventListener("keydown", handleDown);
+  useEventListener("keyup", handleUp);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (pressedKeys.length) {
+        console.debug(`resetting array`);
+        setKeys([]);
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [pressedKeys]);
+
   return (
     <Container {...props}>
-      <KeyboardRow rowLetters={topRow} />
-      <KeyboardRow rowLetters={midRow} />
-      <KeyboardRow rowLetters={botRow} />
+      <KeyboardRow rowLetters={topRow} pressedKeys={pressedKeys} />
+      <KeyboardRow rowLetters={midRow} pressedKeys={pressedKeys} />
+      <KeyboardRow rowLetters={botRow} pressedKeys={pressedKeys} />
     </Container>
   );
 }
