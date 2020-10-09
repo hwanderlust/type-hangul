@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import * as Common from "../common";
-import { fadeIn } from "../../helpers";
+import { Fonts, fadeIn } from "../../helpers";
 
 const Container = styled.header`
   position: absolute;
@@ -29,7 +29,7 @@ const List = styled.ul`
   padding: 0;
 `;
 const CustomLink = styled(Link)`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: 16px;
   margin: auto;
   width: 100px;

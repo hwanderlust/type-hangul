@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
+import { Fonts } from "../../helpers";
+
 export interface NextProps {
   onFinish: Dispatch<SetStateAction<boolean>>;
 }
@@ -16,7 +18,7 @@ function typewriteByLetter(writeText: string, state: [string, Dispatch<SetStateA
 }
 
 const Title = styled.h1`
-  font-family: 'Nanum Pen Script', cursive;
+  font-family: ${Fonts.nanum};
   font-size: 48px;
   font-weight: 200;
   margin-bottom: 0;

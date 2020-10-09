@@ -4,14 +4,14 @@ import styled, { keyframes } from 'styled-components';
 
 import apeach from "../../images/apeach-btn.png";
 import { Disclosure } from "../common";
-import { fadeIn, } from "../../helpers";
+import { Fonts, fadeIn, } from "../../helpers";
 
 import Navigation from "./Navigation";
 import { Title, typewriteByLetter } from "./helpers";
 
 const rotate = keyframes`
   0% { transform: translateX(-25px) translateY(-50%); }
-  50% { transform: translateX(-25px) translateY(-50%) rotate(5deg); }
+  50% { transform: translateX(-25px) translateY(-50%) rotate(10deg); }
   100% { transform: translateX(-25px) translateY(-50%); }
 `;
 
@@ -47,6 +47,7 @@ const Radio = styled.input.attrs(props => ({
     background-size: cover;
     height: 50px;
     width: 50px;
+    filter: drop-shadow(1px 0 5px #000);
   }
   
   &:focus, &:active {
@@ -65,7 +66,7 @@ interface GameOptionProps {
   description: string;
 }
 const CustomLink = styled(Link)`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-size: 48px;
   font-weight: 400;
   color: #FFF;
@@ -78,7 +79,7 @@ const CustomLink = styled(Link)`
   &::after {
     content: "${(props: GameOptionProps) => props.description}";
     color: black;
-    font-family: 'Roboto', sans-serif;
+    font-family: ${Fonts.roboto};
     font-size: 12px;
     margin-left: 16px;
     position: absolute;

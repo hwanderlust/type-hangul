@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
 
+import { Fonts } from "../../helpers";
 import LandingOne from "./LandingOne";
 import LandingTwo from "./LandingTwo";
 import LandingThree from "./LandingThree";
@@ -11,7 +12,7 @@ const Body = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: 'Roboto', sans-serif;
+  font-family: ${Fonts.roboto};
 `;
 
 function Landing() {

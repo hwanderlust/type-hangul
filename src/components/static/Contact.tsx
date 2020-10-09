@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import friends from "../../images/friends-posing.jpg";
+import { Fonts, Sizes, } from "../../helpers";
 import { Disclosure, Logo, MenuBtn } from "../common";
 
 const GridLayout = styled.div`
@@ -32,8 +33,8 @@ const Title = styled.h1`
   margin-top: 2vh;
   margin-bottom: 0;
   padding-left: 5vw;
-  font-family: 'Playfair Display', serif;
-  font-size: calc(36px + (72 - 36) * ((100vw - 300px) / (1440 - 300)));
+  font-family: ${Fonts.playfair};
+  font-size: ${Sizes.variable.font.large};
   font-weight: 400;
 
   @media only screen and (max-width: 720px) {
@@ -65,9 +66,19 @@ const Container = styled.main`
     padding-left: 5vw;
   }
 `;
+const Link = styled.a`
+  text-decoration: none;
+  color: black;
+
+  &:focus {
+    text-decoration: underline;
+    text-decoration-color: black;
+    outline: none;
+  }
+`;
 const Subtitle = styled.h2`
-  font-family: 'Playfair Display', serif;
-  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+  font-family: ${Fonts.playfair};
+  font-size: ${Sizes.variable.font.medium};
   margin-bottom: 0;
   font-weight: 400;
 
@@ -76,8 +87,8 @@ const Subtitle = styled.h2`
   }
 `;
 const Text = styled.p`
-  font-family: "Roboto", serif;
-  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  font-family: ${Fonts.roboto};
+  font-size: ${Sizes.variable.font.small};
   color: white;
   width: 75%;
 
@@ -122,13 +133,17 @@ function Contact() {
 
       <Container>
         <section>
-          <Subtitle>Email</Subtitle>
-          <Text>Any questions or concerns can be directed to <Highlight>hwanderlustdev@gmail.com</Highlight>.</Text>
+          <Link href="mailto:hwanderlustdev@gmail.com?subject=Type%20Hangul%20Inquiry">
+            <Subtitle>Email</Subtitle>
+            <Text>Any questions or concerns can be directed to <Highlight>hwanderlustdev@gmail.com</Highlight>.</Text>
+          </Link>
         </section>
 
         <section>
-          <Subtitle>GitHub</Subtitle>
-          <Text>Any requests or issues can be directed to <Highlight>github.com/hwanderlust</Highlight>.</Text>
+          <Link href="https://github.com/hwanderlust">
+            <Subtitle>GitHub</Subtitle>
+            <Text>Any requests or issues can be directed to <Highlight>github.com/hwanderlust</Highlight>.</Text>
+          </Link>
         </section>
       </Container>
 

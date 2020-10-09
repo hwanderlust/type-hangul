@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { Fonts } from "../../helpers";
 import { NextProps, typewriteByLetter } from './helpers';
 
 const Title = styled.h1`
-  font-family: 'Playfair Display', serif;
+  font-family: ${Fonts.playfair};
   font-weight: 400;
-  text-transform: uppercase;
   margin-bottom: 0;
-`;
+  `;
 const Left = styled.span`
   font-size: 36px;
   color: white;
   letter-spacing: -0.05em;
-`;
+  text-transform: lowercase;
+  `;
 const Right = styled.span`
   font-size: 72px;
   letter-spacing: 0.05em;
+  text-transform: uppercase;
 `;
 const Subtitle = styled.h2`
-  font-family: 'Nanum Pen Script', cursive;
+  font-family: ${Fonts.nanum};
   font-size: 48px;
   font-weight: 200;
   text-align: right;
