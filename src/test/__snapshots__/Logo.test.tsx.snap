@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Logo/> renders correctly 1`] = `
+.c0 {
+  display: block;
+}
+
+.c1 {
+  height: 100px;
+  -webkit-transform: translateY(-10%);
+  -ms-transform: translateY(-10%);
+  transform: translateY(-10%);
+}
+
+@media only screen and (max-width:720px) {
+  .c1 {
+    height: 50px;
+    -webkit-transform: translateY(-25%);
+    -ms-transform: translateY(-25%);
+    transform: translateY(-25%);
+  }
+}
+
+<a
+  className="c0"
+  href="/"
+  onClick={[Function]}
+>
+  <img
+    alt="a 'T' with the Korean ㅎ as a logo"
+    className="c1"
+    src="logo.png"
+  />
+</a>
+`;

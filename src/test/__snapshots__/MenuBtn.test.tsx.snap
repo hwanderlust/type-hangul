@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MenuBtn/> renders correctly in its closed state 1`] = `
+.c0 {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-filter: drop-shadow(1px 0 10px #000);
+  filter: drop-shadow(1px 0 10px #000);
+}
+
+.c0:focus {
+  border: 1px solid white;
+  outline: none;
+}
+
+.c1 {
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width:720px) {
+  .c0 {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+<div>
+  <button
+    className="c0"
+    onClick={[Function]}
+  >
+    <img
+      alt="Kakao Friends' Apeach smiling - as a menu icon/button"
+      className="c1"
+      src="apeach-btn.png"
+    />
+  </button>
+</div>
+`;
+
+exports[`<MenuBtn/> renders correctly in its opened state 1`] = `"<div><div class=\\"sc-bdnylx sc-gtssRu cPhuKl hUggKH\\"><ul class=\\"sc-dlnjPT foHzqh\\"><a class=\\"sc-jSFkmK bYQpRM\\" href=\\"/game/run\\">run</a><a class=\\"sc-jSFkmK bYQpRM\\" href=\\"/game/pop\\">pop</a><a class=\\"sc-jSFkmK bYQpRM\\" href=\\"/game/jump\\">jump</a></ul></div><button class=\\"sc-hKFyIo cvRZQX\\"><img src=\\"apeach-btn.png\\" alt=\\"Kakao Friends' Apeach smiling - as a menu icon/button\\" class=\\"sc-eCApGN fGjSpM\\"></button><div class=\\"sc-bdnylx egspcC\\"><ul class=\\"sc-dlnjPT foHzqh\\"><a class=\\"sc-jSFkmK bYQpRM\\" href=\\"/about\\">about</a><a class=\\"sc-jSFkmK bYQpRM\\" href=\\"/contact\\">contact</a></ul></div></div>"`;
