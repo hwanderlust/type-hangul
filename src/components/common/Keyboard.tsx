@@ -188,12 +188,16 @@ function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKeys: Array<string
   )
 }
 
-function Keyboard(props: StyledProps) {
+interface KeyboardProps extends StyledProps {
+  onKeyPress: (pressedKey: string) => void;
+}
+function Keyboard(props: KeyboardProps) {
   const [pressedKeys, setKeys] = useState([] as Array<string>);
 
   function handleDown(e: KeyboardEvent) {
     if (!pressedKeys.find(el => el.localeCompare(e.key) === 0)) {
       setKeys([...pressedKeys, e.key]);
+      props.onKeyPress(e.key);
     }
   }
 
@@ -220,7 +224,7 @@ function Keyboard(props: StyledProps) {
   }, [pressedKeys]);
 
   return (
-    <Container {...props}>
+    <Container className={props.className}>
       <KeyboardRow rowLetters={topRow} pressedKeys={pressedKeys} />
       <KeyboardRow rowLetters={midRow} pressedKeys={pressedKeys} />
       <KeyboardRow rowLetters={botRow} pressedKeys={pressedKeys} />
