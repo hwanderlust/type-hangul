@@ -1,0 +1,995 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Keyboard/> renders correctly 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: calc(4px + (8 - 4) * ((100vw - 300px) / (1440 - 300)));
+}
+
+.c1:last-of-type {
+  margin-bottom: 0;
+}
+
+.c2 {
+  background-color: black;
+  width: calc(25px + (75 - 25) * ((100vw - 300px) / (1440 - 300)));
+  height: calc(40px + (75 - 40) * ((100vw - 300px) / (1440 - 300)));
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-right: calc(4px + (8 - 4) * ((100vw - 300px) / (1440 - 300)));
+}
+
+.c2:last-of-type {
+  margin-right: 0;
+}
+
+.c3 {
+  width: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.c8 {
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c5 {
+  font-family: 'Roboto',serif;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  color: white;
+  text-transform: uppercase;
+}
+
+.c7 {
+  font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));
+}
+
+@media only screen and (max-width:700px) {
+  .c2 {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+}
+
+@media only screen and (max-width:700px) {
+  .c4 {
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width:700px) {
+  .c8 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+}
+
+@media only screen and (max-width:700px) {
+  .c6 {
+    display: none;
+  }
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            q
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㅃ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅂ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            w
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㅉ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅈ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            e
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㄸ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㄷ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            r
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㄲ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㄱ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            t
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㅆ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅅ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            y
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅛ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            u
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅕ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            i
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅑ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            o
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㅒ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅐ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            p
+          </span>
+          <span
+            className="c5 c7"
+          >
+            ㅖ
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅔ
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            a
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅁ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            s
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㄴ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            d
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅇ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            f
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㄹ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            g
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅎ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            h
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅗ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            j
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅓ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            k
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅏ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            l
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅣ
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            z
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅋ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            x
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅌ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            c
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅊ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            v
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅍ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            b
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅠ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            n
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅜ
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          <span
+            className="c5 c6"
+          >
+            m
+          </span>
+          <span
+            className="c5 c7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="c8"
+        >
+          <span
+            className="c5"
+          >
+            ㅡ
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
