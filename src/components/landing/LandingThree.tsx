@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 
 import apeach from "../../images/apeach-btn.png";
 import { Disclosure } from "../common";
-import { Fonts, fadeIn, } from "../../helpers";
+import { Fonts, Game, fadeIn, } from "../../helpers";
 
 import Navigation from "./Navigation";
 import { Title, typewriteByLetter } from "./helpers";
@@ -86,8 +86,6 @@ const CustomLink = styled(Link)`
     transform: translateY(31px);
   }
 `;
-
-type Game = "run" | "pop" | "jump";
 
 function LandingThree() {
   const [title, setTitle] = useState("");
