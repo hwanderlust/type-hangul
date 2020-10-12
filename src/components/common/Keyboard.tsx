@@ -157,13 +157,13 @@ function useEventListener(eventName: string, handler: (e: KeyboardEvent) => void
   );
 };
 
-const pressed = { backgroundColor: "pink", color: "black" };
+const pressed = { backgroundColor: "#FF7D7D", color: "black", border: "1px solid black" };
 
-function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKeys: Array<string> })): JSX.Element {
+function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKey: string })): JSX.Element {
   return (
     <Row numOfEl={props.rowLetters.length}>
       {props.rowLetters.map((key, index) => (
-        <Key key={`${key}${index}`} style={props.pressedKeys.length && props.pressedKeys.find(el => el.localeCompare(key.eng) === 0) !== undefined ? pressed : {}}>
+        <Key key={`${key}${index}`} style={props.pressedKey.localeCompare(key.eng) === 0 ? pressed : {}}>
           <Contents>
 
             <Top>
@@ -192,42 +192,24 @@ interface KeyboardProps extends StyledProps {
   onKeyPress: (pressedKey: string) => void;
 }
 function Keyboard(props: KeyboardProps) {
-  const [pressedKeys, setKeys] = useState([] as Array<string>);
+  const [pressedKey, setKey] = useState("");
 
   function handleDown(e: KeyboardEvent) {
-    if (!pressedKeys.find(el => el.localeCompare(e.key) === 0)) {
-      setKeys([...pressedKeys, e.key]);
-      props.onKeyPress(e.key);
-    }
-  }
+    setKey(e.key);
+    props.onKeyPress(e.key);
 
-  function handleUp(e: KeyboardEvent) {
-    const index = pressedKeys.findIndex(el => el.localeCompare(e.key) === 0);
-    if (index !== -1) {
-      const copied = [...pressedKeys];
-      copied.splice(index, 1);
-      setKeys(copied);
-    }
+    setTimeout(() => {
+      setKey("");
+    }, 100);
   }
 
   useEventListener("keydown", handleDown);
-  useEventListener("keyup", handleUp);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (pressedKeys.length) {
-        console.debug(`resetting array`);
-        setKeys([]);
-      }
-    }, 250);
-    return () => clearInterval(interval);
-  }, [pressedKeys]);
 
   return (
     <Container className={props.className}>
-      <KeyboardRow rowLetters={topRow} pressedKeys={pressedKeys} />
-      <KeyboardRow rowLetters={midRow} pressedKeys={pressedKeys} />
-      <KeyboardRow rowLetters={botRow} pressedKeys={pressedKeys} />
+      <KeyboardRow rowLetters={topRow} pressedKey={pressedKey} />
+      <KeyboardRow rowLetters={midRow} pressedKey={pressedKey} />
+      <KeyboardRow rowLetters={botRow} pressedKey={pressedKey} />
     </Container>
   );
 }
