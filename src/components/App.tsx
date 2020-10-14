@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
+import Game from "./game";
 import Landing from './landing';
 
 // https://medium.com/hackernoon/lazy-loading-and-preloading-components-in-react-16-6-804de091c82d
@@ -21,6 +22,10 @@ function App() {
       <BrowserRouter>
         <Switch>
 
+          <Route path="/game/:type">
+            <Game />
+          </Route>
+
           <Route exact path="/">
             <Landing />
           </Route>
@@ -35,18 +40,13 @@ function App() {
             </Route>
           </Suspense>
 
-          <Route exact path="/game/run">
-
-          </Route>
-          <Route exact path="/game/pop">
-
-          </Route>
-          <Route exact path="/game/jump">
-
-          </Route>
           <Route exact path="/game/gameover">
 
           </Route>
+
+          {/* TODO take and update 404 from game */}
+          <Route component={() => <h1>404</h1>} />
+
         </Switch>
       </BrowserRouter>
     </Background>

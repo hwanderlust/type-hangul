@@ -1,5 +1,7 @@
 import { keyframes } from "styled-components";
 
+export type Game = "run" | "pop" | "jump";
+
 export interface StyledProps {
   className?: string;
 }
