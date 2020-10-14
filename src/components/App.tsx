@@ -44,6 +44,9 @@ function App() {
 
           </Route>
 
+          {/* TODO take and update 404 from game */}
+          <Route component={() => <h1>404</h1>} />
+
         </Switch>
       </BrowserRouter>
     </Background>
