@@ -90,6 +90,7 @@ function Controller() {
   const [words, setWords] = useState([WORDS[0]]);
   const game = params.type.toLowerCase();
   const [prevGame, setGame] = useState(game);
+  const [isGameOver, toggleGameOver] = useState(false);
 
   // TODO remove when implement dynamic word generation / collection
   useEffect(() => {
@@ -97,8 +98,12 @@ function Controller() {
       setWords(prevWords => [...prevWords, WORDS[Math.floor(Math.random() * WORDS.length)]]);
     }, 1000);
 
+    if (isGameOver) {
+      clearInterval(interval);
+    }
+
     return () => clearInterval(interval);
-  }, [game]);
+  }, [game, isGameOver]);
 
   if (isNotAGame(params.type)) {
     return <Page404 type={params.type} />;
@@ -108,6 +113,11 @@ function Controller() {
     setGame(game);
     setWords([WORDS[0]]);
     // ensure the interval resets
+  }
+
+  // TODO: set conditions
+  if (false) {
+    toggleGameOver(true);
   }
 
   switch (game) {

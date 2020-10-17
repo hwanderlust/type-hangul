@@ -120,19 +120,45 @@ const Ground = styled.img`
   width: 100%;
 `;
 
-function renderBubble(vocab: Word): JSX.Element {
+function renderBubble(vocab: Word, xValue: number): JSX.Element {
   // animate falling bubble by increasing y
   // ease y location from <0 value for transition
-  // ensure bubble doesn't overflow <Display/>
   return (
     <Bubble
       id={vocab.id} key={vocab.id}
-      x={Math.floor(Math.random() * ((window.innerWidth - 100) * 0.75))}
+      x={xValue}
       y={0}>
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
   );
 }
+function manageBubbles() {
+  const isMobile = window.innerWidth < 720;
+  const availableX: Array<number> = [];
+  const recentX: Array<number> = [];
+
+  for (let index = 0; index <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? index += 50 : index += 100) {
+    availableX.push(index);
+  }
+
+  return {
+    renderBubble: function (word: Word) {
+      const index = Math.floor(Math.random() * (availableX.length - 1));
+      const x = availableX.splice(index, 1)[0];
+      recentX.push(x);
+
+      if (recentX.length === 3) {
+        const x = recentX.shift();
+        if (x) {
+          availableX.push(x);
+        }
+      }
+
+      return renderBubble(word, x);
+    }
+  }
+}
+
 function renderPlatform(vocab: Word): JSX.Element {
   // determine how to calc where platforms should be
   // can have already determined fixed y coordinates calculated by window height
@@ -175,6 +201,7 @@ interface DisplayProps {
   className?: string;
 }
 
+const bubbleManager = manageBubbles();
 function Display(props: DisplayProps) {
   const { words, className } = props;
   const game = props.game.toLowerCase();
@@ -202,7 +229,7 @@ function Display(props: DisplayProps) {
         break;
       }
       case "pop": {
-        setBubbles(prev => [...prev, renderBubble(words[words.length - 1])]);
+        setBubbles(prev => [...prev, bubbleManager.renderBubble(words[words.length - 1])]);
         break;
       }
       case "jump": {
