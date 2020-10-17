@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Fonts, Game, Sizes, } from "../../helpers";
 import { Keyboard, MenuBtn } from "../common";
 import Display from "./Display";
-import { Word } from "./helpers";
+import { Word, WORDS } from "./helpers";
 
 const noOp = () => { };
 
@@ -85,14 +85,20 @@ interface Params {
   type: Game;
 }
 
-const defaultWords = [{ id: "test", text: "난 심심해" }, { id: "blah", text: "배고파" }];
-
 function Controller() {
   const params: Params = useParams();
-  const [words, setWords] = useState<Array<Word>>([defaultWords[0]]);
+  const [words, setWords] = useState([WORDS[0]]);
   const game = params.type.toLowerCase();
   const [prevGame, setGame] = useState(game);
-  const timeout = useRef<number>();
+
+  // TODO remove when implement dynamic word generation / collection
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWords(prevWords => [...prevWords, WORDS[Math.floor(Math.random() * WORDS.length)]]);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [game]);
 
   if (isNotAGame(params.type)) {
     return <Page404 type={params.type} />;
@@ -100,15 +106,8 @@ function Controller() {
 
   if (prevGame.localeCompare(game) !== 0) {
     setGame(game);
-    setWords([defaultWords[0]]);
-
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-    }
-
-    timeout.current = setTimeout(() => {
-      setWords(defaultWords);
-    }, 1000);
+    setWords([WORDS[0]]);
+    // ensure the interval resets
   }
 
   switch (game) {
@@ -128,11 +127,6 @@ function Controller() {
       break;
     }
   }
-
-  // TODO remove when implement dynamic word generation / collection
-  setTimeout(() => {
-    setWords(defaultWords);
-  }, 1000);
 
   return (
     <Container>
