@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { Game, Sizes } from "../../helpers";
 import bubblePng from "../../images/bubble.png";
@@ -18,6 +18,14 @@ interface Coordinates {
 interface RyanProps {
   position: "left" | "center";
 }
+interface BubbleProps extends Coordinates {
+  rate: number;
+}
+
+const fallDown = keyframes`
+  from { top: ${window.innerWidth < 720 ? -49 : -99}px; }
+  to { top: calc(50vh - ${window.innerWidth < 720 ? 50 : 100}px); }
+`;
 
 const Container = styled.div`
   background-color: transparent;
@@ -26,6 +34,7 @@ const Container = styled.div`
   width: 75vw;
   height: 50vh;
   position: relative;
+  overflow: hidden;
 `;
 const leftCalc = "calc(10px + (50 - 10) * ((100vw - 300px) / (1440 - 300)))";
 const centerCalc = "calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))))";
@@ -58,7 +67,7 @@ const Sign = styled.span`
   color: white;
   font-size: ${Sizes.variable.font.small};
 `;
-const Bubble = styled.div<Coordinates>`
+const Bubble = styled.div<BubbleProps>`
   position: absolute;
   top: ${props => props.y}px;
   left: ${props => props.x}px;
@@ -69,6 +78,10 @@ const Bubble = styled.div<Coordinates>`
   display: flex;
   justify-content: center;
   align-items: center;
+  animation-name: ${fallDown};
+  animation-duration: ${props => props.rate * 3000}ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 `;
 const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
@@ -127,7 +140,9 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
     <Bubble
       id={vocab.id} key={vocab.id}
       x={xValue}
-      y={0}>
+      y={window.innerWidth < 720 ? -49 : -99}
+      rate={1}
+    >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
   );
