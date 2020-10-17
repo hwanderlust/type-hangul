@@ -22,10 +22,20 @@ interface BubbleProps extends Coordinates {
   rate: number;
 }
 
-const fallDown = keyframes`
+function fallDown(props: BubbleProps) {
+  const waver = window.innerWidth < 720 ? [10, 20, 30] : [30, 40, 50];
+  const side = ["left", "right"][Math.round(Math.random())];
+  const operation = ["+", "-"][Math.round(Math.random())];
+  const waverAmt = waver[Math.floor(Math.random() * (waver.length - 1))];
+
+  return keyframes`
   from { top: ${window.innerWidth < 720 ? -49 : -99}px; }
-  to { top: calc(50vh - ${window.innerWidth < 720 ? 50 : 100}px); }
+  to { 
+    top: calc(50vh - ${window.innerWidth < 720 ? 50 : 100}px); 
+    ${side}: calc(${props.x}px ${operation} ${waverAmt}px);
+  }
 `;
+}
 
 const Container = styled.div`
   background-color: transparent;
