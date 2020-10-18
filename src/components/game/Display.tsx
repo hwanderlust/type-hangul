@@ -21,6 +21,15 @@ interface RyanProps {
 interface BubbleProps extends Coordinates {
   rate: number;
 }
+interface BubblesX {
+  available: Array<number>;
+  recent: [number?, number?, number?];
+}
+interface PlatformTracker {
+  current: Array<Coordinates>;
+  xSelection: Array<number>;
+  lastY: number;
+}
 
 function fallDown(props: BubbleProps) {
   const waver = window.innerWidth < 720 ? [10, 20, 30] : [30, 40, 50];
@@ -36,6 +45,10 @@ function fallDown(props: BubbleProps) {
   }
 `;
 }
+const move = keyframes`
+  from: { transform: translateX(50px) }
+  to: { transform: translateX(500px); }
+`;
 
 const Container = styled.div`
   background-color: transparent;
@@ -54,6 +67,7 @@ const Ryan = styled.svg<RyanProps>`
   left: ${props => props.position === "left" ? leftCalc : centerCalc};
   height: calc(90px + (180 - 90) * ((100vw - 300px) / (1440 - 300)));
   width: calc(50px + (100 - 50) * ((100vw - 300px) / (1440 - 300)));
+  animation: ${move} 1000ms ease;
 `;
 const Con = styled.div<Coordinates>`
   position: absolute;
@@ -143,9 +157,64 @@ const Ground = styled.img`
   width: 100%;
 `;
 
+function manageGameObjects() {
+  const isMobile = window.innerWidth < 720;
+  const bubbles: BubblesX = { available: [], recent: [], };
+  const platforms: PlatformTracker = { current: [], xSelection: [], lastY: (window.innerHeight * 0.5) - 100 };
+
+  for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? xValue += 50 : xValue += 100) {
+    bubbles.available.push(xValue);
+  }
+  for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
+    platforms.xSelection.push(xValue);
+  }
+
+  return {
+    renderBubble: function (word: Word): JSX.Element {
+      const index = Math.floor(Math.random() * (bubbles.available.length - 1));
+      const x = bubbles.available.splice(index, 1)[0];
+      bubbles.recent.push(x);
+
+      if (bubbles.recent.length === 3) {
+        const x = bubbles.recent.shift();
+        if (x) {
+          bubbles.available.push(x);
+        }
+      }
+
+      return renderBubble(word, x);
+    },
+    renderPlatform: function (word: Word): JSX.Element {
+      const index = Math.floor(Math.random() * (platforms.xSelection.length - 1));
+      platforms.lastY -= 100; // revisit when we shift the view as user climbs up
+      const currentPlatform = { x: platforms.xSelection[index], y: platforms.lastY };
+      platforms.current.push(currentPlatform);
+
+      return renderPlatform(word, currentPlatform);
+    },
+    reset: function (game: Game): void {
+      switch (game) {
+        case "run":
+        case "pop":
+          if (bubbles.recent.length) {
+            bubbles.recent.forEach(_ => {
+              const removedX = bubbles.recent.shift()!;
+              bubbles.available.push(removedX);
+            });
+          }
+          return;
+        case "jump":
+          if (platforms.current.length) {
+            platforms.current = [];
+            platforms.lastY = (window.innerHeight * 0.5) - 100;
+          }
+          return;
+      }
+    }
+  }
+}
+
 function renderBubble(vocab: Word, xValue: number): JSX.Element {
-  // animate falling bubble by increasing y
-  // ease y location from <0 value for transition
   return (
     <Bubble
       id={vocab.id} key={vocab.id}
@@ -157,39 +226,12 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
     </Bubble>
   );
 }
-function manageBubbles() {
-  const isMobile = window.innerWidth < 720;
-  const availableX: Array<number> = [];
-  const recentX: Array<number> = [];
-
-  for (let index = 0; index <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? index += 50 : index += 100) {
-    availableX.push(index);
-  }
-
-  return {
-    renderBubble: function (word: Word) {
-      const index = Math.floor(Math.random() * (availableX.length - 1));
-      const x = availableX.splice(index, 1)[0];
-      recentX.push(x);
-
-      if (recentX.length === 3) {
-        const x = recentX.shift();
-        if (x) {
-          availableX.push(x);
-        }
-      }
-
-      return renderBubble(word, x);
-    }
-  }
-}
-
-function renderPlatform(vocab: Word): JSX.Element {
+function renderPlatform(vocab: Word, location: Coordinates): JSX.Element {
   // determine how to calc where platforms should be
   // can have already determined fixed y coordinates calculated by window height
   // then calc available x values based on other platforms and Ryan
   return (
-    <Platform id={vocab.id} key={vocab.id} x={0} y={0}>
+    <Platform id={vocab.id} key={vocab.id} x={location.x} y={location.y}>
       <PlatformText>{vocab.word}</PlatformText>
       <PlatformLine />
     </Platform>
@@ -226,7 +268,7 @@ interface DisplayProps {
   className?: string;
 }
 
-const bubbleManager = manageBubbles();
+const manager = manageGameObjects();
 function Display(props: DisplayProps) {
   const { words, className } = props;
   const game = props.game.toLowerCase();
@@ -254,11 +296,11 @@ function Display(props: DisplayProps) {
         break;
       }
       case "pop": {
-        setBubbles(prev => [...prev, bubbleManager.renderBubble(words[words.length - 1])]);
+        setBubbles(prev => [...prev, manager.renderBubble(words[words.length - 1])]);
         break;
       }
       case "jump": {
-        setPlatforms(prev => [...prev, renderPlatform(words[words.length - 1])]);
+        setPlatforms(prev => [...prev, manager.renderPlatform(words[words.length - 1])]);
         break;
       }
     }
@@ -273,6 +315,13 @@ function Display(props: DisplayProps) {
       <Ground src={groundPng} />
 
       <Ryan ref={ryan} position={game === "run" ? "left" : "center"} width="100" height="185" viewBox="0 0 100 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <animateTransform attributeName="transform"
+          attributeType="XML"
+          type="translate"
+          from="0"
+          to="100 -50"
+          dur="5s"
+          repeatCount="indefinite" />
         <path d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z" fill="#E28F2C" />
         <path id="legRight" d="M82.1666 178.056C83.6665 168.556 82.1666 156.111 82.1666 151.556C82.1666 147 61 147.5 60.6666 151.556C60.3332 155.611 59.1665 171.056 60.6666 178.056C62.1667 185.056 80.6667 187.556 82.1666 178.056Z" fill="#E28F2C" />
         <path id="legLeft" d="M19.6666 178.056C18.1667 168.556 19.6666 151.556 19.6666 151.556C19.6666 151.556 41.1666 148.056 41.1666 151.556C41.1666 155.056 42.6667 171.056 41.1666 178.056C39.6665 185.056 21.1666 187.556 19.6666 178.056Z" fill="#E28F2C" />
