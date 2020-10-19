@@ -57,11 +57,13 @@ const Container = styled.div`
 `;
 const leftCalc = "calc(10px + (50 - 10) * ((100vw - 300px) / (1440 - 300)))";
 const centerCalc = "calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))))";
+const regHeight = "calc(90px + (180 - 90) * ((100vw - 300px) / (1440 - 300)))";
+const jumpHeight = "calc(90px + (100 - 90) * ((100vw - 300px) / (1440 - 300)))";
 const Ryan = styled.svg<RyanProps>`
   position: absolute;
-  top: calc(100% - (100px + (180 - 90) * ((100vw - 300px) / (1440 - 300))));
+  top: ${props => props.position === "left" ? `calc(100% - (100px + ${regHeight}))` : `calc(100% - (1vh + ${jumpHeight}))`};
   left: ${props => props.position === "left" ? leftCalc : centerCalc};
-  height: calc(90px + (180 - 90) * ((100vw - 300px) / (1440 - 300)));
+  height: ${props => props.position === "left" ? regHeight : jumpHeight};
   width: calc(50px + (100 - 50) * ((100vw - 300px) / (1440 - 300)));
 `;
 const Con = styled.div<Coordinates>`
@@ -192,8 +194,44 @@ function manageGameObjects() {
 
       return renderPlatform(word, currentPlatform);
     },
-    jumpToPlatform: function (): void {
-      // TODO 
+    jumpToPlatform: function (node: SVGElement): void {
+
+      if (!this.getPlatforms().length) {
+        this.initPlatform({ x: 0, y: 0 });
+      }
+
+      if (this.getPlatforms().length >= 2) {
+        const animate = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+        animate.setAttribute("id", "myAnimation");
+        animate.setAttribute("attributeName", "transform");
+        animate.setAttribute("attributeType", "XML");
+        animate.setAttribute("type", "translate");
+        animate.setAttribute("dur", "500ms");
+        animate.setAttribute("fill", "freeze");
+
+        const from = this.getPlatforms().length ? this.getPlatforms()[0] : null;
+        const to = this.getPlatforms().length ? this.getPlatforms()[1] : null;
+
+        if (from !== null && to !== null) {
+          const isInitialStartingPoint = from?.x === 0;
+          const initStyles = window.getComputedStyle(node);
+          const fromX = isInitialStartingPoint ? parseInt(initStyles.left, 10) : from?.x;
+
+          to.x -= (parseInt(initStyles.width, 10) / 3);
+          to.x -= fromX;
+          to.y -= parseInt(initStyles.height, 10);
+        }
+
+        animate.setAttribute("from", `${from !== null ? `${from?.x} ${from?.y}` : 0}`);
+        animate.setAttribute("to", `${to !== null ? `${to?.x} -${to?.y}` : 0}`);
+
+        if (node.firstChild) {
+          node.replaceChild(animate, node.firstChild);
+          // @ts-ignore
+          document.getElementById("myAnimation")?.beginElement();
+          platforms.current.shift();
+        }
+      }
     },
     initPlatform: function (location: Coordinates): void {
       if (!platforms.current.length) { }
@@ -292,36 +330,7 @@ function Display(props: DisplayProps) {
     if (node !== null) {
 
       if (game.localeCompare("jump") === 0) {
-        if (!manager.getPlatforms().length) {
-          manager.initPlatform({ x: 0, y: 0 });
-        }
-
-        if (manager.getPlatforms().length >= 2) {
-          const animate = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-          animate.setAttribute("id", "myAnimation");
-          animate.setAttribute("attributeName", "transform");
-          animate.setAttribute("attributeType", "XML");
-          animate.setAttribute("type", "translate");
-          animate.setAttribute("dur", "1s");
-
-          const from = manager.getPlatforms().length ? manager.getPlatforms()[0] : null;
-          const to = manager.getPlatforms().length ? manager.getPlatforms()[1] : null;
-          let direction;
-          if (from !== null && to !== null) {
-            const isInitialStartingPoint = from?.x === 0;
-            const fromX = isInitialStartingPoint ? parseInt(window.getComputedStyle(node).left, 10) : from?.x;
-            direction = to?.x - fromX > 0 ? "" : "-";
-          }
-
-          animate.setAttribute("from", `${from !== null ? `${from?.x} ${from?.y}` : 0}`);
-          animate.setAttribute("to", `${to !== null ? `${direction}${to?.x} -${to?.y}` : 0}`);
-
-          if (node.firstChild) {
-            node.replaceChild(animate, node.firstChild);
-            // @ts-ignore
-            document.getElementById("myAnimation")?.beginElement();
-          }
-        }
+        manager.jumpToPlatform(node);
       }
 
       // const legRight: SVGPathElement | null = node.querySelector("#legRight");
