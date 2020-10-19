@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { Fonts, Game, Sizes, } from "../../helpers";
-import { Keyboard, MenuBtn } from "../common";
+import { Game, } from "../../helpers";
+import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
-import { Word, WORDS } from "./helpers";
+import manageGameObjects from "./manager";
+import { WORDS } from "./helpers";
 
 const noOp = () => { };
 
@@ -30,36 +31,6 @@ const MenuBtnFloating = styled(MenuBtn)`
   }
 `;
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-`;
-const Item = styled.li`
-  font-size: ${Sizes.variable.font.medium};
-`;
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: black;
-  font-family: ${Fonts.playfair};
-
-  &:focus {
-    text-decoration: underline;
-    text-decoration-color: black;
-    outline: none;
-  }
-
-  &:hover {
-    color: white;
-  }
-`;
-
 function isNotAGame(param: string): boolean {
   const type = param.toLowerCase();
   return type.localeCompare("run") !== 0
@@ -67,58 +38,63 @@ function isNotAGame(param: string): boolean {
     && type.localeCompare("jump") !== 0;
 }
 
-// TODO move to App
-function Page404({ type }: { type: string }) {
-  return (
-    <Main>
-      <h1>Oops! "{type}" isn't a game we have. Please select from one of our games below.</h1>
-      <List>
-        <Item><StyledLink to="/game/run">Run</StyledLink></Item>
-        <Item><StyledLink to="/game/pop">Pop</StyledLink></Item>
-        <Item><StyledLink to="/game/jump">Jump</StyledLink></Item>
-      </List>
-    </Main>
-  );
-}
-
 interface Params {
   type: Game;
 }
 
+const manager = manageGameObjects();
 function Controller() {
   const params: Params = useParams();
+  const game = params.type.toLowerCase() as Game;
+
   const [words, setWords] = useState([WORDS[0]]);
-  const game = params.type.toLowerCase();
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
+  const cons = useRef<Array<JSX.Element>>([]);
+  const bubbles = useRef<Array<JSX.Element>>([]);
+  const platforms = useRef<Array<JSX.Element>>([]);
 
   // TODO remove when implement dynamic word generation / collection
   useEffect(() => {
     const interval = setInterval(() => {
-      setWords(prevWords => [...prevWords, WORDS[Math.floor(Math.random() * WORDS.length)]]);
+      const nextWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+      setWords(prevWords => [...prevWords, nextWord]);
     }, 1000);
-
-    if (isGameOver) {
-      clearInterval(interval);
-    }
 
     return () => clearInterval(interval);
   }, [game, isGameOver]);
 
+  useEffect(() => {
+    switch (game) {
+      case "run":
+        cons.current = [...cons.current, manager.renderCon(words[words.length - 1])];
+        break;
+      case "pop":
+        bubbles.current = [...bubbles.current, manager.renderBubble(words[words.length - 1])];
+        break;
+      case "jump":
+        platforms.current = [...platforms.current, manager.renderPlatform(words[words.length - 1])];
+        break;
+    }
+  }, [cons.current, bubbles.current, platforms.current]);
+
   if (isNotAGame(params.type)) {
-    return <Page404 type={params.type} />;
+    return <Page404 />;
   }
 
   if (prevGame.localeCompare(game) !== 0) {
     setGame(game);
     setWords([WORDS[0]]);
-    // ensure the interval resets
+    manager.reset(game);
+    cons.current = [];
+    bubbles.current = [];
+    platforms.current = [];
   }
 
   // TODO: set conditions
-  if (false) {
-    toggleGameOver(true);
-  }
+  // if (false) {
+  //   toggleGameOver(true);
+  // }
 
   switch (game) {
     case "run": {
@@ -144,7 +120,12 @@ function Controller() {
         <h1>{params.type}</h1>
         <p>Game Description</p>
       </Header>
-      <Display game={params.type} words={words as Array<Word>} />
+      <Display
+        game={params.type}
+        bubbles={bubbles.current}
+        cons={cons.current}
+        platforms={platforms.current}
+      />
       <Keyboard onKeyPress={noOp} />
 
       <MenuBtnFloating />

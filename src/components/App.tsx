@@ -1,7 +1,8 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, } from "react-router-dom";
 import styled from "styled-components";
 
+import { Page404 } from "./common";
 import Game from "./game";
 import Landing from './landing';
 
@@ -38,14 +39,13 @@ function App() {
             <Route exact path="/contact">
               <Contact />
             </Route>
+
+            <Route exact path="/game/gameover">
+
+            </Route>
+
+            <Route component={Page404} />
           </Suspense>
-
-          <Route exact path="/game/gameover">
-
-          </Route>
-
-          {/* TODO take and update 404 from game */}
-          <Route component={() => <h1>404</h1>} />
 
         </Switch>
       </BrowserRouter>
