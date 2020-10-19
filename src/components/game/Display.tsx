@@ -201,36 +201,24 @@ function manageGameObjects() {
       }
 
       if (this.getPlatforms().length >= 2) {
-        const animate = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-        animate.setAttribute("id", "myAnimation");
-        animate.setAttribute("attributeName", "transform");
-        animate.setAttribute("attributeType", "XML");
-        animate.setAttribute("type", "translate");
-        animate.setAttribute("dur", "500ms");
-        animate.setAttribute("fill", "freeze");
-
+        const animate = document.getElementById("myAnimation");
         const from = this.getPlatforms().length ? this.getPlatforms()[0] : null;
         const to = this.getPlatforms().length ? this.getPlatforms()[1] : null;
 
         if (from !== null && to !== null) {
-          const isInitialStartingPoint = from?.x === 0;
           const initStyles = window.getComputedStyle(node);
-          const fromX = isInitialStartingPoint ? parseInt(initStyles.left, 10) : from?.x;
+          const fromX = parseInt(initStyles.left, 10);
 
-          to.x -= (parseInt(initStyles.width, 10) / 3);
-          to.x -= fromX;
-          to.y -= parseInt(initStyles.height, 10);
+          to.x = to.x - (parseInt(initStyles.width, 10) / 3) - fromX;
+          to.y = -(to.y - parseInt(initStyles.height, 10) - from.y);
         }
 
-        animate.setAttribute("from", `${from !== null ? `${from?.x} ${from?.y}` : 0}`);
-        animate.setAttribute("to", `${to !== null ? `${to?.x} -${to?.y}` : 0}`);
+        animate?.setAttribute("from", `${from !== null ? `${from?.x} ${from?.y}` : 0}`);
+        animate?.setAttribute("to", `${to !== null ? `${to.x} ${to.y}` : 0}`);
 
-        if (node.firstChild) {
-          node.replaceChild(animate, node.firstChild);
-          // @ts-ignore
-          document.getElementById("myAnimation")?.beginElement();
-          platforms.current.shift();
-        }
+        // @ts-ignore
+        animate?.beginElement();
+        platforms.current.shift();
       }
     },
     initPlatform: function (location: Coordinates): void {
@@ -376,9 +364,13 @@ function Display(props: DisplayProps) {
         viewBox="0 0 100 185"
         fill="none"
         xmlns="http://www.w3.org/2000/svg">
-        <animateTransform attributeName="transform"
+        <animateTransform
+          id="myAnimation"
+          attributeName="transform"
           attributeType="XML"
-          type="translate" />
+          type="translate"
+          dur="500ms"
+          fill="freeze" />
         <path d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z" fill="#E28F2C" />
         <path id="legRight" d="M82.1666 178.056C83.6665 168.556 82.1666 156.111 82.1666 151.556C82.1666 147 61 147.5 60.6666 151.556C60.3332 155.611 59.1665 171.056 60.6666 178.056C62.1667 185.056 80.6667 187.556 82.1666 178.056Z" fill="#E28F2C" />
         <path id="legLeft" d="M19.6666 178.056C18.1667 168.556 19.6666 151.556 19.6666 151.556C19.6666 151.556 41.1666 148.056 41.1666 151.556C41.1666 155.056 42.6667 171.056 41.1666 178.056C39.6665 185.056 21.1666 187.556 19.6666 178.056Z" fill="#E28F2C" />
