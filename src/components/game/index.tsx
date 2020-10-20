@@ -50,9 +50,7 @@ function Controller() {
   const [words, setWords] = useState([WORDS[0]]);
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
-  const cons = useRef<Array<JSX.Element>>([]);
-  const bubbles = useRef<Array<JSX.Element>>([]);
-  const platforms = useRef<Array<JSX.Element>>([]);
+  const gameObjects = useRef<Array<JSX.Element>>([]);
 
   // TODO remove when implement dynamic word generation / collection
   useEffect(() => {
@@ -67,16 +65,16 @@ function Controller() {
   useEffect(() => {
     switch (game) {
       case "run":
-        cons.current = [...cons.current, manager.renderCon(words[words.length - 1])];
+        gameObjects.current = [...gameObjects.current, manager.renderCon(words[words.length - 1])];
         break;
       case "pop":
-        bubbles.current = [...bubbles.current, manager.renderBubble(words[words.length - 1])];
+        gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
         break;
       case "jump":
-        platforms.current = [...platforms.current, manager.renderPlatform(words[words.length - 1])];
+        gameObjects.current = [...gameObjects.current, manager.renderPlatform(words[words.length - 1])];
         break;
     }
-  }, [cons.current, bubbles.current, platforms.current]);
+  }, [gameObjects.current]);
 
   if (isNotAGame(params.type)) {
     return <Page404 />;
@@ -86,9 +84,7 @@ function Controller() {
     setGame(game);
     setWords([WORDS[0]]);
     manager.reset(game);
-    cons.current = [];
-    bubbles.current = [];
-    platforms.current = [];
+    gameObjects.current = [];
   }
 
   // TODO: set conditions
@@ -122,9 +118,7 @@ function Controller() {
       </Header>
       <Display
         game={params.type}
-        bubbles={bubbles.current}
-        cons={cons.current}
-        platforms={platforms.current}
+        objects={gameObjects.current}
       />
       <Keyboard onKeyPress={noOp} />
 

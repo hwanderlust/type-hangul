@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Page404 /> renders correctly 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.c1 {
+  margin: 0;
+  padding: 0;
+}
+
+.c2 {
+  font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
+}
+
+.c3 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: black;
+  font-family: 'Playfair Display',serif;
+}
+
+.c3:focus {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  -webkit-text-decoration-color: black;
+  text-decoration-color: black;
+  outline: none;
+}
+
+.c3:hover {
+  color: white;
+}
+
+<main
+  className="c0"
+>
+  <div>
+    <h1>
+      Oops! Looks like you're a bit lost.
+    </h1>
+    <p>
+      "
+      <strong>
+        /
+      </strong>
+      " isn't a path we have on this site.
+    </p>
+    <h2>
+      If you're here, you're here for the games! Please have a gander.
+    </h2>
+    <ul
+      className="c1"
+    >
+      <li
+        className="c2"
+      >
+        <a
+          className="c3"
+          href="/game/run"
+          onClick={[Function]}
+        >
+          Run
+        </a>
+      </li>
+      <li
+        className="c2"
+      >
+        <a
+          className="c3"
+          href="/game/pop"
+          onClick={[Function]}
+        >
+          Pop
+        </a>
+      </li>
+      <li
+        className="c2"
+      >
+        <a
+          className="c3"
+          href="/game/jump"
+          onClick={[Function]}
+        >
+          Jump
+        </a>
+      </li>
+    </ul>
+  </div>
+</main>
+`;

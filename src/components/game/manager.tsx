@@ -12,7 +12,7 @@ interface Coordinates {
 interface BubbleProps extends Coordinates {
   rate: number;
 }
-interface BubblesX {
+export interface BubblesX {
   available: Array<number>;
   recent: [number?, number?, number?];
 }
@@ -22,13 +22,18 @@ interface PlatformTracker {
   ySelection: Array<number>;
   yIndex: number;
 }
-interface Manager {
+interface Test {
+  getBubbles: () => BubblesX;
+  getPlatforms: () => PlatformTracker;
+}
+export interface Manager {
   renderBubble: (word: Word) => JSX.Element;
   popBubble: () => void;
   renderCon: (word: Word) => JSX.Element;
   renderPlatform: (word: Word) => JSX.Element;
   jumpToPlatform: (node: SVGElement) => void;
   reset: (game: Game) => void;
+  Test: Test;
 }
 
 function fallDown(props: BubbleProps) {
@@ -111,7 +116,6 @@ const PlatformText = styled.p`
   font-size: ${Sizes.variable.font.small}px;
 `;
 
-
 function renderBubble(vocab: Word, xValue: number): JSX.Element {
   return (
     <Bubble
@@ -132,8 +136,6 @@ function renderPlatform(vocab: Word, location: Coordinates): JSX.Element {
     </Platform>
   );
 }
-
-
 function renderCon(vocab: Word): JSX.Element {
   // animate moving left by increasing x
   // ease x location from <0 value for transition
@@ -191,10 +193,15 @@ function manageGameObjects(): Manager {
   return {
     renderBubble: function (word: Word): JSX.Element {
       const index = Math.floor(Math.random() * (bubbles.available.length - 1));
-      const x = bubbles.available.splice(index, 1)[0];
-      bubbles.recent.push(x);
+      const updatedAvailable = bubbles.available.slice();
+      const x = updatedAvailable.splice(index, 1)[0];
+      bubbles.available = updatedAvailable;
 
-      if (bubbles.recent.length === 3) {
+      const updatedRecent = bubbles.recent.slice() as [number?, number?, number?];
+      updatedRecent.push(x);
+      bubbles.recent = updatedRecent;
+
+      if (bubbles.recent.length > 3) {
         const x = bubbles.recent.shift();
         if (x) {
           bubbles.available.push(x);
@@ -220,7 +227,7 @@ function manageGameObjects(): Manager {
         platforms.yIndex++;
       }
 
-      platforms.current.push(currentPlatform);
+      platforms.current = [...platforms.current, currentPlatform];
       return renderPlatform(word, currentPlatform);
     },
     jumpToPlatform: function (node: SVGElement): void {
@@ -270,6 +277,14 @@ function manageGameObjects(): Manager {
             platforms.yIndex = 0;
           }
           return;
+      }
+    },
+    Test: {
+      getBubbles: function () {
+        return { ...bubbles };
+      },
+      getPlatforms: function () {
+        return { ...platforms };
       }
     }
   }
