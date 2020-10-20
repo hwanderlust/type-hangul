@@ -28,7 +28,6 @@ interface Test {
 }
 export interface Manager {
   renderBubble: (word: Word) => JSX.Element;
-  popBubble: () => void;
   renderCon: (word: Word) => JSX.Element;
   renderPlatform: (word: Word) => JSX.Element;
   jumpToPlatform: (node: SVGElement) => void;
@@ -209,9 +208,6 @@ function manageGameObjects(): Manager {
       }
 
       return renderBubble(word, x);
-    },
-    popBubble: function (): void {
-      // remove bubble from display
     },
     renderCon: function (word: Word) {
       // TODO

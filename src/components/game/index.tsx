@@ -6,9 +6,7 @@ import { Game, } from "../../helpers";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
 import manageGameObjects from "./manager";
-import { WORDS } from "./helpers";
-
-const noOp = () => { };
+import { WORDS, Word } from "./helpers";
 
 const Container = styled.div`
   display: flex;
@@ -38,11 +36,36 @@ function isNotAGame(param: string): boolean {
     && type.localeCompare("jump") !== 0;
 }
 
+function wordManager() {
+  let usedWords: Array<number> = [];
+
+  function select(): Word {
+    const index = Math.floor(Math.random() * WORDS.length);
+    const wasUsed = usedWords.find(i => i === index);
+
+    if (wasUsed) {
+      return select();
+    }
+
+    return WORDS[index];
+  }
+
+  function reset(): void {
+    usedWords = [];
+  }
+
+  return {
+    select,
+    reset,
+  }
+}
+
 interface Params {
   type: Game;
 }
 
 const manager = manageGameObjects();
+const wordTracker = wordManager();
 function Controller() {
   const params: Params = useParams();
   const game = params.type.toLowerCase() as Game;
@@ -52,15 +75,36 @@ function Controller() {
   const [isGameOver, toggleGameOver] = useState(false);
   const gameObjects = useRef<Array<JSX.Element>>([]);
 
-  // TODO remove when implement dynamic word generation / collection
+  const rate = useRef(1); // temp? 
+  const count = useRef(0); // temp?
+
+  setInterval(() => {
+    switch (game) {
+      case "run": {
+        // shift left / running pace
+        break;
+      }
+      case "pop": {
+        count.current = count.current + 0.5;
+        break;
+      }
+      case "jump": {
+        // raising fire pace
+        break;
+      }
+    }
+  }, 5000);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+      const nextWord = wordTracker.select();
       setWords(prevWords => [...prevWords, nextWord]);
-    }, 1000);
+      console.log(`words length`, words.length)
+      console.log(`game obj length`, gameObjects.current.length)
+    }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);
-  }, [game, isGameOver]);
+  }, [game, isGameOver, count.current]);
 
   useEffect(() => {
     switch (game) {
@@ -81,10 +125,11 @@ function Controller() {
   }
 
   if (prevGame.localeCompare(game) !== 0) {
-    setGame(game);
-    setWords([WORDS[0]]);
     manager.reset(game);
     gameObjects.current = [];
+    wordTracker.reset();
+    setGame(game);
+    setWords([wordTracker.select()]);
   }
 
   // TODO: set conditions
@@ -92,21 +137,36 @@ function Controller() {
   //   toggleGameOver(true);
   // }
 
-  switch (game) {
-    case "run": {
-      // words
-      // shift left / running pace
-      break;
-    }
-    case "pop": {
-      // words
-      // render bubble pace
-      break;
-    }
-    case "jump": {
-      // words
-      // raising fire pace
-      break;
+  function handleKeyPress(enteredWord: string): void {
+    const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
+    if (word) {
+      switch (game) {
+        case "run":
+          break;
+        case "pop":
+          // single source of truth?
+          const bubble = document.getElementById(word.id);
+          bubble?.remove();
+
+          const wordIndex = words.findIndex(w => w.id.localeCompare(word.id) === 0);
+          if (wordIndex) {
+            console.log(`wordIndex`, wordIndex);
+
+            const updatedWords = [...words];
+            updatedWords.splice(wordIndex, 1);
+            setWords(updatedWords);
+
+            const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
+            console.log(`gameObjIndex`, gameObjIndex);
+
+            const updatedGameObjects = [...gameObjects.current];
+            updatedGameObjects.splice(gameObjIndex, 1);
+            gameObjects.current = updatedGameObjects;
+          }
+          break;
+        case "jump":
+          break;
+      }
     }
   }
 
@@ -120,7 +180,7 @@ function Controller() {
         game={params.type}
         objects={gameObjects.current}
       />
-      <Keyboard onKeyPress={noOp} />
+      <Keyboard onKeyPress={handleKeyPress} />
 
       <MenuBtnFloating />
     </Container>
