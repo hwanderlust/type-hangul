@@ -6,6 +6,12 @@ export interface StyledProps {
   className?: string;
 }
 
+export interface KeyType {
+  eng: string;
+  shift: string;
+  kor: string;
+}
+
 const Fonts = {
   playfair: "'Playfair Display', serif",
   nanum: "'Nanum Pen Script', cursive",

@@ -9,36 +9,41 @@ import Keyboard from "../components/common/Keyboard";
 const noOp = () => { };
 
 describe("<Keyboard/>", () => {
+  let container: HTMLDivElement;
+  let onSubmit: (word: string) => void;
+
+  beforeAll(() => {
+    container = document.createElement("div");
+    onSubmit = jest.fn();
+    ReactDOM.render(<Keyboard onSubmit={onSubmit} />, container);
+  });
+
   it('renders correctly', () => {
     const tree = renderer
-      .create(<Keyboard onKeyPress={noOp} />)
+      .create(<Keyboard onSubmit={noOp} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  it("passes pressed key up to parent upon keydown event", () => {
-    interface EventListeners {
-      error?: EventListenerOrEventListenerObject;
-      keydown?: EventListenerOrEventListenerObject;
-      keyup?: EventListenerOrEventListenerObject;
+  it("doesn't pass up the typed word when typing", () => {
+    const input = container.querySelector("input");
+    if (input) {
+      input.value = "바보";
+      ReactTestUtils.Simulate.change(input);
+      expect(onSubmit).not.toBeCalled();
     }
-    type Event = "error" | "keydown" | "keyup";
-    const map: EventListeners = {};
-    window.addEventListener = jest.fn((event, cb) => {
-      map[(event as Event)] = cb;
-    });
-    const onKeyPress = jest.fn();
+  });
 
-    const container = document.createElement("div");
-    ReactTestUtils.act(() => {
-      ReactDOM.render(<Keyboard onKeyPress={onKeyPress} />, container);
-    });
-    ReactTestUtils.act(() => {
-      if (map.keydown) {
-        // @ts-ignore
-        map.keydown({ key: "KeyA" })
-      }
-      expect(onKeyPress).toBeCalledWith("KeyA");
-    });
+  it("passes up the typed word when hitting 'Enter' and input value is cleared", () => {
+    const input = container.querySelector("input");
+    const form = container.querySelector("form");
+    if (input && form) {
+      input.value = "바보";
+      ReactTestUtils.Simulate.change(input);
+      ReactTestUtils.Simulate.submit(form);
+
+      expect(onSubmit).toBeCalledWith("바보");
+      expect(input.value).toBe("");
+    }
   });
 });

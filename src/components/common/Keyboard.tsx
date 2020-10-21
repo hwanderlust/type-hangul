@@ -1,14 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Fonts, Sizes, StyledProps } from "../../helpers";
+import { Fonts, KeyType, Sizes, StyledProps } from "../../helpers";
 
-interface Key {
-  eng: string;
-  shift: string;
-  kor: string;
-}
-const topRow: Array<Key> = [
+const topRow: Array<KeyType> = [
   { eng: "q", shift: "ㅃ", kor: "ㅂ" },
   { eng: "w", shift: "ㅉ", kor: "ㅈ" },
   { eng: "e", shift: "ㄸ", kor: "ㄷ" },
@@ -20,7 +15,7 @@ const topRow: Array<Key> = [
   { eng: "o", shift: "ㅒ", kor: "ㅐ" },
   { eng: "p", shift: "ㅖ", kor: "ㅔ" },
 ];
-const midRow: Array<Key> = [
+const midRow: Array<KeyType> = [
   { eng: "a", shift: "", kor: "ㅁ" },
   { eng: "s", shift: "", kor: "ㄴ" },
   { eng: "d", shift: "", kor: "ㅇ" },
@@ -31,7 +26,7 @@ const midRow: Array<Key> = [
   { eng: "k", shift: "", kor: "ㅏ" },
   { eng: "l", shift: "", kor: "ㅣ" },
 ];
-const botRow: Array<Key> = [
+const botRow: Array<KeyType> = [
   { eng: "z", shift: "", kor: "ㅋ" },
   { eng: "x", shift: "", kor: "ㅌ" },
   { eng: "c", shift: "", kor: "ㅊ" },
@@ -121,49 +116,14 @@ const LetterEng = styled(Letter)`
   }
 `;
 
-// https://stackoverflow.com/questions/29069639/listen-to-keypress-for-document-in-reactjs
-function useEventListener(eventName: string, handler: (e: KeyboardEvent) => void, element = window) {
-  // Create a ref that stores handler
-  const savedHandler = useRef();
+// TODO: see if there's another way to implement this
+// const pressed = { backgroundColor: "#FF7D7D", color: "black", border: "1px solid black" };
 
-  // Update ref.current value if handler changes.
-  // This allows our effect below to always get latest handler ...
-  // ... without us needing to pass it in effect deps array ...
-  // ... and potentially cause effect to re-run every render.
-  useEffect(() => {
-    // @ts-ignore
-    savedHandler.current = handler;
-  }, [handler]);
-
-  useEffect(
-    () => {
-      // Make sure element supports addEventListener
-      const isSupported = element && element.addEventListener;
-      if (!isSupported) return;
-
-      // Create event listener that calls handler function stored in ref
-      // @ts-ignore
-      const eventListener = event => savedHandler.current(event);
-
-      // Add event listener
-      element.addEventListener(eventName, eventListener);
-
-      // Remove event listener on cleanup
-      return () => {
-        element.removeEventListener(eventName, eventListener);
-      };
-    },
-    [eventName, element] // Re-run if eventName or element changes
-  );
-};
-
-const pressed = { backgroundColor: "#FF7D7D", color: "black", border: "1px solid black" };
-
-function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKey: string })): JSX.Element {
+function KeyboardRow(props: ({ rowLetters: Array<KeyType>, })): JSX.Element {
   return (
     <Row numOfEl={props.rowLetters.length}>
       {props.rowLetters.map((key, index) => (
-        <Key key={`${key}${index}`} style={props.pressedKey.localeCompare(key.eng) === 0 ? pressed : {}}>
+        <Key key={`${key}${index}`} >
           <Contents>
 
             <Top>
@@ -189,27 +149,34 @@ function KeyboardRow(props: ({ rowLetters: Array<Key>, pressedKey: string })): J
 }
 
 interface KeyboardProps extends StyledProps {
-  onKeyPress: (pressedKey: string) => void;
+  onSubmit: (key: string) => void;
 }
 function Keyboard(props: KeyboardProps) {
-  const [pressedKey, setKey] = useState("");
+  const [word, setWord] = useState("");
 
-  function handleDown(e: KeyboardEvent) {
-    setKey(e.key);
-    props.onKeyPress(e.key);
-
-    setTimeout(() => {
-      setKey("");
-    }, 100);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    setWord(e.target.value);
   }
 
-  useEventListener("keydown", handleDown);
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
+    props.onSubmit(word);
+    setWord("");
+  }
 
+  // TODO: update when I update the design for the form input
   return (
     <Container className={props.className}>
-      <KeyboardRow rowLetters={topRow} pressedKey={pressedKey} />
-      <KeyboardRow rowLetters={midRow} pressedKey={pressedKey} />
-      <KeyboardRow rowLetters={botRow} pressedKey={pressedKey} />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          onChange={handleChange}
+          value={word}
+          autoFocus />
+      </form>
+      <KeyboardRow rowLetters={topRow} />
+      <KeyboardRow rowLetters={midRow} />
+      <KeyboardRow rowLetters={botRow} />
     </Container>
   );
 }

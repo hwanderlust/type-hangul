@@ -5,10 +5,8 @@ import styled from "styled-components";
 import { Game, } from "../../helpers";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
+import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 import manageGameObjects from "./manager";
-import { WORDS } from "./helpers";
-
-const noOp = () => { };
 
 const Container = styled.div`
   display: flex;
@@ -31,36 +29,50 @@ const MenuBtnFloating = styled(MenuBtn)`
   }
 `;
 
-function isNotAGame(param: string): boolean {
-  const type = param.toLowerCase();
-  return type.localeCompare("run") !== 0
-    && type.localeCompare("pop") !== 0
-    && type.localeCompare("jump") !== 0;
-}
 
 interface Params {
   type: Game;
 }
 
 const manager = manageGameObjects();
+const wordTracker = wordManager();
 function Controller() {
   const params: Params = useParams();
   const game = params.type.toLowerCase() as Game;
 
-  const [words, setWords] = useState([WORDS[0]]);
+  const [words, setWords] = useState([wordTracker.select()]);
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
   const gameObjects = useRef<Array<JSX.Element>>([]);
 
-  // TODO remove when implement dynamic word generation / collection
+  const rate = useRef(1); // temp? 
+  const count = useRef(0); // temp?
+
+  setInterval(() => {
+    switch (game) {
+      case "run": {
+        // shift left / running pace
+        break;
+      }
+      case "pop": {
+        count.current = count.current + 0.2;
+        break;
+      }
+      case "jump": {
+        // raising fire pace
+        break;
+      }
+    }
+  }, 5000);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+      const nextWord = wordTracker.select();
       setWords(prevWords => [...prevWords, nextWord]);
-    }, 1000);
+    }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);
-  }, [game, isGameOver]);
+  }, [game, isGameOver, count.current]);
 
   useEffect(() => {
     switch (game) {
@@ -80,11 +92,12 @@ function Controller() {
     return <Page404 />;
   }
 
-  if (prevGame.localeCompare(game) !== 0) {
-    setGame(game);
-    setWords([WORDS[0]]);
+  if (gameTypeChanged(prevGame, game)) {
     manager.reset(game);
     gameObjects.current = [];
+    wordTracker.reset();
+    setGame(game);
+    setWords([wordTracker.select()]);
   }
 
   // TODO: set conditions
@@ -92,21 +105,20 @@ function Controller() {
   //   toggleGameOver(true);
   // }
 
-  switch (game) {
-    case "run": {
-      // words
-      // shift left / running pace
-      break;
-    }
-    case "pop": {
-      // words
-      // render bubble pace
-      break;
-    }
-    case "jump": {
-      // words
-      // raising fire pace
-      break;
+  function handleSubmit(enteredWord: string): void {
+    const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
+    if (word) {
+      switch (game) {
+        case "run":
+          break;
+        case "pop":
+          manager.popBubble(word);
+          const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
+          gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
+          break;
+        case "jump":
+          break;
+      }
     }
   }
 
@@ -116,11 +128,10 @@ function Controller() {
         <h1>{params.type}</h1>
         <p>Game Description</p>
       </Header>
-      <Display
-        game={params.type}
-        objects={gameObjects.current}
-      />
-      <Keyboard onKeyPress={noOp} />
+      <Display game={params.type}>
+        {gameObjects.current}
+      </Display>
+      <Keyboard onSubmit={handleSubmit} />
 
       <MenuBtnFloating />
     </Container>

@@ -9,9 +9,6 @@ interface Coordinates {
   x: number;
   y: number;
 }
-interface BubbleProps extends Coordinates {
-  rate: number;
-}
 export interface BubblesX {
   available: Array<number>;
   recent: [number?, number?, number?];
@@ -28,7 +25,7 @@ interface Test {
 }
 export interface Manager {
   renderBubble: (word: Word) => JSX.Element;
-  popBubble: () => void;
+  popBubble: (word: Word) => void;
   renderCon: (word: Word) => JSX.Element;
   renderPlatform: (word: Word) => JSX.Element;
   jumpToPlatform: (node: SVGElement) => void;
@@ -36,7 +33,7 @@ export interface Manager {
   Test: Test;
 }
 
-function fallDown(props: BubbleProps) {
+function fallDown(props: Coordinates) {
   const waver = window.innerWidth < 720 ? [10, 20, 30] : [30, 40, 50];
   const side = ["left", "right"][Math.round(Math.random())];
   const operation = ["+", "-"][Math.round(Math.random())];
@@ -73,7 +70,7 @@ const Sign = styled.span`
   color: white;
   font-size: ${Sizes.variable.font.small};
 `;
-const Bubble = styled.div<BubbleProps>`
+const Bubble = styled.div<Coordinates>`
   position: absolute;
   top: ${props => props.y}px;
   left: ${props => props.x}px;
@@ -85,7 +82,7 @@ const Bubble = styled.div<BubbleProps>`
   justify-content: center;
   align-items: center;
   animation-name: ${fallDown};
-  animation-duration: ${props => props.rate * 3000}ms;
+  animation-duration: 12000ms;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
 `;
@@ -122,7 +119,6 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
       id={vocab.id} key={vocab.id}
       x={xValue}
       y={window.innerWidth < 720 ? -49 : -99}
-      rate={1}
     >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
@@ -210,8 +206,12 @@ function manageGameObjects(): Manager {
 
       return renderBubble(word, x);
     },
-    popBubble: function (): void {
-      // remove bubble from display
+    popBubble: function (word: Word): void {
+      const element = document.getElementById(word.id);
+      if (element) {
+        element.style.transform = "scale(0)";
+        element.style.transition = "transform 150ms ease";
+      }
     },
     renderCon: function (word: Word) {
       // TODO
