@@ -116,13 +116,14 @@ const LetterEng = styled(Letter)`
   }
 `;
 
-const pressed = { backgroundColor: "#FF7D7D", color: "black", border: "1px solid black" };
+// TODO: see if there's another way to implement this
+// const pressed = { backgroundColor: "#FF7D7D", color: "black", border: "1px solid black" };
 
-function KeyboardRow(props: ({ rowLetters: Array<KeyType>, pressedKey: string })): JSX.Element {
+function KeyboardRow(props: ({ rowLetters: Array<KeyType>, })): JSX.Element {
   return (
     <Row numOfEl={props.rowLetters.length}>
       {props.rowLetters.map((key, index) => (
-        <Key key={`${key}${index}`} style={props.pressedKey.localeCompare(key.eng) === 0 ? pressed : {}}>
+        <Key key={`${key}${index}`} >
           <Contents>
 
             <Top>
@@ -152,18 +153,14 @@ interface KeyboardProps extends StyledProps {
 }
 function Keyboard(props: KeyboardProps) {
   const [word, setWord] = useState("");
-  const [pressedKey, setPressedKey] = useState("");
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    setPressedKey(e.target.value.substr(-1));
     setWord(e.target.value);
-    setTimeout(() => { setPressedKey("") }, 100);
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     props.onSubmit(word);
-    setPressedKey("");
     setWord("");
   }
 
@@ -177,9 +174,9 @@ function Keyboard(props: KeyboardProps) {
           value={word}
           autoFocus />
       </form>
-      <KeyboardRow rowLetters={topRow} pressedKey={pressedKey} />
-      <KeyboardRow rowLetters={midRow} pressedKey={pressedKey} />
-      <KeyboardRow rowLetters={botRow} pressedKey={pressedKey} />
+      <KeyboardRow rowLetters={topRow} />
+      <KeyboardRow rowLetters={midRow} />
+      <KeyboardRow rowLetters={botRow} />
     </Container>
   );
 }

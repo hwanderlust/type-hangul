@@ -34,14 +34,16 @@ describe("<Keyboard/>", () => {
     }
   });
 
-  it("passes up the typed word when hitting 'Enter'", () => {
+  it("passes up the typed word when hitting 'Enter' and input value is cleared", () => {
     const input = container.querySelector("input");
     const form = container.querySelector("form");
     if (input && form) {
       input.value = "바보";
       ReactTestUtils.Simulate.change(input);
       ReactTestUtils.Simulate.submit(form);
+
       expect(onSubmit).toBeCalledWith("바보");
+      expect(input.value).toBe("");
     }
   });
 });
