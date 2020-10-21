@@ -36,6 +36,10 @@ function isNotAGame(param: string): boolean {
     && type.localeCompare("jump") !== 0;
 }
 
+function gameTypeChanged(previous: Game, current: Game): boolean {
+  return previous.localeCompare(current) !== 0;
+}
+
 function wordManager() {
   let usedWords: Array<number> = [];
 
@@ -70,7 +74,7 @@ function Controller() {
   const params: Params = useParams();
   const game = params.type.toLowerCase() as Game;
 
-  const [words, setWords] = useState([WORDS[0]]);
+  const [words, setWords] = useState([wordTracker.select()]);
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
   const gameObjects = useRef<Array<JSX.Element>>([]);
@@ -85,7 +89,7 @@ function Controller() {
         break;
       }
       case "pop": {
-        count.current = count.current + 0.5;
+        count.current = count.current + 0.2;
         break;
       }
       case "jump": {
@@ -99,8 +103,6 @@ function Controller() {
     const interval = setInterval(() => {
       const nextWord = wordTracker.select();
       setWords(prevWords => [...prevWords, nextWord]);
-      console.log(`words length`, words.length)
-      console.log(`game obj length`, gameObjects.current.length)
     }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);
@@ -124,7 +126,7 @@ function Controller() {
     return <Page404 />;
   }
 
-  if (prevGame.localeCompare(game) !== 0) {
+  if (gameTypeChanged(prevGame, game)) {
     manager.reset(game);
     gameObjects.current = [];
     wordTracker.reset();
@@ -144,25 +146,9 @@ function Controller() {
         case "run":
           break;
         case "pop":
-          // single source of truth?
-          const bubble = document.getElementById(word.id);
-          bubble?.remove();
-
-          const wordIndex = words.findIndex(w => w.id.localeCompare(word.id) === 0);
-          if (wordIndex) {
-            console.log(`wordIndex`, wordIndex);
-
-            const updatedWords = [...words];
-            updatedWords.splice(wordIndex, 1);
-            setWords(updatedWords);
-
-            const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
-            console.log(`gameObjIndex`, gameObjIndex);
-
-            const updatedGameObjects = [...gameObjects.current];
-            updatedGameObjects.splice(gameObjIndex, 1);
-            gameObjects.current = updatedGameObjects;
-          }
+          manager.popBubble(word);
+          const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
+          gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
           break;
         case "jump":
           break;
@@ -176,10 +162,9 @@ function Controller() {
         <h1>{params.type}</h1>
         <p>Game Description</p>
       </Header>
-      <Display
-        game={params.type}
-        objects={gameObjects.current}
-      />
+      <Display game={params.type}>
+        {gameObjects.current}
+      </Display>
       <Keyboard onKeyPress={handleKeyPress} />
 
       <MenuBtnFloating />

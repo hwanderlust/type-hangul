@@ -61,11 +61,11 @@ const Ground = styled.img`
 interface DisplayProps {
   game: Game;
   className?: string;
-  objects: Array<JSX.Element>;
+  children: Array<JSX.Element>;
 }
 
 function Display(props: DisplayProps) {
-  const { className, objects } = props;
+  const { className, children } = props;
   const game = props.game.toLowerCase();
 
   return (
@@ -106,7 +106,7 @@ function Display(props: DisplayProps) {
         <path fillRule="evenodd" clipRule="evenodd" d="M37.998 105H38L44.3084 111.25L50.5 105.116L56.6916 111.25L62.5606 105.435C67.0982 109.102 70 114.712 70 121C70 132.046 61.0457 141 50 141C38.9543 141 30 132.046 30 121C30 114.458 33.1414 108.649 37.998 105Z" fill="white" />
       </Ryan>
 
-      {objects}
+      {children}
 
     </Container >
   );
