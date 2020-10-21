@@ -147,6 +147,16 @@ exports[`<Keyboard/> renders correctly 1`] = `
 <div
   className="c0"
 >
+  <form
+    onSubmit={[Function]}
+  >
+    <input
+      autoFocus={true}
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </form>
   <div
     className="c1"
   >

@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Game, } from "../../helpers";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
+import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 import manageGameObjects from "./manager";
-import { WORDS, Word } from "./helpers";
 
 const Container = styled.div`
   display: flex;
@@ -29,40 +29,6 @@ const MenuBtnFloating = styled(MenuBtn)`
   }
 `;
 
-function isNotAGame(param: string): boolean {
-  const type = param.toLowerCase();
-  return type.localeCompare("run") !== 0
-    && type.localeCompare("pop") !== 0
-    && type.localeCompare("jump") !== 0;
-}
-
-function gameTypeChanged(previous: Game, current: Game): boolean {
-  return previous.localeCompare(current) !== 0;
-}
-
-function wordManager() {
-  let usedWords: Array<number> = [];
-
-  function select(): Word {
-    const index = Math.floor(Math.random() * WORDS.length);
-    const wasUsed = usedWords.find(i => i === index);
-
-    if (wasUsed) {
-      return select();
-    }
-
-    return WORDS[index];
-  }
-
-  function reset(): void {
-    usedWords = [];
-  }
-
-  return {
-    select,
-    reset,
-  }
-}
 
 interface Params {
   type: Game;
@@ -139,7 +105,7 @@ function Controller() {
   //   toggleGameOver(true);
   // }
 
-  function handleKeyPress(enteredWord: string): void {
+  function handleSubmit(enteredWord: string): void {
     const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
     if (word) {
       switch (game) {
@@ -165,7 +131,7 @@ function Controller() {
       <Display game={params.type}>
         {gameObjects.current}
       </Display>
-      <Keyboard onKeyPress={handleKeyPress} />
+      <Keyboard onSubmit={handleSubmit} />
 
       <MenuBtnFloating />
     </Container>

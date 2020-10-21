@@ -148,7 +148,7 @@ function KeyboardRow(props: ({ rowLetters: Array<KeyType>, pressedKey: string })
 }
 
 interface KeyboardProps extends StyledProps {
-  onKeyPress: (key: string) => void;
+  onSubmit: (key: string) => void;
 }
 function Keyboard(props: KeyboardProps) {
   const [word, setWord] = useState("");
@@ -162,11 +162,12 @@ function Keyboard(props: KeyboardProps) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    props.onKeyPress(word);
+    props.onSubmit(word);
     setPressedKey("");
     setWord("");
   }
 
+  // TODO: update when I update the design for the form input
   return (
     <Container className={props.className}>
       <form onSubmit={handleSubmit}>

@@ -55,6 +55,27 @@ describe("manager", () => {
     });
   });
 
+  describe("popBubble()", () => {
+    beforeAll(() => {
+      document.body.innerHTML = `
+        <div>
+          <div id=${vocab.id}></div>
+        </div>
+      `;
+    });
+
+    afterAll(() => {
+      document.body.innerHTML = "";
+    });
+
+    it("adds in-line styling for a vanishing effect", () => {
+      manager.popBubble(vocab);
+      const bubble = document.getElementById(vocab.id);
+      expect(bubble?.style.transform).toBe("scale(0)");
+      expect(bubble?.style.transition).toBe("transform 150ms ease");
+    });
+  });
+
   describe("renderPlatform()", () => {
     it("keeps track of all platforms", () => {
       const beforeRender = manager.Test.getPlatforms();
