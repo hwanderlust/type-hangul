@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Game, } from "../../helpers";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
+import Platforms from "./Platforms";
 import { Word, gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 import manageGameObjects from "./manager";
 
@@ -50,6 +51,7 @@ function Controller() {
   const ryan = useRef<SVGElement>();
   const prevWord = useRef<Word>();
   const wordIndex = useRef(0);
+  const jumped = useRef(false);
 
   const ryanRef = useCallback((node) => {
     ryan.current = node;
@@ -92,7 +94,7 @@ function Controller() {
         gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
         break;
       case "jump":
-        gameObjects.current = [...gameObjects.current, manager.renderPlatform(words[words.length - 1])];
+        // gameObjects.current = [...gameObjects.current, manager.renderPlatform(words[words.length - 1])];
         break;
     }
   }, [gameObjects.current]);
@@ -177,23 +179,24 @@ function Controller() {
       }
       case "jump":
         if (ryan.current) {
-          const nextPlatformWord = words[wordIndex.current];
-          if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
-            manager.jumpToPlatform(ryan.current);
+          jumped.current = true;
+          // const nextPlatformWord = words[wordIndex.current];
+          // if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
+          //   manager.jumpToPlatform(ryan.current);
 
-            if (prevWord.current) {
-              const platform = document.getElementById(prevWord.current.id);
-              if (platform) {
-                platform.style.transition = "opacity 150ms ease"
-                platform.style.opacity = "0";
-              }
-              const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(prevWord.current?.id!) === 0);
-              gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
-            }
+          //   if (prevWord.current) {
+          //     const platform = document.getElementById(prevWord.current.id);
+          //     if (platform) {
+          //       platform.style.transition = "opacity 150ms ease"
+          //       platform.style.opacity = "0";
+          //     }
+          //     const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(prevWord.current?.id!) === 0);
+          //     gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
+          //   }
 
-            prevWord.current = nextPlatformWord;
-            wordIndex.current += 1;
-          }
+          //   prevWord.current = nextPlatformWord;
+          //   wordIndex.current += 1;
+          // }
         }
         break;
     }
@@ -206,7 +209,7 @@ function Controller() {
         <p>Game Description</p>
       </Header>
       <Display game={params.type} ryanRef={ryanRef} >
-        {gameObjects.current}
+        {game !== "jump" ? gameObjects.current : <Platforms words={words} jumped={jumped} ryanRef={ryan.current} />}
       </Display>
       <Keyboard onSubmit={handleSubmit} />
 

@@ -22,8 +22,6 @@ const Container = styled.div`
   height: 50vh;
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column-reverse;
 `;
 const leftCalc = "calc(10px + (50 - 10) * ((100vw - 300px) / (1440 - 300)))";
 const centerCalc = "calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))))";
@@ -79,7 +77,7 @@ const Ground = styled.img`
 interface DisplayProps {
   game: Game;
   className?: string;
-  children: Array<JSX.Element>;
+  children: Array<JSX.Element> | JSX.Element;
   ryanRef: (instance: SVGElement | null) => void;
 }
 

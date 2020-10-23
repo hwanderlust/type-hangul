@@ -90,17 +90,17 @@ const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
 const Platform = styled.div<Coordinates>`
-  position: relative;
-  // top: ${props => props.y}px;
+  position: absolute;
+  top: ${props => props.y}px;
   left: ${props => props.x}px;
   margin-bottom: 100px;
 
   & div {
-    // margin: 0 auto;
+    margin: 0 auto;
   }
 
   & p {
-    // margin: 0 auto 0.5rem auto 0;
+    margin: 0 auto 0.5rem auto 0;
   }
 `;
 const PlatformLine = styled.div`
@@ -112,7 +112,6 @@ const PlatformLine = styled.div`
 const PlatformText = styled.p`
   position: relative;
   font-size: ${Sizes.variable.font.small}px;
-  display: inline-block;
 `;
 
 function renderBubble(vocab: Word, xValue: number): JSX.Element {
@@ -223,7 +222,7 @@ function manageGameObjects(): Manager {
       let currentPlatform;
       const xIndex = Math.floor(Math.random() * (platforms.xSelection.length - 1));
 
-      if (platforms.current[0].y === 0 && platforms.current.length === 1) {
+      if (platforms.current[0].x === 0 && platforms.current[0].y === 0 && platforms.current.length === 1) {
         currentPlatform = { x: platforms.xSelection[xIndex], y: (window.innerHeight * 0.5) - 150 };
       } else {
         currentPlatform = { x: platforms.xSelection[xIndex], y: platforms.current[platforms.current.length - 1].y - 150 };
