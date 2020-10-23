@@ -45,27 +45,27 @@ const Cloud1 = styled(Cloud)`
 `;
 const Cloud2 = styled(Cloud)`
   position: absolute;
-  top: 10vh;
+  top: -100vh;
   left: 35vw;
 `;
 const Cloud3 = styled(Cloud)`
   position: absolute;
-  top: 4vh;
+  top: -200vh;
   left: 60vw;
 `;
 const Cloud4 = styled(Cloud)`
   position: absolute;
-  top: -120vh;
+  top: -300vh;
   left: 5vw;
 `;
 const Cloud5 = styled(Cloud)`
   position: absolute;
-  top: -230vh;
+  top: -400vh;
   left: 35vw;
 `;
 const Cloud6 = styled(Cloud)`
   position: absolute;
-  top: -450vh;
+  top: -500vh;
   left: 60vw;
 `;
 const Ground = styled.img`

@@ -1,27 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { Sizes } from "../../helpers";
-import { Word } from "./helpers";
+import { Coordinates, Word } from "./helpers";
 
-interface Coordinates {
-  x: number;
-  y: number;
-}
-interface Current extends Word, Coordinates {
+// used to transition / animate between platforms as opposed to x and y used for actual render coordinates
+interface PlatformProps extends Word, Coordinates {
   calcX: number;
   calcY: number;
 }
 interface PlatformTracker {
-  current: Array<Current>;
+  platforms: Array<PlatformProps>;
   xSelection: Array<number>;
   levels: number;
   currentLevel: number;
+  scrollCount: number;
 }
 interface PlatformsProps {
   words: Array<Word>;
   jumped: React.MutableRefObject<boolean>;
   ryanRef: SVGElement | undefined;
+}
+type DomEl = HTMLElement | null;
+interface Clouds {
+  1: DomEl;
+  2: DomEl;
+  3: DomEl;
+  4: DomEl;
+  5: DomEl;
+  6: DomEl;
+  cycle: 1 | 2 | 3 | 4 | 5 | 6;
+  startCycle: boolean;
 }
 
 const Platform = styled.div<Coordinates>`
@@ -57,60 +66,69 @@ const pTagDefaultMarginBottom = 16;
 function Platforms(props: PlatformsProps): JSX.Element {
   const { words, jumped, ryanRef } = props;
 
-  // switch to useRef? 
-  // no, use setState to trigger rerender when shifting display view / scrolling effect
-  const [state, setState] = useState<PlatformTracker>({
-    current: [],
+  const state = useRef<PlatformTracker>({
+    platforms: [],
     xSelection: [],
     levels: 0,
-    currentLevel: 1,
+    currentLevel: 0,
+    scrollCount: 0,
   });
   const initialPlatform = useRef(true);
+  const clouds = useRef<Clouds>();
+  const ground = useRef<DomEl>();
 
   // didMount
   useEffect(() => {
     for (let xValue = 0; xValue <= (displayWidth - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
-      state.xSelection.push(xValue);
+      state.current.xSelection.push(xValue);
     }
 
-    let yValue = (displayHeight) - 200;
+    let yValue = displayHeight - platformMargin;
     while (yValue >= 0) {
-      state.levels += 1;
+      state.current.levels += 1;
       yValue -= platformMargin;
     }
+
+    clouds.current = {
+      1: document.getElementById("cloud1"),
+      2: document.getElementById("cloud2"),
+      3: document.getElementById("cloud3"),
+      4: document.getElementById("cloud4"),
+      5: document.getElementById("cloud5"),
+      6: document.getElementById("cloud6"),
+      cycle: 1,
+      startCycle: false,
+    };
+    ground.current = document.getElementById("ground");
   }, []);
 
   // didUpdate
   useEffect(() => {
-    if (words.length !== 0 && state.xSelection.length) {
+    if (words.length !== 0 && state.current.xSelection.length) {
       const latestWord = words[words.length - 1];
 
-      const currentPlatform: Current = { ...latestWord, x: 0, y: 0, calcX: 0, calcY: 0 };
-      const xIndex = Math.floor(Math.random() * (state.xSelection.length - 1));
+      const newPlatform: PlatformProps = { ...latestWord, x: 0, y: 0, calcX: 0, calcY: 0 };
+      const xIndex = Math.floor(Math.random() * (state.current.xSelection.length - 1));
 
       if (words.length === 1) {
-        currentPlatform.x = state.xSelection[xIndex];
-        currentPlatform.y = (displayHeight) - platformMargin;
+        newPlatform.x = state.current.xSelection[xIndex];
+        newPlatform.y = (displayHeight) - platformMargin;
       } else {
-        currentPlatform.x = state.xSelection[xIndex];
-        currentPlatform.y = state.current[state.current.length - 1].y - platformMargin;
+        newPlatform.x = state.current.xSelection[xIndex];
+        newPlatform.y = state.current.platforms[state.current.platforms.length - 1].y - platformMargin;
       }
 
-      state.current = [...state.current, currentPlatform];
+      state.current.platforms = [...state.current.platforms, newPlatform];
     }
   }, [words]);
 
   // jumped
-  if (jumped.current && state.current.length >= 2) {
-    if (state.currentLevel === state.levels) {
-      state.currentLevel = 0;
-    }
-
+  if (jumped.current && state.current.platforms.length >= 2) {
     const ryanJumpAnimation = document.getElementById("ryanAnimation");
-    const from: Current = initialPlatform.current
+    const from: PlatformProps = initialPlatform.current
       ? { id: "0", word: "", definition: "", x: 0, y: 0, calcX: 0, calcY: 0 }
-      : { ...state.current[0] };
-    const to = initialPlatform.current ? state.current[0] : state.current[1];
+      : { ...state.current.platforms[0] };
+    const to = initialPlatform.current ? state.current.platforms[0] : state.current.platforms[1];
 
     if (from !== null && to !== null && ryanRef) {
       const initStyles = window.getComputedStyle(ryanRef);
@@ -133,16 +151,76 @@ function Platforms(props: PlatformsProps): JSX.Element {
     if (initialPlatform.current) {
       initialPlatform.current = false;
     } else {
-      state.current.shift();
+      state.current.platforms.shift();
     }
 
-    state.currentLevel += 1;
+    state.current.currentLevel += 1;
     jumped.current = false;
+
+    // scroll
+    if (state.current.currentLevel === state.current.levels) {
+
+      if (ground.current && ground.current.style.display !== "none") {
+        ground.current.style.display = "none";
+      }
+
+      const scrollAmount = platformMargin * state.current.levels;
+
+      if (clouds.current) {
+        if (clouds.current["1"]) {
+          clouds.current["1"].style.top = `${parseInt(window.getComputedStyle(clouds.current["1"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds.current["2"]) {
+          clouds.current["2"].style.top = `${parseInt(window.getComputedStyle(clouds.current["2"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds.current["3"]) {
+          clouds.current["3"].style.top = `${parseInt(window.getComputedStyle(clouds.current["3"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds.current["4"]) {
+          clouds.current["4"].style.top = `${parseInt(window.getComputedStyle(clouds.current["4"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds.current["5"]) {
+          clouds.current["5"].style.top = `${parseInt(window.getComputedStyle(clouds.current["5"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds.current["6"]) {
+          clouds.current["6"].style.top = `${parseInt(window.getComputedStyle(clouds.current["6"]).top, 10) + scrollAmount}px`;
+        }
+      }
+
+      const ryanJumpAnimation = document.getElementById("ryanAnimation");
+      const head = state.current.platforms[0];
+      ryanJumpAnimation?.setAttribute("values", `${head.calcX} ${platformMargin}; ${head.calcX} ${0}; ${head.calcX} ${head.calcY + (scrollAmount)}`);
+      // @ts-ignore
+      ryanJumpAnimation?.beginElement();
+
+      state.current.platforms = state.current.platforms.map(c => {
+        c.y += scrollAmount;
+        c.calcY += scrollAmount;
+        return c;
+      });
+
+      state.current.currentLevel = 0;
+      state.current.scrollCount += 1;
+
+      if (clouds.current && clouds.current.cycle % 5 === 0) {
+        clouds.current.startCycle = true;
+      }
+      if (clouds.current && clouds.current.startCycle) {
+        if (clouds.current[clouds.current.cycle]) {
+          clouds.current[clouds.current.cycle]!.style.top = `-100vh`;
+          clouds.current.cycle += 1;
+
+          if (clouds.current.cycle === 7) {
+            clouds.current.cycle = 1;
+          }
+        }
+      }
+    }
   }
 
   // @ts-ignore
-  return state.current.map(platform => (
-    <Platform id={platform.id} x={platform.x} y={platform.y}>
+  return state.current.platforms.map(platform => (
+    <Platform id={platform.id} key={platform.id} x={platform.x} y={platform.y}>
       <PlatformText>{platform.word}</PlatformText>
       <PlatformLine />
     </Platform>

@@ -94,58 +94,9 @@ function Controller() {
         gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
         break;
       case "jump":
-        // gameObjects.current = [...gameObjects.current, manager.renderPlatform(words[words.length - 1])];
         break;
     }
   }, [gameObjects.current]);
-
-  useEffect(() => {
-    const cloud1Interval = setInterval(() => {
-      const cloud1 = document.getElementById("cloud1");
-      if (cloud1) {
-        cloud1.style.top = `-200px`;
-      }
-    }, 20000);
-    const cloud2Interval = setInterval(() => {
-      const cloud2 = document.getElementById("cloud2");
-      if (cloud2) {
-        cloud2.style.top = `-200px`;
-      }
-    }, 25000);
-    const cloud3Interval = setInterval(() => {
-      const cloud3 = document.getElementById("cloud3");
-      if (cloud3) {
-        cloud3.style.top = `-200px`;
-      }
-    }, 30000);
-    const cloud4Interval = setInterval(() => {
-      const cloud4 = document.getElementById("cloud4");
-      if (cloud4) {
-        cloud4.style.top = `-200px`;
-      }
-    }, 42000);
-    const cloud5Interval = setInterval(() => {
-      const cloud5 = document.getElementById("cloud5");
-      if (cloud5) {
-        cloud5.style.top = `-200px`;
-      }
-    }, 50000);
-    const cloud6Interval = setInterval(() => {
-      const cloud6 = document.getElementById("cloud6");
-      if (cloud6) {
-        cloud6.style.top = `-200px`;
-      }
-    }, 61000);
-
-    return () => {
-      clearInterval(cloud1Interval);
-      clearInterval(cloud2Interval);
-      clearInterval(cloud3Interval);
-      clearInterval(cloud4Interval);
-      clearInterval(cloud5Interval);
-      clearInterval(cloud6Interval);
-    }
-  }, [])
 
   if (isNotAGame(params.type)) {
     return <Page404 />;
@@ -179,24 +130,12 @@ function Controller() {
       }
       case "jump":
         if (ryan.current) {
-          jumped.current = true;
-          // const nextPlatformWord = words[wordIndex.current];
-          // if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
-          //   manager.jumpToPlatform(ryan.current);
-
-          //   if (prevWord.current) {
-          //     const platform = document.getElementById(prevWord.current.id);
-          //     if (platform) {
-          //       platform.style.transition = "opacity 150ms ease"
-          //       platform.style.opacity = "0";
-          //     }
-          //     const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(prevWord.current?.id!) === 0);
-          //     gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
-          //   }
-
-          //   prevWord.current = nextPlatformWord;
-          //   wordIndex.current += 1;
-          // }
+          const nextPlatformWord = words[wordIndex.current];
+          if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
+            jumped.current = true;
+            prevWord.current = nextPlatformWord;
+            wordIndex.current += 1;
+          }
         }
         break;
     }

@@ -3,32 +3,19 @@ import styled, { keyframes } from "styled-components";
 
 import { Game, Sizes } from "../../helpers";
 import bubblePng from "../../images/bubble.png";
-import { Word } from "./helpers";
+import { Coordinates, Word } from "./helpers";
 
-interface Coordinates {
-  x: number;
-  y: number;
-}
 export interface BubblesX {
   available: Array<number>;
   recent: [number?, number?, number?];
 }
-interface PlatformTracker {
-  current: Array<Coordinates>;
-  xSelection: Array<number>;
-  levels: number;
-  currentLevel: number;
-}
 interface Test {
   getBubbles: () => BubblesX;
-  getPlatforms: () => PlatformTracker;
 }
 export interface Manager {
   renderBubble: (word: Word) => JSX.Element;
   popBubble: (word: Word) => void;
   renderCon: (word: Word) => JSX.Element;
-  renderPlatform: (word: Word) => JSX.Element;
-  jumpToPlatform: (node: SVGElement) => void;
   reset: (game: Game) => void;
   Test: Test;
 }
@@ -89,30 +76,6 @@ const Bubble = styled.div<Coordinates>`
 const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
-const Platform = styled.div<Coordinates>`
-  position: absolute;
-  top: ${props => props.y}px;
-  left: ${props => props.x}px;
-  margin-bottom: 100px;
-
-  & div {
-    margin: 0 auto;
-  }
-
-  & p {
-    margin: 0 auto 0.5rem auto 0;
-  }
-`;
-const PlatformLine = styled.div`
-  position: relative;  
-  width: calc(25px + (50 - 25) * ((100vw - 300px) / (1440 - 300)));
-  height: 2px;
-  background-color: black;
-`;
-const PlatformText = styled.p`
-  position: relative;
-  font-size: ${Sizes.variable.font.small}px;
-`;
 
 function renderBubble(vocab: Word, xValue: number): JSX.Element {
   return (
@@ -123,14 +86,6 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
     >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
-  );
-}
-function renderPlatform(vocab: Word, location: Coordinates): JSX.Element {
-  return (
-    <Platform id={vocab.id} key={vocab.id} x={location.x} y={location.y}>
-      <PlatformText>{vocab.word}</PlatformText>
-      <PlatformLine />
-    </Platform>
   );
 }
 function renderCon(vocab: Word): JSX.Element {
@@ -168,23 +123,9 @@ function renderCon(vocab: Word): JSX.Element {
 function manageGameObjects(): Manager {
   const isMobile = window.innerWidth < 720;
   const bubbles: BubblesX = { available: [], recent: [], };
-  const platforms: PlatformTracker = {
-    current: [{ x: 0, y: 0 }],
-    xSelection: [],
-    levels: 0,
-    currentLevel: 1,
-  };
 
   for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? xValue += 50 : xValue += 100) {
     bubbles.available.push(xValue);
-  }
-  for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
-    platforms.xSelection.push(xValue);
-  }
-  let yValue = (window.innerHeight * 0.5) - 200;
-  while (yValue >= 0) {
-    platforms.levels += 1;
-    yValue -= 150;
   }
 
   return {
@@ -218,93 +159,6 @@ function manageGameObjects(): Manager {
       // TODO
       return renderCon(word);
     },
-    renderPlatform: function (word: Word): JSX.Element {
-      let currentPlatform;
-      const xIndex = Math.floor(Math.random() * (platforms.xSelection.length - 1));
-
-      if (platforms.current[0].x === 0 && platforms.current[0].y === 0 && platforms.current.length === 1) {
-        currentPlatform = { x: platforms.xSelection[xIndex], y: (window.innerHeight * 0.5) - 150 };
-      } else {
-        currentPlatform = { x: platforms.xSelection[xIndex], y: platforms.current[platforms.current.length - 1].y - 150 };
-      }
-
-      platforms.current = [...platforms.current, currentPlatform];
-      return renderPlatform(word, currentPlatform);
-    },
-    jumpToPlatform: function (node: SVGElement): void {
-      if (platforms.current.length >= 2) {
-
-        if (platforms.currentLevel === platforms.levels) {
-          platforms.currentLevel = 0;
-        }
-
-        const ryanJumpAnimation = document.getElementById("ryanAnimation");
-        const from = platforms.current[0];
-        const to = platforms.current[1];
-
-        if (from !== null && to !== null) {
-          const initStyles = window.getComputedStyle(node);
-          const left = parseInt(initStyles.left, 10);
-          const height = parseInt(initStyles.height, 10);
-          const width = parseInt(initStyles.width, 10);
-
-          to.x = to.x - left - (width / 3);
-          to.y = from.y === 0 ? -to.y + (height * 2) + 50 : from.y;
-          // to.y = from.y === 0 ? -to.y + (height * 2) + 50 : from.y - to.y + 20;
-
-          console.log(`calc to`, to);
-
-          ryanJumpAnimation?.setAttribute("values", `${from.x} ${from.y}; ${to.x} ${to.y - 100}; ${to.x} ${to.y}`);
-          // ryanJumpAnimation?.setAttribute("from", `${from.x} ${from.y}`);
-          // ryanJumpAnimation?.setAttribute("to", `${to.x} ${to.y}`);
-        }
-
-        // @ts-ignore
-        ryanJumpAnimation?.beginElement();
-        platforms.current.shift();
-        platforms.currentLevel += 1;
-
-        // const display = document.getElementById("display");
-        // if (display) {
-        //   display.scrollBy(0, 100);
-        //   display.scrollTop = display.scrollHeight;
-        // }
-
-        if (from.x === 0 && from.y === 0) {
-          const ground = document.getElementById("ground");
-          if (ground) {
-            ground.style.opacity = "0";
-            ground.style.transition = "opacity 100ms ease-out";
-            setTimeout(() => { ground.style.display = "none"; }, 150);
-          }
-        }
-
-        const cloud1 = document.getElementById("cloud1");
-        const cloud2 = document.getElementById("cloud2");
-        const cloud3 = document.getElementById("cloud3");
-        const cloud4 = document.getElementById("cloud4");
-        const cloud5 = document.getElementById("cloud5");
-        const cloud6 = document.getElementById("cloud6");
-        if (cloud1) {
-          cloud1.style.top = `${parseInt(window.getComputedStyle(cloud1).top, 10) + 100}px`;
-        }
-        if (cloud2) {
-          cloud2.style.top = `${parseInt(window.getComputedStyle(cloud2).top, 10) + 100}px`;
-        }
-        if (cloud3) {
-          cloud3.style.top = `${parseInt(window.getComputedStyle(cloud3).top, 10) + 100}px`;
-        }
-        if (cloud4) {
-          cloud4.style.top = `${parseInt(window.getComputedStyle(cloud4).top, 10) + 100}px`;
-        }
-        if (cloud5) {
-          cloud5.style.top = `${parseInt(window.getComputedStyle(cloud5).top, 10) + 100}px`;
-        }
-        if (cloud6) {
-          cloud6.style.top = `${parseInt(window.getComputedStyle(cloud6).top, 10) + 100}px`;
-        }
-      }
-    },
     reset: function (game: Game): void {
       switch (game) {
         case "run":
@@ -317,9 +171,6 @@ function manageGameObjects(): Manager {
           }
           return;
         case "jump":
-          if (platforms.current.length) {
-            platforms.current = [];
-          }
           return;
       }
     },
@@ -327,9 +178,6 @@ function manageGameObjects(): Manager {
       getBubbles: function () {
         return { ...bubbles };
       },
-      getPlatforms: function () {
-        return { ...platforms };
-      }
     }
   }
 }
