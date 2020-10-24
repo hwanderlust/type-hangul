@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Game, } from "../../helpers";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
-import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
+import Platforms from "./Platforms";
+import { Word, gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 import manageGameObjects from "./manager";
 
 const Container = styled.div`
@@ -47,6 +48,14 @@ function Controller() {
 
   const rate = useRef(1); // temp? 
   const count = useRef(0); // temp?
+  const ryan = useRef<SVGElement>();
+  const prevWord = useRef<Word>();
+  const wordIndex = useRef(0);
+  const jumped = useRef(false);
+
+  const ryanRef = useCallback((node) => {
+    ryan.current = node;
+  }, []);
 
   setInterval(() => {
     switch (game) {
@@ -67,8 +76,10 @@ function Controller() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextWord = wordTracker.select();
-      setWords(prevWords => [...prevWords, nextWord]);
+      if (gameObjects.current.length <= 3) {
+        const nextWord = wordTracker.select();
+        setWords(prevWords => [...prevWords, nextWord]);
+      }
     }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);
@@ -83,7 +94,6 @@ function Controller() {
         gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
         break;
       case "jump":
-        gameObjects.current = [...gameObjects.current, manager.renderPlatform(words[words.length - 1])];
         break;
     }
   }, [gameObjects.current]);
@@ -106,19 +116,28 @@ function Controller() {
   // }
 
   function handleSubmit(enteredWord: string): void {
-    const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
-    if (word) {
-      switch (game) {
-        case "run":
-          break;
-        case "pop":
+    switch (game) {
+      case "run":
+        break;
+      case "pop": {
+        const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
+        if (word) {
           manager.popBubble(word);
           const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
           gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
           break;
-        case "jump":
-          break;
+        }
       }
+      case "jump":
+        if (ryan.current) {
+          const nextPlatformWord = words[wordIndex.current];
+          if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
+            jumped.current = true;
+            prevWord.current = nextPlatformWord;
+            wordIndex.current += 1;
+          }
+        }
+        break;
     }
   }
 
@@ -128,8 +147,8 @@ function Controller() {
         <h1>{params.type}</h1>
         <p>Game Description</p>
       </Header>
-      <Display game={params.type}>
-        {gameObjects.current}
+      <Display game={params.type} ryanRef={ryanRef} >
+        {game !== "jump" ? gameObjects.current : <Platforms words={words} jumped={jumped} ryanRef={ryan.current} />}
       </Display>
       <Keyboard onSubmit={handleSubmit} />
 

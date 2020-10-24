@@ -14,6 +14,10 @@ export interface WordManager {
   reset: () => void;
   Test: WordManagerTest;
 }
+export interface Coordinates {
+  x: number;
+  y: number;
+}
 
 const WORDS: Array<Word> = JSON.parse(JSON.stringify(wordJson));
 

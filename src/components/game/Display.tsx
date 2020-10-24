@@ -25,6 +25,7 @@ const Container = styled.div`
 `;
 const leftCalc = "calc(10px + (50 - 10) * ((100vw - 300px) / (1440 - 300)))";
 const centerCalc = "calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))))";
+
 const regHeight = "calc(90px + (180 - 90) * ((100vw - 300px) / (1440 - 300)))";
 const jumpHeight = "calc(90px + (100 - 90) * ((100vw - 300px) / (1440 - 300)))";
 const Ryan = styled.svg<RyanProps>`
@@ -44,12 +45,27 @@ const Cloud1 = styled(Cloud)`
 `;
 const Cloud2 = styled(Cloud)`
   position: absolute;
-  top: 10vh;
+  top: -100vh;
   left: 35vw;
 `;
 const Cloud3 = styled(Cloud)`
   position: absolute;
-  top: 4vh;
+  top: -200vh;
+  left: 60vw;
+`;
+const Cloud4 = styled(Cloud)`
+  position: absolute;
+  top: -300vh;
+  left: 5vw;
+`;
+const Cloud5 = styled(Cloud)`
+  position: absolute;
+  top: -400vh;
+  left: 35vw;
+`;
+const Cloud6 = styled(Cloud)`
+  position: absolute;
+  top: -500vh;
   left: 60vw;
 `;
 const Ground = styled.img`
@@ -61,23 +77,29 @@ const Ground = styled.img`
 interface DisplayProps {
   game: Game;
   className?: string;
-  children: Array<JSX.Element>;
+  children: Array<JSX.Element> | JSX.Element;
+  ryanRef: (instance: SVGElement | null) => void;
 }
 
 function Display(props: DisplayProps) {
-  const { className, children } = props;
+  const { className, children, ryanRef } = props;
   const game = props.game.toLowerCase();
 
   return (
-    <Container className={className}>
+    <Container id="display" className={className}>
 
-      <Cloud1 src={cloud1Png} />
-      <Cloud2 src={cloud2Png} />
-      <Cloud3 src={cloud3Png} />
-      <Ground src={groundPng} />
+      <Cloud1 id="cloud1" src={cloud1Png} />
+      <Cloud2 id="cloud2" src={cloud2Png} />
+      <Cloud3 id="cloud3" src={cloud3Png} />
+      <Cloud4 id="cloud4" src={cloud1Png} />
+      <Cloud5 id="cloud5" src={cloud2Png} />
+      <Cloud6 id="cloud6" src={cloud3Png} />
+
+      <Ground id="ground" src={groundPng} />
 
       <Ryan
         id="ryan"
+        ref={ryanRef}
         position={game === "run" ? "left" : "center"}
         width="100"
         height="185"
@@ -89,7 +111,11 @@ function Display(props: DisplayProps) {
           attributeName="transform"
           attributeType="XML"
           type="translate"
-          dur="500ms"
+          dur="1000ms"
+          values="0 0; 0 -200; 0 -100"
+          keyTimes="0; 0.5; 1"
+          repeatCount="1"
+          begin="indefinite"
           fill="freeze" />
         <path d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z" fill="#E28F2C" />
         <path id="legRight" d="M82.1666 178.056C83.6665 168.556 82.1666 156.111 82.1666 151.556C82.1666 147 61 147.5 60.6666 151.556C60.3332 155.611 59.1665 171.056 60.6666 178.056C62.1667 185.056 80.6667 187.556 82.1666 178.056Z" fill="#E28F2C" />

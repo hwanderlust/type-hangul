@@ -3,32 +3,19 @@ import styled, { keyframes } from "styled-components";
 
 import { Game, Sizes } from "../../helpers";
 import bubblePng from "../../images/bubble.png";
-import { Word } from "./helpers";
+import { Coordinates, Word } from "./helpers";
 
-interface Coordinates {
-  x: number;
-  y: number;
-}
 export interface BubblesX {
   available: Array<number>;
   recent: [number?, number?, number?];
 }
-interface PlatformTracker {
-  current: Array<Coordinates>;
-  xSelection: Array<number>;
-  ySelection: Array<number>;
-  yIndex: number;
-}
 interface Test {
   getBubbles: () => BubblesX;
-  getPlatforms: () => PlatformTracker;
 }
 export interface Manager {
   renderBubble: (word: Word) => JSX.Element;
   popBubble: (word: Word) => void;
   renderCon: (word: Word) => JSX.Element;
-  renderPlatform: (word: Word) => JSX.Element;
-  jumpToPlatform: (node: SVGElement) => void;
   reset: (game: Game) => void;
   Test: Test;
 }
@@ -89,29 +76,6 @@ const Bubble = styled.div<Coordinates>`
 const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
-const Platform = styled.div<Coordinates>`
-  position: absolute;
-  top: ${props => props.y}px;
-  left: ${props => props.x}px;
-
-  & div {
-    margin: 0 auto;
-  }
-
-  & p {
-    margin: 0 auto 0.5rem auto 0;
-  }
-`;
-const PlatformLine = styled.div`
-  position: relative;  
-  width: calc(25px + (50 - 25) * ((100vw - 300px) / (1440 - 300)));
-  height: 2px;
-  background-color: black;
-`;
-const PlatformText = styled.p`
-  position: relative;
-  font-size: ${Sizes.variable.font.small}px;
-`;
 
 function renderBubble(vocab: Word, xValue: number): JSX.Element {
   return (
@@ -122,14 +86,6 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
     >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
-  );
-}
-function renderPlatform(vocab: Word, location: Coordinates): JSX.Element {
-  return (
-    <Platform id={vocab.id} key={vocab.id} x={location.x} y={location.y}>
-      <PlatformText>{vocab.word}</PlatformText>
-      <PlatformLine />
-    </Platform>
   );
 }
 function renderCon(vocab: Word): JSX.Element {
@@ -167,23 +123,9 @@ function renderCon(vocab: Word): JSX.Element {
 function manageGameObjects(): Manager {
   const isMobile = window.innerWidth < 720;
   const bubbles: BubblesX = { available: [], recent: [], };
-  const platforms: PlatformTracker = {
-    current: [],
-    xSelection: [],
-    ySelection: [],
-    yIndex: 0,
-  };
 
   for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? xValue += 50 : xValue += 100) {
     bubbles.available.push(xValue);
-  }
-  for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
-    platforms.xSelection.push(xValue);
-  }
-  let yValue = (window.innerHeight * 0.5) - 200;
-  while (yValue >= 0) {
-    platforms.ySelection.push(yValue);
-    yValue -= 100;
   }
 
   return {
@@ -217,49 +159,6 @@ function manageGameObjects(): Manager {
       // TODO
       return renderCon(word);
     },
-    renderPlatform: function (word: Word): JSX.Element {
-      const xIndex = Math.floor(Math.random() * (platforms.xSelection.length - 1));
-      const currentPlatform = { x: platforms.xSelection[xIndex], y: platforms.ySelection[platforms.yIndex] };
-
-      if (platforms.yIndex === (platforms.ySelection.length - 1)) {
-        platforms.yIndex = 0;
-      } else {
-        platforms.yIndex++;
-      }
-
-      platforms.current = [...platforms.current, currentPlatform];
-      return renderPlatform(word, currentPlatform);
-    },
-    jumpToPlatform: function (node: SVGElement): void {
-
-      if (!platforms.current.length) {
-        platforms.current.push({ x: 0, y: 0 });
-      }
-
-      if (platforms.current.length >= 2) {
-        const ryanJumpAnimation = document.getElementById("ryanAnimation");
-        const from = platforms.current.length ? platforms.current[0] : null;
-        const to = platforms.current.length ? platforms.current[1] : null;
-
-        if (from !== null && to !== null) {
-          const initStyles = window.getComputedStyle(node);
-          const fromX = parseInt(initStyles.left, 10);
-
-          to.x = to.x - (parseInt(initStyles.width, 10) / 3) - fromX;
-          to.y = -(to.y - parseInt(initStyles.height, 10) - from.y);
-        }
-
-        ryanJumpAnimation?.setAttribute("from", `${from !== null ? `${from?.x} ${from?.y}` : 0}`);
-        ryanJumpAnimation?.setAttribute("to", `${to !== null ? `${to.x} ${to.y}` : 0}`);
-
-        // @ts-ignore
-        ryanJumpAnimation?.beginElement();
-        platforms.current.shift();
-        // platforms.current.forEach(platform => {
-        //   platform.y += 100;
-        // });
-      }
-    },
     reset: function (game: Game): void {
       switch (game) {
         case "run":
@@ -272,10 +171,6 @@ function manageGameObjects(): Manager {
           }
           return;
         case "jump":
-          if (platforms.current.length) {
-            platforms.current = [];
-            platforms.yIndex = 0;
-          }
           return;
       }
     },
@@ -283,9 +178,6 @@ function manageGameObjects(): Manager {
       getBubbles: function () {
         return { ...bubbles };
       },
-      getPlatforms: function () {
-        return { ...platforms };
-      }
     }
   }
 }
