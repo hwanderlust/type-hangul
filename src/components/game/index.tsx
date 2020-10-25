@@ -72,10 +72,8 @@ function Controller() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (gameObjects.current.length <= 3) {
-        const nextWord = wordTracker.select();
-        setWords(prevWords => [...prevWords, nextWord]);
-      }
+      const nextWord = wordTracker.select();
+      setWords(prevWords => [...prevWords, nextWord]);
     }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);

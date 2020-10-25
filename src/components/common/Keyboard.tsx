@@ -56,8 +56,8 @@ const Row = styled.div<RowProps>`
 `;
 const Key = styled.div`
   background-color: black;
-  width: calc(25px + (75 - 25) * ((100vw - 300px) / (1440 - 300)));
-  height: calc(40px + (75 - 40) * ((100vw - 300px) / (1440 - 300)));
+  width: calc(20px + (50 - 20) * ((100vw - 300px) / (1440 - 300)));
+  height: calc(30px + (50 - 30) * ((100vw - 300px) / (1440 - 300)));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,6 +66,7 @@ const Key = styled.div`
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   margin-right: calc(4px + (8 - 4) * ((100vw - 300px) / (1440 - 300)));
+  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.7));
 
   &:last-of-type {
     margin-right: 0;
@@ -114,6 +115,25 @@ const LetterEng = styled(Letter)`
   @media only screen and (max-width: 700px) {
     display: none;
   }
+`;
+const TextInput = styled.input.attrs(_ => ({
+  type: "text",
+}))`
+  width: 50vw;
+  border: none;
+  background-color: #28748C;
+  color: white;
+  border-radius: 20px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: ${Sizes.variable.font.small};
+  outline-offset: 8px;
+`;
+const Tip = styled.p`
+  font-size: ${Sizes.variable.font.xSmall};
 `;
 
 // TODO: see if there's another way to implement this
@@ -168,12 +188,14 @@ function Keyboard(props: KeyboardProps) {
   return (
     <Container className={props.className}>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+        <TextInput
           onChange={handleChange}
           value={word}
           autoFocus />
       </form>
+
+      <Tip>*Use your device's keyboard, this is just a visual guide</Tip>
+
       <KeyboardRow rowLetters={topRow} />
       <KeyboardRow rowLetters={midRow} />
       <KeyboardRow rowLetters={botRow} />

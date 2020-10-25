@@ -15,6 +15,7 @@ const Contact = lazy(() => preloadContact);
 const Background = styled.div`
   background-color: #FF7D7D;
   position: relative;
+  min-height: 100vh;
 `;
 
 function App() {
