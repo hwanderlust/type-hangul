@@ -42,7 +42,6 @@ function Page404() {
         <p>"<strong>{useLocation().pathname}</strong>" isn't a path we have on this site.</p>
         <h2>If you're here, you're here for the games! Please have a gander.</h2>
         <List>
-          <Item><StyledLink to="/game/run">Run</StyledLink></Item>
           <Item><StyledLink to="/game/pop">Pop</StyledLink></Item>
           <Item><StyledLink to="/game/jump">Jump</StyledLink></Item>
         </List>

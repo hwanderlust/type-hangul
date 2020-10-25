@@ -59,10 +59,6 @@ function Controller() {
 
   setInterval(() => {
     switch (game) {
-      case "run": {
-        // shift left / running pace
-        break;
-      }
       case "pop": {
         count.current = count.current + 0.2;
         break;
@@ -87,9 +83,6 @@ function Controller() {
 
   useEffect(() => {
     switch (game) {
-      case "run":
-        gameObjects.current = [...gameObjects.current, manager.renderCon(words[words.length - 1])];
-        break;
       case "pop":
         gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
         break;
@@ -117,8 +110,6 @@ function Controller() {
 
   function handleSubmit(enteredWord: string): void {
     switch (game) {
-      case "run":
-        break;
       case "pop": {
         const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
         if (word) {

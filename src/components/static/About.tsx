@@ -6,7 +6,6 @@ import ryanPole from "../../images/ryan-pole.png";
 import friends from "../../images/friends-walking.jpg";
 import ryan from "../../images/ryan-waving.png";
 import apeach from "../../images/apeach-sparkly-eyes.png";
-import con from "../../images/con-thinking.png";
 
 import { Disclosure, Logo, MenuBtn } from "../common";
 import { Fonts, Sizes } from "../../helpers";
@@ -169,13 +168,6 @@ function About() {
           <RyanPole src={ryanPole} alt="Kakao Friends' Ryan hanging on a pole leaning left peeking a look" />
 
           <article>
-            <Subtitle>Run</Subtitle>
-            <Text>
-              These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
-            </Text>
-          </article>
-
-          <article>
             <Subtitle>Pop</Subtitle>
             <Text>
               These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
@@ -208,14 +200,6 @@ function About() {
                 <Intro>Mischievous peach that escaped from the peach tree</Intro>
               </CaptionLeft>
               <img src={apeach} alt="Kakao friends' Apeach drinking something with sparkly eyes" />
-            </Row>
-
-            <Row>
-              <img src={con} alt="Kakao friends' Con in a thinking pose with one of its arms under its chin" />
-              <CaptionRight>
-                <Name>Con</Name>
-                <Intro>The unidentifiable crocodile created by Muzi by raising a pickled radish and now wants to raise a peach</Intro>
-              </CaptionRight>
             </Row>
           </Intros>
         </Friends>

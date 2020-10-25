@@ -89,8 +89,7 @@ const CustomLink = styled(Link)`
 
 function LandingThree() {
   const [title, setTitle] = useState("");
-  const [selectedGame, setGame] = useState("run");
-  const [showSecondaryComponents, toggleSecondaryComponents] = useState(false);
+  const [selectedGame, setGame] = useState("pop");
   const history = useHistory();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement | HTMLInputElement>): void {
@@ -103,11 +102,10 @@ function LandingThree() {
   }
 
   typewriteByLetter(titleText, [title, setTitle]);
-  setTimeout(() => { toggleSecondaryComponents(true) }, 2000);
 
   return (
     <Main>
-      {showSecondaryComponents && <Navigation />}
+      <Navigation />
 
       <Title>{title}</Title>
 
@@ -116,22 +114,10 @@ function LandingThree() {
 
         <div>
           <Radio
-            value="run"
-            checked={selectedGame === "run"}
-            onChange={handleChange}
-            autoFocus />
-          <CustomLink
-            to="/game/run"
-            description={selectedGame === "run" ? "Type the given words to help your character clear obstacles" : ""}>
-            Run
-          </CustomLink>
-        </div>
-
-        <div>
-          <Radio
             value="pop"
             checked={selectedGame === "pop"}
-            onChange={handleChange} />
+            onChange={handleChange}
+            autoFocus />
           <CustomLink
             to="/game/pop"
             description={selectedGame === "pop" ? "Type the floating words to avoid the bubbles from hitting the ground" : ""}>
@@ -153,7 +139,7 @@ function LandingThree() {
 
       </Container>
 
-      {showSecondaryComponents && <Disclosure />}
+      <Disclosure />
 
     </Main>
   );
