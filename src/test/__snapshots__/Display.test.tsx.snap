@@ -11,7 +11,7 @@ exports[`<Display/> renders correctly for 'jump' 1`] = `
   overflow: hidden;
 }
 
-.c6 {
+.c9 {
   position: absolute;
   top: calc(100% - (1vh + calc(90px + (100 - 90) * ((100vw - 300px) / (1440 - 300)))));
   left: calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))));
@@ -31,17 +31,35 @@ exports[`<Display/> renders correctly for 'jump' 1`] = `
 
 .c3 {
   position: absolute;
-  top: 10vh;
+  top: -100vh;
   left: 35vw;
 }
 
 .c4 {
   position: absolute;
-  top: 4vh;
+  top: -200vh;
   left: 60vw;
 }
 
 .c5 {
+  position: absolute;
+  top: -300vh;
+  left: 5vw;
+}
+
+.c6 {
+  position: absolute;
+  top: -400vh;
+  left: 35vw;
+}
+
+.c7 {
+  position: absolute;
+  top: -500vh;
+  left: 60vw;
+}
+
+.c8 {
   position: absolute;
   bottom: 2vh;
   width: 100%;
@@ -49,25 +67,45 @@ exports[`<Display/> renders correctly for 'jump' 1`] = `
 
 <div
   className="c0"
+  id="display"
 >
   <img
     className="c1 c2"
+    id="cloud1"
     src="cloud1.png"
   />
   <img
     className="c1 c3"
+    id="cloud2"
     src="cloud2.png"
   />
   <img
     className="c1 c4"
+    id="cloud3"
     src="cloud3.png"
   />
   <img
-    className="c5"
+    className="c1 c5"
+    id="cloud4"
+    src="cloud1.png"
+  />
+  <img
+    className="c1 c6"
+    id="cloud5"
+    src="cloud2.png"
+  />
+  <img
+    className="c1 c7"
+    id="cloud6"
+    src="cloud3.png"
+  />
+  <img
+    className="c8"
+    id="ground"
     src="ground.png"
   />
   <svg
-    className="c6"
+    className="c9"
     fill="none"
     height="185"
     id="ryan"
@@ -78,10 +116,14 @@ exports[`<Display/> renders correctly for 'jump' 1`] = `
     <animateTransform
       attributeName="transform"
       attributeType="XML"
-      dur="500ms"
+      begin="indefinite"
+      dur="1000ms"
       fill="freeze"
       id="ryanAnimation"
+      keyTimes="0; 0.5; 1"
+      repeatCount="1"
       type="translate"
+      values="0 0; 0 -200; 0 -100"
     />
     <path
       d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z"
@@ -178,7 +220,7 @@ exports[`<Display/> renders correctly for 'pop' 1`] = `
   overflow: hidden;
 }
 
-.c6 {
+.c9 {
   position: absolute;
   top: calc(100% - (1vh + calc(90px + (100 - 90) * ((100vw - 300px) / (1440 - 300)))));
   left: calc(50% - (25px + (100 - 50) * ((100vw - 300px) / (1440 - 300))));
@@ -198,17 +240,35 @@ exports[`<Display/> renders correctly for 'pop' 1`] = `
 
 .c3 {
   position: absolute;
-  top: 10vh;
+  top: -100vh;
   left: 35vw;
 }
 
 .c4 {
   position: absolute;
-  top: 4vh;
+  top: -200vh;
   left: 60vw;
 }
 
 .c5 {
+  position: absolute;
+  top: -300vh;
+  left: 5vw;
+}
+
+.c6 {
+  position: absolute;
+  top: -400vh;
+  left: 35vw;
+}
+
+.c7 {
+  position: absolute;
+  top: -500vh;
+  left: 60vw;
+}
+
+.c8 {
   position: absolute;
   bottom: 2vh;
   width: 100%;
@@ -216,25 +276,45 @@ exports[`<Display/> renders correctly for 'pop' 1`] = `
 
 <div
   className="c0"
+  id="display"
 >
   <img
     className="c1 c2"
+    id="cloud1"
     src="cloud1.png"
   />
   <img
     className="c1 c3"
+    id="cloud2"
     src="cloud2.png"
   />
   <img
     className="c1 c4"
+    id="cloud3"
     src="cloud3.png"
   />
   <img
-    className="c5"
+    className="c1 c5"
+    id="cloud4"
+    src="cloud1.png"
+  />
+  <img
+    className="c1 c6"
+    id="cloud5"
+    src="cloud2.png"
+  />
+  <img
+    className="c1 c7"
+    id="cloud6"
+    src="cloud3.png"
+  />
+  <img
+    className="c8"
+    id="ground"
     src="ground.png"
   />
   <svg
-    className="c6"
+    className="c9"
     fill="none"
     height="185"
     id="ryan"
@@ -245,10 +325,14 @@ exports[`<Display/> renders correctly for 'pop' 1`] = `
     <animateTransform
       attributeName="transform"
       attributeType="XML"
-      dur="500ms"
+      begin="indefinite"
+      dur="1000ms"
       fill="freeze"
       id="ryanAnimation"
+      keyTimes="0; 0.5; 1"
+      repeatCount="1"
       type="translate"
+      values="0 0; 0 -200; 0 -100"
     />
     <path
       d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z"
@@ -345,7 +429,7 @@ exports[`<Display/> renders correctly for 'run' 1`] = `
   overflow: hidden;
 }
 
-.c6 {
+.c9 {
   position: absolute;
   top: calc(100% - (100px + calc(90px + (180 - 90) * ((100vw - 300px) / (1440 - 300)))));
   left: calc(10px + (50 - 10) * ((100vw - 300px) / (1440 - 300)));
@@ -365,17 +449,35 @@ exports[`<Display/> renders correctly for 'run' 1`] = `
 
 .c3 {
   position: absolute;
-  top: 10vh;
+  top: -100vh;
   left: 35vw;
 }
 
 .c4 {
   position: absolute;
-  top: 4vh;
+  top: -200vh;
   left: 60vw;
 }
 
 .c5 {
+  position: absolute;
+  top: -300vh;
+  left: 5vw;
+}
+
+.c6 {
+  position: absolute;
+  top: -400vh;
+  left: 35vw;
+}
+
+.c7 {
+  position: absolute;
+  top: -500vh;
+  left: 60vw;
+}
+
+.c8 {
   position: absolute;
   bottom: 2vh;
   width: 100%;
@@ -383,25 +485,45 @@ exports[`<Display/> renders correctly for 'run' 1`] = `
 
 <div
   className="c0"
+  id="display"
 >
   <img
     className="c1 c2"
+    id="cloud1"
     src="cloud1.png"
   />
   <img
     className="c1 c3"
+    id="cloud2"
     src="cloud2.png"
   />
   <img
     className="c1 c4"
+    id="cloud3"
     src="cloud3.png"
   />
   <img
-    className="c5"
+    className="c1 c5"
+    id="cloud4"
+    src="cloud1.png"
+  />
+  <img
+    className="c1 c6"
+    id="cloud5"
+    src="cloud2.png"
+  />
+  <img
+    className="c1 c7"
+    id="cloud6"
+    src="cloud3.png"
+  />
+  <img
+    className="c8"
+    id="ground"
     src="ground.png"
   />
   <svg
-    className="c6"
+    className="c9"
     fill="none"
     height="185"
     id="ryan"
@@ -412,10 +534,14 @@ exports[`<Display/> renders correctly for 'run' 1`] = `
     <animateTransform
       attributeName="transform"
       attributeType="XML"
-      dur="500ms"
+      begin="indefinite"
+      dur="1000ms"
       fill="freeze"
       id="ryanAnimation"
+      keyTimes="0; 0.5; 1"
+      repeatCount="1"
       type="translate"
+      values="0 0; 0 -200; 0 -100"
     />
     <path
       d="M84 86H16C16 86 2.50001 116 0.500014 122.5C-1.49999 129 6.50012 132 9.00001 126.5C11.4999 121 16 114 19.5 107C23 100 19.5 143 19.5 152C19.5 161 39.5 162 40.5 152C40.5 147 60 147 60 152C61 161.5 80 161 82 152C84 143 82 112.5 82 107C82 101.5 86.5 122 90.5 126.5C94.5 131 99.5 127.5 99.5 122.5C99.5 117.5 84 86 84 86Z"

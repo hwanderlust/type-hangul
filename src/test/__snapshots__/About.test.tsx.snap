@@ -432,18 +432,6 @@ Array [
         <h2
           className="c2"
         >
-          Run
-        </h2>
-        <p
-          className="c3"
-        >
-          These games are for those with a passion and interest in the Korean language and would like to learn or practice their typing skills, whether it’s on a desktop or laptop on a large screen or a smaller screen like on mobile devices.
-        </p>
-      </article>
-      <article>
-        <h2
-          className="c2"
-        >
           Pop
         </h2>
         <p
@@ -520,28 +508,6 @@ Array [
             src="apeach-sparkly-eyes.png"
           />
         </div>
-        <div
-          className="c8"
-        >
-          <img
-            alt="Kakao friends' Con in a thinking pose with one of its arms under its chin"
-            src="con-thinking.png"
-          />
-          <div
-            className="c9 c10"
-          >
-            <h3
-              className="c11"
-            >
-              Con
-            </h3>
-            <p
-              className="c12"
-            >
-              The unidentifiable crocodile created by Muzi by raising a pickled radish and now wants to raise a peach
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   </main>,
@@ -555,8 +521,8 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-animation: hUniol 500ms ease-in;
-  animation: hUniol 500ms ease-in;
+  -webkit-animation: hUniol 4000ms ease-in;
+  animation: hUniol 4000ms ease-in;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;

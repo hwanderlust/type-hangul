@@ -73,17 +73,6 @@ exports[`<Page404 /> renders correctly 1`] = `
       >
         <a
           className="c3"
-          href="/game/run"
-          onClick={[Function]}
-        >
-          Run
-        </a>
-      </li>
-      <li
-        className="c2"
-      >
-        <a
-          className="c3"
           href="/game/pop"
           onClick={[Function]}
         >
