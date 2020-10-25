@@ -8,7 +8,7 @@ const Container = styled.footer`
   width: 100%;
   display: flex;
   flex-direction: column;
-  animation: ${fadeIn} 500ms ease-in;
+  animation: ${fadeIn} 4000ms ease-in;
   align-items: center;
 `;
 const Line = styled.div`
