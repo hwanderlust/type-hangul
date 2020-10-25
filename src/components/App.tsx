@@ -21,18 +21,18 @@ function App() {
   return (
     <Background>
       <BrowserRouter>
-        <Switch>
+        {/* TODO add proper fallback */}
+        <Suspense fallback={() => <>Loading...</>} >
+          <Switch>
+            <Route exact path="/">
+              <Landing />
+            </Route>
 
-          <Route path="/game/:type">
-            <Game />
-          </Route>
+            <Route path="/game/:type">
+              <Game />
+            </Route>
 
-          <Route exact path="/">
-            <Landing />
-          </Route>
 
-          {/* TODO add proper fallback */}
-          <Suspense fallback={() => <>Loading...</>} >
             <Route exact path="/about">
               <About />
             </Route>
@@ -41,13 +41,12 @@ function App() {
             </Route>
 
             <Route exact path="/game/gameover">
-
+              <h1>Gameover</h1>
             </Route>
 
             <Route component={Page404} />
-          </Suspense>
-
-        </Switch>
+          </Switch>
+        </Suspense>
       </BrowserRouter>
     </Background>
   );
