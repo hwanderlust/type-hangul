@@ -19,7 +19,7 @@ exports[`<Keyboard/> renders correctly 1`] = `
   align-items: center;
 }
 
-.c1 {
+.c3 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -31,14 +31,14 @@ exports[`<Keyboard/> renders correctly 1`] = `
   margin-bottom: calc(4px + (8 - 4) * ((100vw - 300px) / (1440 - 300)));
 }
 
-.c1:last-of-type {
+.c3:last-of-type {
   margin-bottom: 0;
 }
 
-.c2 {
+.c4 {
   background-color: black;
-  width: calc(25px + (75 - 25) * ((100vw - 300px) / (1440 - 300)));
-  height: calc(40px + (75 - 40) * ((100vw - 300px) / (1440 - 300)));
+  width: calc(20px + (50 - 20) * ((100vw - 300px) / (1440 - 300)));
+  height: calc(30px + (50 - 30) * ((100vw - 300px) / (1440 - 300)));
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,13 +56,15 @@ exports[`<Keyboard/> renders correctly 1`] = `
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   margin-right: calc(4px + (8 - 4) * ((100vw - 300px) / (1440 - 300)));
+  -webkit-filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.7));
+  filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.7));
 }
 
-.c2:last-of-type {
+.c4:last-of-type {
   margin-right: 0;
 }
 
-.c3 {
+.c5 {
   width: 50%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -73,7 +75,7 @@ exports[`<Keyboard/> renders correctly 1`] = `
   flex-direction: column;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -91,25 +93,44 @@ exports[`<Keyboard/> renders correctly 1`] = `
   align-items: flex-end;
 }
 
-.c8 {
+.c10 {
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c5 {
+.c7 {
   font-family: 'Roboto',serif;
   font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
   color: white;
   text-transform: uppercase;
 }
 
-.c7 {
+.c9 {
+  font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));
+}
+
+.c1 {
+  width: 50vw;
+  border: none;
+  background-color: #28748C;
+  color: white;
+  border-radius: 20px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)));
+  outline-offset: 8px;
+}
+
+.c2 {
   font-size: calc(8px + (12 - 8) * ((100vw - 300px) / (1440 - 300)));
 }
 
 @media only screen and (max-width:700px) {
-  .c2 {
+  .c4 {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -118,7 +139,7 @@ exports[`<Keyboard/> renders correctly 1`] = `
 }
 
 @media only screen and (max-width:700px) {
-  .c4 {
+  .c6 {
     -webkit-box-pack: end;
     -webkit-justify-content: flex-end;
     -ms-flex-pack: end;
@@ -131,7 +152,7 @@ exports[`<Keyboard/> renders correctly 1`] = `
 }
 
 @media only screen and (max-width:700px) {
-  .c8 {
+  .c10 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
@@ -139,7 +160,7 @@ exports[`<Keyboard/> renders correctly 1`] = `
 }
 
 @media only screen and (max-width:700px) {
-  .c6 {
+  .c8 {
     display: none;
   }
 }
@@ -152,39 +173,45 @@ exports[`<Keyboard/> renders correctly 1`] = `
   >
     <input
       autoFocus={true}
+      className="c1"
       onChange={[Function]}
       type="text"
       value=""
     />
   </form>
+  <p
+    className="c2"
+  >
+    *Use your device's keyboard, this is just a visual guide
+  </p>
   <div
-    className="c1"
+    className="c3"
   >
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             q
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㅃ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅂ
           </span>
@@ -192,30 +219,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             w
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㅉ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅈ
           </span>
@@ -223,30 +250,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             e
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㄸ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㄷ
           </span>
@@ -254,30 +281,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             r
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㄲ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㄱ
           </span>
@@ -285,30 +312,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             t
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㅆ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅅ
           </span>
@@ -316,30 +343,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             y
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅛ
           </span>
@@ -347,30 +374,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             u
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅕ
           </span>
@@ -378,30 +405,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             i
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅑ
           </span>
@@ -409,30 +436,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             o
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㅒ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅐ
           </span>
@@ -440,30 +467,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             p
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             ㅖ
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅔ
           </span>
@@ -472,33 +499,33 @@ exports[`<Keyboard/> renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="c1"
+    className="c3"
   >
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             a
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅁ
           </span>
@@ -506,30 +533,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             s
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㄴ
           </span>
@@ -537,30 +564,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             d
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅇ
           </span>
@@ -568,30 +595,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             f
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㄹ
           </span>
@@ -599,30 +626,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             g
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅎ
           </span>
@@ -630,30 +657,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             h
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅗ
           </span>
@@ -661,30 +688,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             j
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅓ
           </span>
@@ -692,30 +719,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             k
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅏ
           </span>
@@ -723,30 +750,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             l
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅣ
           </span>
@@ -755,33 +782,33 @@ exports[`<Keyboard/> renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="c1"
+    className="c3"
   >
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             z
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅋ
           </span>
@@ -789,30 +816,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             x
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅌ
           </span>
@@ -820,30 +847,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             c
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅊ
           </span>
@@ -851,30 +878,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             v
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅍ
           </span>
@@ -882,30 +909,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             b
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅠ
           </span>
@@ -913,30 +940,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             n
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅜ
           </span>
@@ -944,30 +971,30 @@ exports[`<Keyboard/> renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="c2"
+      className="c4"
     >
       <div
-        className="c3"
+        className="c5"
       >
         <div
-          className="c4"
+          className="c6"
         >
           <span
-            className="c5 c6"
+            className="c7 c8"
           >
             m
           </span>
           <span
-            className="c5 c7"
+            className="c7 c9"
           >
             
           </span>
         </div>
         <div
-          className="c8"
+          className="c10"
         >
           <span
-            className="c5"
+            className="c7"
           >
             ㅡ
           </span>
