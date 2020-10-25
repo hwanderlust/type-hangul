@@ -51,7 +51,7 @@ const Icon = styled.img`
   height: 100%;
 `;
 
-const topOptions = ["run", "pop", "jump"];
+const topOptions = ["pop", "jump"];
 const bottomOptions = ["about", "contact"];
 const MenuOption = styled(Link)`
   font-family: ${Fonts.playfair};

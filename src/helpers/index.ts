@@ -1,6 +1,6 @@
 import { keyframes } from "styled-components";
 
-export type Game = "run" | "pop" | "jump";
+export type Game = "pop" | "jump";
 
 export interface StyledProps {
   className?: string;

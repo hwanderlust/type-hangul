@@ -11,8 +11,8 @@ exports[`<Contact/> renders correctly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-animation: hUniol 500ms ease-in;
-  animation: hUniol 500ms ease-in;
+  -webkit-animation: hUniol 4000ms ease-in;
+  animation: hUniol 4000ms ease-in;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;

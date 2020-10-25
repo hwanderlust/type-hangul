@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Fonts, fadeIn } from "../../helpers";
 import { NextProps, Title, typewriteByLetter } from "./helpers";
 
-const titleText = "게임 3개 있어요";
+const titleText = "게임 2개 있어요";
 const titleDuration = titleText.length * 100;
 const gameOptionTwoDelay = titleDuration + 750;
 const gameOptionThreeDelay = titleDuration + (750 * 2);
@@ -19,9 +19,6 @@ const Container = styled.div`
 `;
 const ContainerTwo = styled(Container)`
   animation-delay: ${gameOptionTwoDelay}ms;
-`;
-const ContainerThree = styled(Container)`
-  animation-delay: ${gameOptionThreeDelay}ms;
 `;
 const GameOption = styled.h2`
   font-family: ${Fonts.playfair};
@@ -50,19 +47,14 @@ function LandingTwo(props: NextProps) {
       <Title>{title}</Title>
 
       <Container>
-        <GameOption>Run</GameOption>
-        <GameDesc>Type the given words to help your character clear obstacles</GameDesc>
+        <GameOption>Pop</GameOption>
+        <GameDesc>Type the floating words to avoid the bubbles from hitting the ground</GameDesc>
       </Container>
 
       <ContainerTwo>
-        <GameOption>Pop</GameOption>
-        <GameDesc>Type the floating words to avoid the bubbles from hitting the ground</GameDesc>
-      </ContainerTwo>
-
-      <ContainerThree>
         <GameOption>Jump</GameOption>
         <GameDesc>Type the words on the closest platform to escape the burning fire</GameDesc>
-      </ContainerThree>
+      </ContainerTwo>
     </main>
   );
 }
