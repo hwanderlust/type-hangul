@@ -24,8 +24,7 @@ const WORDS: Array<Word> = JSON.parse(JSON.stringify(wordJson));
 
 function isNotAGame(param: string): boolean {
   const type = param.toLowerCase();
-  return type.localeCompare("run") !== 0
-    && type.localeCompare("pop") !== 0
+  return type.localeCompare("pop") !== 0
     && type.localeCompare("jump") !== 0;
 }
 
