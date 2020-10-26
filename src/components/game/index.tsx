@@ -7,7 +7,7 @@ import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
 import Platforms from "./Platforms";
 import { Word, gameTypeChanged, isNotAGame, wordManager } from "./helpers";
-import manageGameObjects from "./manager";
+import Bubbles from "./Bubbles";
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ interface Params {
   type: Game;
 }
 
-const manager = manageGameObjects();
+const bubblesManager = Bubbles();
 const wordTracker = wordManager();
 function Controller() {
   const params: Params = useParams();
@@ -82,7 +82,7 @@ function Controller() {
   useEffect(() => {
     switch (game) {
       case "pop":
-        gameObjects.current = [...gameObjects.current, manager.renderBubble(words[words.length - 1])];
+        gameObjects.current = [...gameObjects.current, bubblesManager.render(words[words.length - 1])];
         break;
       case "jump":
         break;
@@ -94,7 +94,7 @@ function Controller() {
   }
 
   if (gameTypeChanged(prevGame, game)) {
-    manager.reset(game);
+    bubblesManager.reset();
     gameObjects.current = [];
     wordTracker.reset();
     setGame(game);
@@ -111,7 +111,7 @@ function Controller() {
       case "pop": {
         const word = words.find(w => w.word.localeCompare(enteredWord) === 0);
         if (word) {
-          manager.popBubble(word);
+          bubblesManager.pop(word);
           const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
           gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
           break;
