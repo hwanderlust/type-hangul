@@ -1,21 +1,21 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-import { Game, Sizes } from "../../helpers";
+import { Sizes } from "../../helpers";
 import bubblePng from "../../images/bubble.png";
 import { Coordinates, Word } from "./helpers";
 
-export interface BubblesX {
+export interface BubblesState {
   available: Array<number>;
   recent: [number?, number?, number?];
 }
 interface Test {
-  getBubbles: () => BubblesX;
+  getState: () => BubblesState;
 }
-export interface Manager {
-  renderBubble: (word: Word) => JSX.Element;
-  popBubble: (word: Word) => void;
-  reset: (game: Game) => void;
+export interface BubblesManager {
+  render: (word: Word) => JSX.Element;
+  pop: (word: Word) => void;
+  reset: () => void;
   Test: Test;
 }
 
@@ -54,7 +54,7 @@ const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
 
-function renderBubble(vocab: Word, xValue: number): JSX.Element {
+function render(vocab: Word, xValue: number): JSX.Element {
   return (
     <Bubble
       id={vocab.id} key={vocab.id}
@@ -66,16 +66,16 @@ function renderBubble(vocab: Word, xValue: number): JSX.Element {
   );
 }
 
-function manageGameObjects(): Manager {
+function Bubbles(): BubblesManager {
   const isMobile = window.innerWidth < 720;
-  const bubbles: BubblesX = { available: [], recent: [], };
+  const bubbles: BubblesState = { available: [], recent: [], };
 
   for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? xValue += 50 : xValue += 100) {
     bubbles.available.push(xValue);
   }
 
   return {
-    renderBubble: function (word: Word): JSX.Element {
+    render: function (word: Word): JSX.Element {
       const index = Math.floor(Math.random() * (bubbles.available.length - 1));
       const updatedAvailable = bubbles.available.slice();
       const x = updatedAvailable.splice(index, 1)[0];
@@ -92,36 +92,29 @@ function manageGameObjects(): Manager {
         }
       }
 
-      return renderBubble(word, x);
+      return render(word, x);
     },
-    popBubble: function (word: Word): void {
+    pop: function (word: Word): void {
       const element = document.getElementById(word.id);
       if (element) {
         element.style.transform = "scale(0)";
         element.style.transition = "transform 150ms ease";
       }
     },
-    reset: function (game: Game): void {
-      switch (game) {
-        case "run":
-        case "pop":
-          if (bubbles.recent.length) {
-            bubbles.recent.forEach(_ => {
-              const removedX = bubbles.recent.shift()!;
-              bubbles.available.push(removedX);
-            });
-          }
-          return;
-        case "jump":
-          return;
+    reset: function (): void {
+      if (bubbles.recent.length) {
+        bubbles.recent.forEach(_ => {
+          const removedX = bubbles.recent.shift()!;
+          bubbles.available.push(removedX);
+        });
       }
     },
     Test: {
-      getBubbles: function () {
+      getState: function () {
         return { ...bubbles };
       },
     }
   }
 }
 
-export default manageGameObjects;
+export default Bubbles;

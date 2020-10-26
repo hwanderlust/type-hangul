@@ -1,53 +1,53 @@
-import manageGameObjects, { BubblesX, Manager } from "../components/game/manager";
+import Bubbles, { BubblesState, BubblesManager } from "../components/game/Bubbles";
 
 const vocab = { id: "123", word: "게으르다", definition: "lazy" };
 
 describe("manager", () => {
-  let manager: Manager;
+  let manager: BubblesManager;
 
   beforeEach(() => {
-    manager = manageGameObjects();
+    manager = Bubbles();
   });
 
   describe("initializes properly", () => {
     it("list of available x values for the Display where bubbles can populate", () => {
-      const { available, recent } = manager.Test.getBubbles();
+      const { available, recent } = manager.Test.getState();
       expect(recent.length).toBe(0);
       expect(available.length > 0).toBe(true);
     });
   });
 
   describe("renderBubble()", () => {
-    let beforeRender: BubblesX;
+    let beforeRender: BubblesState;
 
     beforeEach(() => {
-      beforeRender = manager.Test.getBubbles();
+      beforeRender = manager.Test.getState();
     });
 
     it("prevents dupes to the same location by moving x values back and forth from 'available' and 'recent' on each render", () => {
-      manager.renderBubble(vocab);
-      const firstRender = manager.Test.getBubbles();
+      manager.render(vocab);
+      const firstRender = manager.Test.getState();
       expect(firstRender.available.length).toBe(beforeRender.available.length - 1);
       expect(firstRender.recent.length).toBe(beforeRender.recent.length + 1);
 
-      manager.renderBubble(vocab);
-      const secondRender = manager.Test.getBubbles();
+      manager.render(vocab);
+      const secondRender = manager.Test.getState();
       expect(secondRender.available.length).toBe(firstRender.available.length - 1);
       expect(secondRender.recent.length).toBe(firstRender.recent.length + 1);
 
-      manager.renderBubble(vocab);
-      const thirdRender = manager.Test.getBubbles();
+      manager.render(vocab);
+      const thirdRender = manager.Test.getState();
       expect(thirdRender.available.length).toBe(secondRender.available.length - 1);
       expect(thirdRender.recent.length).toBe(secondRender.recent.length + 1);
 
-      manager.renderBubble(vocab);
-      const fourthRender = manager.Test.getBubbles();
+      manager.render(vocab);
+      const fourthRender = manager.Test.getState();
       expect(fourthRender.available.length).toBe(thirdRender.available.length);
       expect(fourthRender.recent.length).toBe(3);
     });
   });
 
-  describe("popBubble()", () => {
+  describe("pop()", () => {
     beforeAll(() => {
       document.body.innerHTML = `
         <div>
@@ -61,7 +61,7 @@ describe("manager", () => {
     });
 
     it("adds in-line styling for a vanishing effect", () => {
-      manager.popBubble(vocab);
+      manager.pop(vocab);
       const bubble = document.getElementById(vocab.id);
       expect(bubble?.style.transform).toBe("scale(0)");
       expect(bubble?.style.transition).toBe("transform 150ms ease");
@@ -69,30 +69,17 @@ describe("manager", () => {
   });
 
   describe("reset()", () => {
-    it("pop -> clears 'recent' and moves all back to 'available'", () => {
-      const beforeRender = manager.Test.getBubbles();
-      manager.renderBubble(vocab);
-      const afterRender = manager.Test.getBubbles();
+    it("clears 'recent' and moves all back to 'available'", () => {
+      const beforeRender = manager.Test.getState();
+      manager.render(vocab);
+      const afterRender = manager.Test.getState();
       expect(afterRender.available.length).toBe(beforeRender.available.length - 1);
       expect(afterRender.recent.length).toBe(1);
 
-      manager.reset("pop");
-      const afterReset = manager.Test.getBubbles();
+      manager.reset();
+      const afterReset = manager.Test.getState();
       expect(afterReset.available.length).toBe(beforeRender.available.length);
       expect(afterReset.recent.length).toBe(0);
-    });
-
-    it("resetting 'jump' doesn't effect 'pop' state", () => {
-      const beforeRender = manager.Test.getBubbles();
-      manager.renderBubble(vocab);
-      const afterRender = manager.Test.getBubbles();
-      manager.reset("jump");
-      const afterReset = manager.Test.getBubbles();
-
-      expect(afterRender.available.length).toBe(beforeRender.available.length - 1);
-      expect(afterRender.recent.length).toBe(1);
-      expect(afterReset.available.length).toBe(beforeRender.available.length - 1);
-      expect(afterReset.recent.length).toBe(1);
     });
   });
 });
