@@ -5,19 +5,14 @@ import renderer from 'react-test-renderer';
 import Display from "../components/game/Display";
 
 describe("<Display/>", () => {
-  it("renders correctly for 'run'", () => {
-    const tree = renderer
-      .create(
-        <Display game="run" objects={[]} />
-      )
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+  const ryanRef = () => document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
   it("renders correctly for 'pop'", () => {
     const tree = renderer
       .create(
-        <Display game="pop" objects={[]} />
+        <Display game="pop" ryanRef={ryanRef}>
+          <div></div>
+        </Display>
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
@@ -26,7 +21,9 @@ describe("<Display/>", () => {
   it("renders correctly for 'jump'", () => {
     const tree = renderer
       .create(
-        <Display game="jump" objects={[]} />
+        <Display game="jump" ryanRef={ryanRef} >
+          <div></div>
+        </Display>
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
