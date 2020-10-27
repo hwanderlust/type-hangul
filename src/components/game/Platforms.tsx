@@ -4,12 +4,13 @@ import styled from "styled-components";
 import { Sizes } from "../../helpers";
 import { Coordinates, Word } from "./helpers";
 
-interface PlatformsState {
+export interface PlatformsState {
   platforms: Array<PlatformProps>;
   xSelection: Array<number>;
   levels: number;
   currentLevel: number;
   initialPlatform: boolean;
+  scrollCount: number;
 }
 interface PlatformProps extends Word, Coordinates {
   // used to transition / animate between platforms as opposed to x and y used for actual render coordinates
@@ -19,11 +20,13 @@ interface PlatformProps extends Word, Coordinates {
 interface Test {
   getState: () => PlatformsState;
   getRyan: () => SVGElement | undefined;
+  getClouds: () => Clouds;
+  getGround: () => DomEl;
 }
-interface PlatformsManager {
+export interface PlatformsManager {
   render: (word: Word) => void;
   jump: (word: Word) => void;
-  scroll: () => void;
+  scroll: () => boolean;
   renderAll: () => Array<JSX.Element>;
   reset: () => void;
   setRefs: (ryan: SVGElement | undefined) => void;
@@ -82,6 +85,7 @@ function Platforms2(): PlatformsManager {
     levels: 0,
     currentLevel: 0,
     initialPlatform: true,
+    scrollCount: 0,
   };
 
   let ryanRef: SVGElement | undefined;
@@ -118,7 +122,10 @@ function Platforms2(): PlatformsManager {
       state.platforms.push(platform);
     },
     jump: function (word) {
-      if (state.platforms.length >= 2) {
+      if (
+        (state.initialPlatform && state.platforms.length >= 1)
+        || state.platforms.length >= 2
+      ) {
         const ryanJumpAnimation = document.getElementById("ryanAnimation");
         const from: PlatformProps = state.initialPlatform
           ? { ...word, x: 0, y: 0, calcX: 0, calcY: 0 }
@@ -151,7 +158,6 @@ function Platforms2(): PlatformsManager {
 
         state.currentLevel += 1;
       }
-
     },
     scroll: function () {
       if (state.currentLevel >= state.levels) {
@@ -193,8 +199,9 @@ function Platforms2(): PlatformsManager {
         });
 
         state.currentLevel = 0;
+        state.scrollCount += 1;
 
-        if (clouds.cycle % 5 === 0) {
+        if (state.scrollCount % 5 === 0) {
           clouds.startCycle = true;
         }
         if (clouds && clouds.startCycle) {
@@ -203,7 +210,11 @@ function Platforms2(): PlatformsManager {
             clouds.cycle = (clouds.cycle === 6 ? 1 : clouds.cycle + 1) as Cycle;
           }
         }
+
+        return true;
       }
+
+      return false;
     },
     renderAll: function () {
       return state.platforms.map(platform => (
@@ -216,6 +227,8 @@ function Platforms2(): PlatformsManager {
     reset: function () {
       state.currentLevel = 0;
       state.platforms = [];
+      state.initialPlatform = true;
+      state.scrollCount = 0;
     },
     setRefs: function (ryan) {
       ryanRef = ryan;
@@ -233,6 +246,12 @@ function Platforms2(): PlatformsManager {
       },
       getRyan: function () {
         return ryanRef;
+      },
+      getClouds: function () {
+        return { ...clouds };
+      },
+      getGround: function () {
+        return ground;
       }
     }
   }

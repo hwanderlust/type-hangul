@@ -45,6 +45,7 @@ function Controller() {
   const [words, setWords] = useState([wordTracker.select()]);
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
+  const [rerender, toggleRerender] = useState(0);
   const gameObjects = useRef<Array<JSX.Element>>([]);
 
   const rate = useRef(1); // temp? 
@@ -75,7 +76,7 @@ function Controller() {
     }, rate.current * (3000 - count.current));
 
     return () => clearInterval(interval);
-  }, [game, isGameOver, count.current]);
+  }, [isGameOver]);
 
   useEffect(() => {
     switch (game) {
@@ -86,7 +87,7 @@ function Controller() {
         platformsManager.render(words[words.length - 1]);
         break;
     }
-  }, [gameObjects.current, words]);
+  }, [words]);
 
   if (isNotAGame(params.type)) {
     return <Page404 />;
@@ -122,7 +123,9 @@ function Controller() {
 
         if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
           platformsManager.jump(nextPlatformWord);
-          platformsManager.scroll();
+          if (platformsManager.scroll()) {
+            toggleRerender(prev => prev + 1);
+          }
           wordIndex.current += 1;
         }
         break;
