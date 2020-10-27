@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Platforms renders properly with words 1`] = `
+Array [
+  .c0 {
+  position: absolute;
+  top: 234px;
+  left: 550px;
+}
+
+.c0 div {
+  margin: 0 auto;
+}
+
+.c0 p {
+  margin: 0 auto 0.5rem auto 0;
+}
+
+.c2 {
+  position: relative;
+  width: calc(25px + (50 - 25) * ((100vw - 300px) / (1440 - 300)));
+  height: 2px;
+  background-color: black;
+}
+
+.c1 {
+  position: relative;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)))px;
+}
+
+<div
+    className="c0"
+    id="1"
+    x={550}
+    y={234}
+  >
+    <p
+      className="c1"
+    >
+      배고프다
+    </p>
+    <div
+      className="c2"
+    />
+  </div>,
+  .c0 {
+  position: absolute;
+  top: 84px;
+  left: 300px;
+}
+
+.c0 div {
+  margin: 0 auto;
+}
+
+.c0 p {
+  margin: 0 auto 0.5rem auto 0;
+}
+
+.c2 {
+  position: relative;
+  width: calc(25px + (50 - 25) * ((100vw - 300px) / (1440 - 300)));
+  height: 2px;
+  background-color: black;
+}
+
+.c1 {
+  position: relative;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)))px;
+}
+
+<div
+    className="c0"
+    id="2"
+    x={300}
+    y={84}
+  >
+    <p
+      className="c1"
+    >
+      심심하다
+    </p>
+    <div
+      className="c2"
+    />
+  </div>,
+  .c0 {
+  position: absolute;
+  top: -66px;
+  left: 50px;
+}
+
+.c0 div {
+  margin: 0 auto;
+}
+
+.c0 p {
+  margin: 0 auto 0.5rem auto 0;
+}
+
+.c2 {
+  position: relative;
+  width: calc(25px + (50 - 25) * ((100vw - 300px) / (1440 - 300)));
+  height: 2px;
+  background-color: black;
+}
+
+.c1 {
+  position: relative;
+  font-size: calc(12px + (16 - 12) * ((100vw - 300px) / (1440 - 300)))px;
+}
+
+<div
+    className="c0"
+    id="3"
+    x={50}
+    y={-66}
+  >
+    <p
+      className="c1"
+    >
+      놀고 싶다
+    </p>
+    <div
+      className="c2"
+    />
+  </div>,
+]
+`;

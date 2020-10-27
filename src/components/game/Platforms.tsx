@@ -1,27 +1,39 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { Sizes } from "../../helpers";
 import { Coordinates, Word } from "./helpers";
 
-// used to transition / animate between platforms as opposed to x and y used for actual render coordinates
-interface PlatformProps extends Word, Coordinates {
-  calcX: number;
-  calcY: number;
-}
-interface PlatformTracker {
+export interface PlatformsState {
   platforms: Array<PlatformProps>;
   xSelection: Array<number>;
   levels: number;
   currentLevel: number;
+  initialPlatform: boolean;
   scrollCount: number;
 }
-interface PlatformsProps {
-  words: Array<Word>;
-  jumped: React.MutableRefObject<boolean>;
-  ryanRef: SVGElement | undefined;
+interface PlatformProps extends Word, Coordinates {
+  // used to transition / animate between platforms as opposed to x and y used for actual render coordinates
+  calcX: number;
+  calcY: number;
+}
+interface Test {
+  getState: () => PlatformsState;
+  getRyan: () => SVGElement | undefined;
+  getClouds: () => Clouds;
+  getGround: () => DomEl;
+}
+export interface PlatformsManager {
+  render: (word: Word) => void;
+  jump: (word: Word) => void;
+  scroll: () => boolean;
+  renderAll: () => Array<JSX.Element>;
+  reset: () => void;
+  setRefs: (ryan: SVGElement | undefined) => void;
+  Test: Test;
 }
 type DomEl = HTMLElement | null;
+type Cycle = 1 | 2 | 3 | 4 | 5 | 6;
 interface Clouds {
   1: DomEl;
   2: DomEl;
@@ -29,7 +41,7 @@ interface Clouds {
   4: DomEl;
   5: DomEl;
   6: DomEl;
-  cycle: 1 | 2 | 3 | 4 | 5 | 6;
+  cycle: Cycle;
   startCycle: boolean;
 }
 
@@ -63,168 +75,186 @@ const displayWidth = window.innerWidth * 0.75;
 const displayHeight = window.innerHeight * 0.5;
 const pTagDefaultMarginBottom = 16;
 
-function Platforms(props: PlatformsProps): JSX.Element {
-  const { words, jumped, ryanRef } = props;
+// This one is faster with each jump but the scroll lags a tad bit
+// whereas the other lags with each jump but the scrolling is faster
+function Platforms2(): PlatformsManager {
 
-  const state = useRef<PlatformTracker>({
+  const state: PlatformsState = {
     platforms: [],
     xSelection: [],
     levels: 0,
     currentLevel: 0,
+    initialPlatform: true,
     scrollCount: 0,
-  });
-  const initialPlatform = useRef(true);
-  const clouds = useRef<Clouds>();
-  const ground = useRef<DomEl>();
+  };
 
-  // didMount
-  useEffect(() => {
-    for (let xValue = 0; xValue <= (displayWidth - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
-      state.current.xSelection.push(xValue);
-    }
+  let ryanRef: SVGElement | undefined;
+  let ground: DomEl = null;
+  const clouds: Clouds = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    cycle: 1,
+    startCycle: false
+  };
 
-    let yValue = displayHeight - platformMargin;
-    while (yValue >= 0) {
-      state.current.levels += 1;
-      yValue -= platformMargin;
-    }
+  for (let xValue = 0; xValue <= (displayWidth - (isMobile ? 25 : 50)); isMobile ? xValue += 25 : xValue += 50) {
+    state.xSelection.push(xValue);
+  }
 
-    clouds.current = {
-      1: document.getElementById("cloud1"),
-      2: document.getElementById("cloud2"),
-      3: document.getElementById("cloud3"),
-      4: document.getElementById("cloud4"),
-      5: document.getElementById("cloud5"),
-      6: document.getElementById("cloud6"),
-      cycle: 1,
-      startCycle: false,
-    };
-    ground.current = document.getElementById("ground");
-  }, []);
+  let yValue = displayHeight - platformMargin;
+  while (yValue >= 0) {
+    state.levels += 1;
+    yValue -= platformMargin;
+  }
 
-  // didUpdate
-  useEffect(() => {
-    if (words.length !== 0 && state.current.xSelection.length) {
-      const latestWord = words[words.length - 1];
+  return {
+    render: function (word) {
+      const platform: PlatformProps = { ...word, x: 0, y: 0, calcX: 0, calcY: 0 };
+      const xIndex = Math.floor(Math.random() * (state.xSelection.length - 1));
 
-      const newPlatform: PlatformProps = { ...latestWord, x: 0, y: 0, calcX: 0, calcY: 0 };
-      const xIndex = Math.floor(Math.random() * (state.current.xSelection.length - 1));
+      platform.x = state.xSelection[xIndex];
+      platform.y = state.platforms.length === 0 ? displayHeight - platformMargin : state.platforms[state.platforms.length - 1].y - platformMargin;
 
-      if (words.length === 1) {
-        newPlatform.x = state.current.xSelection[xIndex];
-        newPlatform.y = (displayHeight) - platformMargin;
-      } else {
-        newPlatform.x = state.current.xSelection[xIndex];
-        newPlatform.y = state.current.platforms[state.current.platforms.length - 1].y - platformMargin;
+      state.platforms.push(platform);
+    },
+    jump: function (word) {
+      if (
+        (state.initialPlatform && state.platforms.length >= 1)
+        || state.platforms.length >= 2
+      ) {
+        const ryanJumpAnimation = document.getElementById("ryanAnimation");
+        const from: PlatformProps = state.initialPlatform
+          ? { ...word, x: 0, y: 0, calcX: 0, calcY: 0 }
+          : { ...state.platforms[0] };
+        const to = state.initialPlatform ? state.platforms[0] : state.platforms[1];
+
+        if (from !== null && to !== null && ryanRef) {
+          const initStyles = window.getComputedStyle(ryanRef);
+          const top = parseInt(initStyles.top, 10);
+          const left = parseInt(initStyles.left, 10);
+          const width = parseInt(initStyles.width, 10);
+
+          to.calcX = Math.ceil(to.x - left - (width / 3));
+          to.calcY = Math.ceil(from.y === 0
+            ? top - to.y - platformMargin + pTagDefaultMarginBottom
+            : from.calcY - platformMargin
+          );
+
+          ryanJumpAnimation?.setAttribute("values", `${from.calcX} ${from.calcY}; ${to.calcX} ${to.calcY - 100}; ${to.calcX} ${to.calcY}`);
+        }
+
+        // @ts-ignore
+        ryanJumpAnimation?.beginElement();
+
+        if (state.initialPlatform) {
+          state.initialPlatform = false;
+        } else {
+          state.platforms.shift();
+        }
+
+        state.currentLevel += 1;
       }
-
-      state.current.platforms = [...state.current.platforms, newPlatform];
-    }
-  }, [words]);
-
-  // jumped
-  if (jumped.current && state.current.platforms.length >= 2) {
-    const ryanJumpAnimation = document.getElementById("ryanAnimation");
-    const from: PlatformProps = initialPlatform.current
-      ? { id: "0", word: "", definition: "", x: 0, y: 0, calcX: 0, calcY: 0 }
-      : { ...state.current.platforms[0] };
-    const to = initialPlatform.current ? state.current.platforms[0] : state.current.platforms[1];
-
-    if (from !== null && to !== null && ryanRef) {
-      const initStyles = window.getComputedStyle(ryanRef);
-      const top = parseInt(initStyles.top, 10);
-      const left = parseInt(initStyles.left, 10);
-      const width = parseInt(initStyles.width, 10);
-
-      to.calcX = Math.ceil(to.x - left - (width / 3));
-      to.calcY = Math.ceil(from.y === 0
-        ? top - to.y - platformMargin + pTagDefaultMarginBottom
-        : from.calcY - platformMargin
-      );
-
-      ryanJumpAnimation?.setAttribute("values", `${from.calcX} ${from.calcY}; ${to.calcX} ${to.calcY - 100}; ${to.calcX} ${to.calcY}`);
-    }
-
-    // @ts-ignore
-    ryanJumpAnimation?.beginElement();
-
-    if (initialPlatform.current) {
-      initialPlatform.current = false;
-    } else {
-      state.current.platforms.shift();
-    }
-
-    state.current.currentLevel += 1;
-    jumped.current = false;
-
-    // scroll
-    if (state.current.currentLevel === state.current.levels) {
-
-      if (ground.current && ground.current.style.display !== "none") {
-        ground.current.style.display = "none";
-      }
-
-      const scrollAmount = platformMargin * state.current.levels;
-
-      if (clouds.current) {
-        if (clouds.current["1"]) {
-          clouds.current["1"].style.top = `${parseInt(window.getComputedStyle(clouds.current["1"]).top, 10) + scrollAmount}px`;
+    },
+    scroll: function () {
+      if (state.currentLevel >= state.levels) {
+        if (ground && ground.style.display !== "none") {
+          ground.style.display = "none";
         }
-        if (clouds.current["2"]) {
-          clouds.current["2"].style.top = `${parseInt(window.getComputedStyle(clouds.current["2"]).top, 10) + scrollAmount}px`;
-        }
-        if (clouds.current["3"]) {
-          clouds.current["3"].style.top = `${parseInt(window.getComputedStyle(clouds.current["3"]).top, 10) + scrollAmount}px`;
-        }
-        if (clouds.current["4"]) {
-          clouds.current["4"].style.top = `${parseInt(window.getComputedStyle(clouds.current["4"]).top, 10) + scrollAmount}px`;
-        }
-        if (clouds.current["5"]) {
-          clouds.current["5"].style.top = `${parseInt(window.getComputedStyle(clouds.current["5"]).top, 10) + scrollAmount}px`;
-        }
-        if (clouds.current["6"]) {
-          clouds.current["6"].style.top = `${parseInt(window.getComputedStyle(clouds.current["6"]).top, 10) + scrollAmount}px`;
-        }
-      }
 
-      const ryanJumpAnimation = document.getElementById("ryanAnimation");
-      const head = state.current.platforms[0];
-      ryanJumpAnimation?.setAttribute("values", `${head.calcX} ${platformMargin}; ${head.calcX} ${0}; ${head.calcX} ${head.calcY + (scrollAmount)}`);
-      // @ts-ignore
-      ryanJumpAnimation?.beginElement();
+        const scrollAmount = platformMargin * state.levels;
 
-      state.current.platforms = state.current.platforms.map(c => {
-        c.y += scrollAmount;
-        c.calcY += scrollAmount;
-        return c;
-      });
+        const ryanJumpAnimation = document.getElementById("ryanAnimation");
+        const head = state.platforms[0];
+        ryanJumpAnimation?.setAttribute("values", `${head.calcX} ${platformMargin}; ${head.calcX} ${0}; ${head.calcX} ${head.calcY + (scrollAmount)}`);
+        // @ts-ignore
+        ryanJumpAnimation?.beginElement();
 
-      state.current.currentLevel = 0;
-      state.current.scrollCount += 1;
+        if (clouds["1"]) {
+          clouds["1"].style.top = `${parseInt(window.getComputedStyle(clouds["1"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds["2"]) {
+          clouds["2"].style.top = `${parseInt(window.getComputedStyle(clouds["2"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds["3"]) {
+          clouds["3"].style.top = `${parseInt(window.getComputedStyle(clouds["3"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds["4"]) {
+          clouds["4"].style.top = `${parseInt(window.getComputedStyle(clouds["4"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds["5"]) {
+          clouds["5"].style.top = `${parseInt(window.getComputedStyle(clouds["5"]).top, 10) + scrollAmount}px`;
+        }
+        if (clouds["6"]) {
+          clouds["6"].style.top = `${parseInt(window.getComputedStyle(clouds["6"]).top, 10) + scrollAmount}px`;
+        }
 
-      if (clouds.current && clouds.current.cycle % 5 === 0) {
-        clouds.current.startCycle = true;
-      }
-      if (clouds.current && clouds.current.startCycle) {
-        if (clouds.current[clouds.current.cycle]) {
-          clouds.current[clouds.current.cycle]!.style.top = `-100vh`;
-          clouds.current.cycle += 1;
+        state.platforms = state.platforms.map(c => {
+          c.y += scrollAmount;
+          c.calcY += scrollAmount;
+          return c;
+        });
 
-          if (clouds.current.cycle === 7) {
-            clouds.current.cycle = 1;
+        state.currentLevel = 0;
+        state.scrollCount += 1;
+
+        if (state.scrollCount % 5 === 0) {
+          clouds.startCycle = true;
+        }
+        if (clouds && clouds.startCycle) {
+          if (clouds[clouds.cycle]) {
+            clouds[clouds.cycle]!.style.top = `-100vh`;
+            clouds.cycle = (clouds.cycle === 6 ? 1 : clouds.cycle + 1) as Cycle;
           }
         }
+
+        return true;
+      }
+
+      return false;
+    },
+    renderAll: function () {
+      return state.platforms.map(platform => (
+        <Platform id={platform.id} key={platform.id} x={platform.x} y={platform.y}>
+          <PlatformText>{platform.word}</PlatformText>
+          <PlatformLine />
+        </Platform>
+      ));
+    },
+    reset: function () {
+      state.currentLevel = 0;
+      state.platforms = [];
+      state.initialPlatform = true;
+      state.scrollCount = 0;
+    },
+    setRefs: function (ryan) {
+      ryanRef = ryan;
+      ground = document.getElementById("ground");
+      clouds[1] = document.getElementById("cloud1");
+      clouds[2] = document.getElementById("cloud2");
+      clouds[3] = document.getElementById("cloud3");
+      clouds[4] = document.getElementById("cloud4");
+      clouds[5] = document.getElementById("cloud5");
+      clouds[6] = document.getElementById("cloud6");
+    },
+    Test: {
+      getState: function () {
+        return { ...state };
+      },
+      getRyan: function () {
+        return ryanRef;
+      },
+      getClouds: function () {
+        return { ...clouds };
+      },
+      getGround: function () {
+        return ground;
       }
     }
   }
-
-  // @ts-ignore
-  return state.current.platforms.map(platform => (
-    <Platform id={platform.id} key={platform.id} x={platform.x} y={platform.y}>
-      <PlatformText>{platform.word}</PlatformText>
-      <PlatformLine />
-    </Platform>
-  ))
 }
 
-export default Platforms;
+export default Platforms2;
