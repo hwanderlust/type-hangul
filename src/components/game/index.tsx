@@ -46,37 +46,45 @@ function Controller() {
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
   const [rerender, toggleRerender] = useState(0);
-  const gameObjects = useRef<Array<JSX.Element>>([]);
+  const [rate, setRate] = useState(game === "pop" ? 3 : 1);
+  const [count, setCount] = useState(0);
+  const [didMount, toggleDidMount] = useState(false);
 
-  const rate = useRef(1); // temp? 
-  const count = useRef(0); // temp?
+  const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
   }, []);
 
-  setInterval(() => {
-    switch (game) {
-      case "pop": {
-        count.current = count.current + 0.2;
-        break;
-      }
-      case "jump": {
-        // raising fire pace
-        break;
-      }
-    }
-  }, 5000);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      const nextWord = wordTracker.select();
-      setWords(prevWords => [...prevWords, nextWord]);
-    }, rate.current * (3000 - count.current));
+    if (didMount) {
+      const timeout = setTimeout(() => {
+        const nextWord = wordTracker.select();
+        setWords(prevWords => [...prevWords, nextWord]);
+        setCount(prev => {
+          if ((prev + 1) % 5 === 0) {
+            setRate(prev => {
+              if (game === "jump") return prev;
 
-    return () => clearInterval(interval);
-  }, [isGameOver]);
+              if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
+                return prev;
+              }
+              return parseFloat((prev - 0.1).toFixed(1));
+            });
+          }
+          return prev + 1;
+        });
+      }, rate * 1000);
+
+      return () => clearTimeout(timeout);
+    }
+
+    if (!didMount) {
+      toggleDidMount(true);
+    }
+
+  }, [isGameOver, count, rate, didMount]);
 
   useEffect(() => {
     switch (game) {
@@ -99,7 +107,9 @@ function Controller() {
     gameObjects.current = [];
     wordTracker.reset();
     setGame(game);
+    setRate(game === "pop" ? 3 : 1);
     setWords([wordTracker.select()]);
+    toggleDidMount(false);
   }
 
   // TODO: set conditions
