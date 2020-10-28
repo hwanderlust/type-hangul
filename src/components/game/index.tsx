@@ -5,10 +5,11 @@ import styled, { keyframes } from "styled-components";
 import { Game, } from "../../helpers";
 import firePng from "../../images/fire.png";
 import { Keyboard, MenuBtn, Page404 } from "../common";
+import Bubbles from "./Bubbles";
 import Display from "./Display";
 import Platforms from "./Platforms";
+import Score from "./Score";
 import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
-import Bubbles from "./Bubbles";
 
 interface FireProps {
   scrollCount: number;
@@ -65,6 +66,7 @@ interface Params {
 const bubblesManager = Bubbles();
 const platformsManager = Platforms();
 const wordTracker = wordManager();
+const score = Score();
 
 function Controller() {
   const params: Params = useParams();
@@ -136,6 +138,7 @@ function Controller() {
     setRate(game === "pop" ? 3 : 1);
     setWords([wordTracker.select()]);
     toggleDidMount(false);
+    score.reset();
   }
 
   // TODO: set conditions
@@ -151,6 +154,7 @@ function Controller() {
           bubblesManager.pop(word);
           const gameObjIndex = gameObjects.current.findIndex(go => (go.props.id as string).localeCompare(word.id) === 0);
           gameObjects.current.splice(gameObjIndex, 1); // removes from DOM
+          score.increase();
           break;
         }
       }
@@ -163,6 +167,7 @@ function Controller() {
             toggleRerender(prev => prev + 1);
           }
           wordIndex.current += 1;
+          score.increase();
         }
         break;
     }
