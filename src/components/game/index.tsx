@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { Game, } from "../../helpers";
+import firePng from "../../images/fire.png";
 import { Keyboard, MenuBtn, Page404 } from "../common";
 import Display from "./Display";
 import Platforms from "./Platforms";
 import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 import Bubbles from "./Bubbles";
+
+interface FireProps {
+  scrollCount: number;
+  rate: number;
+}
+
+const raiseFireImg = keyframes`
+  from { height: 5px; }
+  to { height: 100px; }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +39,23 @@ const MenuBtnFloating = styled(MenuBtn)`
   @media only screen and (max-width: 720px) {
     display: none;
   }
+`;
+
+const Fire = styled.div<FireProps>`
+  position: absolute;
+  bottom: ${props => 0 - (props.scrollCount * 150) + props.rate}px;
+  width: 100%;
+`;
+const FirePic = styled.img`
+  width: 100%;
+  height: 5px;
+  transform: translateY(4px);
+  animation: ${raiseFireImg} 3s ease-in forwards;
+`;
+const FirePit = styled.div`
+  width: 100%;
+  height: 0px; // TODO: after optimizing rendering of all platforms via virtualization or something
+  background-color: blue;
 `;
 
 interface Params {
@@ -65,8 +93,6 @@ function Controller() {
         setCount(prev => {
           if ((prev + 1) % 5 === 0) {
             setRate(prev => {
-              if (game === "jump") return prev;
-
               if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
                 return prev;
               }
@@ -149,7 +175,15 @@ function Controller() {
         <p>Game Description</p>
       </Header>
       <Display game={params.type} ryanRef={ryanRef} >
-        {game !== "jump" ? gameObjects.current : platformsManager.renderAll()}
+        {game === "pop" ? gameObjects.current : (
+          <>
+            {platformsManager.renderAll()}
+            <Fire scrollCount={rerender} rate={count * 5}>
+              <FirePic src={firePng} />
+              <FirePit />
+            </Fire>
+          </>
+        )}
       </Display>
       <Keyboard onSubmit={handleSubmit} />
 

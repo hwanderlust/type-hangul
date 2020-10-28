@@ -75,8 +75,6 @@ const displayWidth = window.innerWidth * 0.75;
 const displayHeight = window.innerHeight * 0.5;
 const pTagDefaultMarginBottom = 16;
 
-// This one is faster with each jump but the scroll lags a tad bit
-// whereas the other lags with each jump but the scrolling is faster
 function Platforms2(): PlatformsManager {
 
   const state: PlatformsState = {
