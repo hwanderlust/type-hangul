@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams, } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 import { Game, } from "../../helpers";
@@ -8,9 +8,15 @@ import { Keyboard, MenuBtn, Page404 } from "../common";
 import Bubbles from "./Bubbles";
 import Display from "./Display";
 import Platforms from "./Platforms";
-import Score from "./Score";
+import { Score } from "./Score";
 import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 
+interface GameProps {
+  score: Score;
+}
+interface Params {
+  type: Game;
+}
 interface FireProps {
   scrollCount: number;
   rate: number;
@@ -59,18 +65,15 @@ const FirePit = styled.div`
   background-color: blue;
 `;
 
-interface Params {
-  type: Game;
-}
-
 const bubblesManager = Bubbles();
 const platformsManager = Platforms();
 const wordTracker = wordManager();
-const score = Score();
 
-function Controller() {
+function Controller(props: GameProps) {
+  const { score } = props;
   const params: Params = useParams();
   const game = params.type.toLowerCase() as Game;
+  const history = useHistory();
 
   const [words, setWords] = useState([wordTracker.select()]);
   const [prevGame, setGame] = useState(game);
@@ -112,18 +115,24 @@ function Controller() {
       toggleDidMount(true);
     }
 
-  }, [isGameOver, count, rate, didMount]);
+  }, [count, rate, didMount]);
 
   useEffect(() => {
     switch (game) {
       case "pop":
-        gameObjects.current = [...gameObjects.current, bubblesManager.render(words[words.length - 1])];
+        gameObjects.current = [...gameObjects.current, bubblesManager.render(words[words.length - 1], () => toggleGameOver(true))];
         break;
       case "jump":
         platformsManager.render(words[words.length - 1]);
         break;
     }
   }, [words]);
+
+  useEffect(() => {
+    if (isGameOver) {
+      history.push("/gameover");
+    }
+  }, [isGameOver]);
 
   if (isNotAGame(params.type)) {
     return <Page404 />;

@@ -13,7 +13,7 @@ interface Test {
   getState: () => BubblesState;
 }
 export interface BubblesManager {
-  render: (word: Word) => JSX.Element;
+  render: (word: Word, toggleGameover: () => void) => JSX.Element;
   pop: (word: Word) => void;
   reset: () => void;
   Test: Test;
@@ -54,12 +54,13 @@ const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
 
-function render(vocab: Word, xValue: number): JSX.Element {
+function render(vocab: Word, xValue: number, toggleGameover: () => void): JSX.Element {
   return (
     <Bubble
       id={vocab.id} key={vocab.id}
       x={xValue}
       y={window.innerWidth < 720 ? -49 : -99}
+      onAnimationEnd={toggleGameover}
     >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
@@ -75,7 +76,7 @@ function Bubbles(): BubblesManager {
   }
 
   return {
-    render: function (word: Word): JSX.Element {
+    render: function (word, toggleGameover): JSX.Element {
       const index = Math.floor(Math.random() * (bubbles.available.length - 1));
       const updatedAvailable = bubbles.available.slice();
       const x = updatedAvailable.splice(index, 1)[0];
@@ -92,7 +93,7 @@ function Bubbles(): BubblesManager {
         }
       }
 
-      return render(word, x);
+      return render(word, x, toggleGameover);
     },
     pop: function (word: Word): void {
       const element = document.getElementById(word.id);
