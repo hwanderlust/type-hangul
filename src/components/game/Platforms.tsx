@@ -30,8 +30,8 @@ export interface PlatformsManager {
   renderAll: () => Array<JSX.Element>;
   reset: () => void;
   setRefs: (ryan: SVGElement | undefined) => void;
-  getRyanLocation: () => CSSStyleDeclaration | null;
-  getScrollCount: () => number;
+  getActivePlatform: () => PlatformProps | null;
+  getScrollHeight: () => number;
   Test: Test;
 }
 type DomEl = HTMLElement | null;
@@ -240,12 +240,12 @@ function Platforms2(): PlatformsManager {
       clouds[5] = document.getElementById("cloud5");
       clouds[6] = document.getElementById("cloud6");
     },
-    getRyanLocation: function () {
-      if (!ryanRef) return null;
-      return window.getComputedStyle(ryanRef);
+    getActivePlatform: function () {
+      if (!state.platforms.length) return null;
+      return state.platforms[0];
     },
-    getScrollCount: function () {
-      return state.scrollCount;
+    getScrollHeight: function () {
+      return state.scrollCount * platformMargin * state.levels;
     },
     Test: {
       getState: function () {

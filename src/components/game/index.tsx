@@ -18,7 +18,7 @@ interface Params {
   type: Game;
 }
 interface FireProps {
-  scrollCount: number;
+  scrollHeight: number;
   rate: number;
 }
 
@@ -50,7 +50,7 @@ const MenuBtnFloating = styled(MenuBtn)`
 
 const Fire = styled.div<FireProps>`
   position: absolute;
-  bottom: ${props => 0 - (props.scrollCount * 150) + props.rate}px;
+  bottom: ${props => 0 - props.scrollHeight + props.rate}px;
   width: 100%;
 `;
 const FirePic = styled.img`
@@ -87,6 +87,7 @@ function Controller(props: GameProps) {
   const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
   const fireStartingCount = useRef(0);
+  const fireRate = (count - fireStartingCount.current) * 5;
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
@@ -132,11 +133,12 @@ function Controller(props: GameProps) {
   }, [words]);
 
   useEffect(() => {
-    const fireY = 0 - (platformsManager.getScrollCount() * 150) + (count * 5);
-    const ryanY = platformsManager.getRyanLocation()?.top;
+    const fireY = 0 - platformsManager.getScrollHeight() + fireRate;
+    const displayHeight = window.innerHeight * 0.5;
+    const activePlatform = platformsManager.getActivePlatform()?.y || 0;
+    const isRyanInFire = displayHeight - fireY - activePlatform === 100;
 
-    // the latter calc = ryan is in fire
-    if (showFire && !!ryanY && Math.abs((window.innerHeight * 0.5) - fireY - parseInt(ryanY, 10)) <= 5) {
+    if (showFire && !!activePlatform && isRyanInFire) {
       toggleGameOver(true);
     }
   }, [rerender, count]);
@@ -207,7 +209,7 @@ function Controller(props: GameProps) {
           <>
             {platformsManager.renderAll()}
             {showFire && (
-              <Fire scrollCount={platformsManager.getScrollCount()} rate={(count - fireStartingCount.current) * 5}>
+              <Fire scrollHeight={platformsManager.getScrollHeight()} rate={fireRate}>
                 <FirePic src={firePng} />
                 <FirePit />
               </Fire>

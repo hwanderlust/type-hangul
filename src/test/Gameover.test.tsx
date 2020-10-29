@@ -1,11 +1,15 @@
 jest.mock("../components/game/Score");
 
 const mockHistoryPush = jest.fn();
+const mockGo = jest.fn();
 jest.mock("react-router-dom", () => {
   return {
     ...jest.requireActual('react-router-dom'),
     useParams: () => ({ type: "pop" }),
-    useHistory: () => ({ push: mockHistoryPush }),
+    useHistory: () => ({
+      go: mockGo,
+      push: mockHistoryPush,
+    }),
   };
 });
 
@@ -63,10 +67,11 @@ describe("<Gameover/>", () => {
       expect(score.reset).toBeCalled();
     });
 
-    it("pushes to history to navigate to game", () => {
+    it("pushes to history to navigate to game and refreshes the page", () => {
       const button = container.querySelector("#tryAgain");
       ReactTestUtils.Simulate.click(button!);
       expect(mockHistoryPush).toBeCalledWith("/game/pop");
+      expect(mockGo).toBeCalledWith(0);
     });
   });
 });

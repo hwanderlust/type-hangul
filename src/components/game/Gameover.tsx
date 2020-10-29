@@ -114,7 +114,8 @@ function Gameover(props: GameoverProps) {
             id="tryAgain"
             onClick={() => {
               score.reset();
-              history.push(`/game/${type}`)
+              history.push(`/game/${type}`);
+              history.go(0);
             }}>
             다시 해봐
             </Button>
