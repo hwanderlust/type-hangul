@@ -57,7 +57,7 @@ const FirePic = styled.img`
   width: 100%;
   height: 5px;
   transform: translateY(4px);
-  animation: ${raiseFireImg} 3s ease-in forwards;
+  animation: ${raiseFireImg} 1s ease-in forwards;
 `;
 const FirePit = styled.div`
   width: 100%;
@@ -82,9 +82,11 @@ function Controller(props: GameProps) {
   const [rate, setRate] = useState(game === "pop" ? 3 : 1);
   const [count, setCount] = useState(0);
   const [didMount, toggleDidMount] = useState(false);
+  const [showFire, toggleFire] = useState(false);
 
   const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
+  const fireStartingCount = useRef(0);
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
@@ -113,6 +115,7 @@ function Controller(props: GameProps) {
 
     if (!didMount) {
       toggleDidMount(true);
+      bubblesManager.setGameover(() => toggleGameOver(true));
     }
 
   }, [count, rate, didMount]);
@@ -120,13 +123,23 @@ function Controller(props: GameProps) {
   useEffect(() => {
     switch (game) {
       case "pop":
-        gameObjects.current = [...gameObjects.current, bubblesManager.render(words[words.length - 1], () => toggleGameOver(true))];
+        gameObjects.current = [...gameObjects.current, bubblesManager.render(words[words.length - 1])];
         break;
       case "jump":
         platformsManager.render(words[words.length - 1]);
         break;
     }
   }, [words]);
+
+  useEffect(() => {
+    const fireY = 0 - (platformsManager.getScrollCount() * 150) + (count * 5);
+    const ryanY = platformsManager.getRyanLocation()?.top;
+
+    // the latter calc = ryan is in fire
+    if (showFire && !!ryanY && Math.abs((window.innerHeight * 0.5) - fireY - parseInt(ryanY, 10)) <= 5) {
+      toggleGameOver(true);
+    }
+  }, [rerender, count]);
 
   useEffect(() => {
     if (isGameOver) {
@@ -150,11 +163,6 @@ function Controller(props: GameProps) {
     score.reset();
   }
 
-  // TODO: set conditions
-  // if (false) {
-  //   toggleGameOver(true);
-  // }
-
   function handleSubmit(enteredWord: string): void {
     switch (game) {
       case "pop": {
@@ -172,9 +180,15 @@ function Controller(props: GameProps) {
 
         if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
           platformsManager.jump(nextPlatformWord);
+
+          if (!showFire) {
+            toggleFire(true);
+            fireStartingCount.current = count;
+          }
           if (platformsManager.scroll()) {
             toggleRerender(prev => prev + 1);
           }
+
           wordIndex.current += 1;
           score.increase();
         }
@@ -192,10 +206,12 @@ function Controller(props: GameProps) {
         {game === "pop" ? gameObjects.current : (
           <>
             {platformsManager.renderAll()}
-            <Fire scrollCount={rerender} rate={count * 5}>
-              <FirePic src={firePng} />
-              <FirePit />
-            </Fire>
+            {showFire && (
+              <Fire scrollCount={platformsManager.getScrollCount()} rate={(count - fireStartingCount.current) * 5}>
+                <FirePic src={firePng} />
+                <FirePit />
+              </Fire>
+            )}
           </>
         )}
       </Display>
