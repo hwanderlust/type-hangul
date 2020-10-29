@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { Page404 } from "./common";
 import Game from "./game";
+import Gameover from "./game/Gameover";
+import Score from "./game/Score";
 import Landing from './landing';
 
 // https://medium.com/hackernoon/lazy-loading-and-preloading-components-in-react-16-6-804de091c82d
@@ -19,6 +21,8 @@ const Background = styled.div`
 `;
 
 function App() {
+  const score = Score();
+
   return (
     <Background>
       <BrowserRouter>
@@ -30,19 +34,17 @@ function App() {
             </Route>
 
             <Route path="/game/:type">
-              <Game />
+              <Game score={score} />
             </Route>
-
+            <Route exact path="/gameover/:type">
+              <Gameover score={score} />
+            </Route>
 
             <Route exact path="/about">
               <About />
             </Route>
             <Route exact path="/contact">
               <Contact />
-            </Route>
-
-            <Route exact path="/game/gameover">
-              <h1>Gameover</h1>
             </Route>
 
             <Route component={Page404} />

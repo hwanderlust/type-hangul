@@ -30,6 +30,8 @@ export interface PlatformsManager {
   renderAll: () => Array<JSX.Element>;
   reset: () => void;
   setRefs: (ryan: SVGElement | undefined) => void;
+  getActivePlatform: () => PlatformProps | null;
+  getScrollHeight: () => number;
   Test: Test;
 }
 type DomEl = HTMLElement | null;
@@ -237,6 +239,13 @@ function Platforms2(): PlatformsManager {
       clouds[4] = document.getElementById("cloud4");
       clouds[5] = document.getElementById("cloud5");
       clouds[6] = document.getElementById("cloud6");
+    },
+    getActivePlatform: function () {
+      if (!state.platforms.length) return null;
+      return state.platforms[0];
+    },
+    getScrollHeight: function () {
+      return state.scrollCount * platformMargin * state.levels;
     },
     Test: {
       getState: function () {

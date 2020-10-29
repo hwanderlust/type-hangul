@@ -15,6 +15,7 @@ interface Test {
 export interface BubblesManager {
   render: (word: Word) => JSX.Element;
   pop: (word: Word) => void;
+  setGameover: (callback: () => void) => void;
   reset: () => void;
   Test: Test;
 }
@@ -54,12 +55,13 @@ const BubbleText = styled.span`
   font-size: ${Sizes.variable.font.small};
 `;
 
-function render(vocab: Word, xValue: number): JSX.Element {
+function render(vocab: Word, xValue: number, toggleGameover: () => void): JSX.Element {
   return (
     <Bubble
       id={vocab.id} key={vocab.id}
       x={xValue}
       y={window.innerWidth < 720 ? -49 : -99}
+      onAnimationEnd={toggleGameover}
     >
       <BubbleText>{vocab.word}</BubbleText>
     </Bubble>
@@ -69,13 +71,14 @@ function render(vocab: Word, xValue: number): JSX.Element {
 function Bubbles(): BubblesManager {
   const isMobile = window.innerWidth < 720;
   const bubbles: BubblesState = { available: [], recent: [], };
+  let gameover: () => void;
 
   for (let xValue = 0; xValue <= (window.innerWidth * 0.75 - (isMobile ? 50 : 100)); isMobile ? xValue += 50 : xValue += 100) {
     bubbles.available.push(xValue);
   }
 
   return {
-    render: function (word: Word): JSX.Element {
+    render: function (word): JSX.Element {
       const index = Math.floor(Math.random() * (bubbles.available.length - 1));
       const updatedAvailable = bubbles.available.slice();
       const x = updatedAvailable.splice(index, 1)[0];
@@ -92,7 +95,12 @@ function Bubbles(): BubblesManager {
         }
       }
 
-      return render(word, x);
+      if (!gameover) {
+        console.error("Gameover callback was never set.");
+        return <></>;
+      }
+
+      return render(word, x, gameover);
     },
     pop: function (word: Word): void {
       const element = document.getElementById(word.id);
@@ -100,6 +108,9 @@ function Bubbles(): BubblesManager {
         element.style.transform = "scale(0)";
         element.style.transition = "transform 150ms ease";
       }
+    },
+    setGameover: function (callback) {
+      gameover = callback;
     },
     reset: function (): void {
       if (bubbles.recent.length) {

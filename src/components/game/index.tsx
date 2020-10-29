@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams, } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 import { Game, } from "../../helpers";
@@ -8,11 +8,17 @@ import { Keyboard, MenuBtn, Page404 } from "../common";
 import Bubbles from "./Bubbles";
 import Display from "./Display";
 import Platforms from "./Platforms";
-import Score from "./Score";
+import { Score } from "./Score";
 import { gameTypeChanged, isNotAGame, wordManager } from "./helpers";
 
+interface GameProps {
+  score: Score;
+}
+interface Params {
+  type: Game;
+}
 interface FireProps {
-  scrollCount: number;
+  scrollHeight: number;
   rate: number;
 }
 
@@ -44,14 +50,14 @@ const MenuBtnFloating = styled(MenuBtn)`
 
 const Fire = styled.div<FireProps>`
   position: absolute;
-  bottom: ${props => 0 - (props.scrollCount * 150) + props.rate}px;
+  bottom: ${props => 0 - props.scrollHeight + props.rate}px;
   width: 100%;
 `;
 const FirePic = styled.img`
   width: 100%;
   height: 5px;
   transform: translateY(4px);
-  animation: ${raiseFireImg} 3s ease-in forwards;
+  animation: ${raiseFireImg} 1s ease-in forwards;
 `;
 const FirePit = styled.div`
   width: 100%;
@@ -59,18 +65,15 @@ const FirePit = styled.div`
   background-color: blue;
 `;
 
-interface Params {
-  type: Game;
-}
-
 const bubblesManager = Bubbles();
 const platformsManager = Platforms();
 const wordTracker = wordManager();
-const score = Score();
 
-function Controller() {
+function Controller(props: GameProps) {
+  const { score } = props;
   const params: Params = useParams();
   const game = params.type.toLowerCase() as Game;
+  const history = useHistory();
 
   const [words, setWords] = useState([wordTracker.select()]);
   const [prevGame, setGame] = useState(game);
@@ -79,9 +82,12 @@ function Controller() {
   const [rate, setRate] = useState(game === "pop" ? 3 : 1);
   const [count, setCount] = useState(0);
   const [didMount, toggleDidMount] = useState(false);
+  const [showFire, toggleFire] = useState(false);
 
   const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
+  const fireStartingCount = useRef(0);
+  const fireRate = (count - fireStartingCount.current) * 5;
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
@@ -110,9 +116,10 @@ function Controller() {
 
     if (!didMount) {
       toggleDidMount(true);
+      bubblesManager.setGameover(() => toggleGameOver(true));
     }
 
-  }, [isGameOver, count, rate, didMount]);
+  }, [count, rate, didMount]);
 
   useEffect(() => {
     switch (game) {
@@ -124,6 +131,23 @@ function Controller() {
         break;
     }
   }, [words]);
+
+  useEffect(() => {
+    const fireY = 0 - platformsManager.getScrollHeight() + fireRate;
+    const displayHeight = window.innerHeight * 0.5;
+    const activePlatform = platformsManager.getActivePlatform()?.y || 0;
+    const isRyanInFire = displayHeight - fireY - activePlatform === 100;
+
+    if (showFire && !!activePlatform && isRyanInFire) {
+      toggleGameOver(true);
+    }
+  }, [rerender, count]);
+
+  useEffect(() => {
+    if (isGameOver) {
+      history.push(`/gameover/${game}`);
+    }
+  }, [isGameOver]);
 
   if (isNotAGame(params.type)) {
     return <Page404 />;
@@ -140,11 +164,6 @@ function Controller() {
     toggleDidMount(false);
     score.reset();
   }
-
-  // TODO: set conditions
-  // if (false) {
-  //   toggleGameOver(true);
-  // }
 
   function handleSubmit(enteredWord: string): void {
     switch (game) {
@@ -163,9 +182,15 @@ function Controller() {
 
         if (nextPlatformWord.word.localeCompare(enteredWord) === 0) {
           platformsManager.jump(nextPlatformWord);
+
+          if (!showFire) {
+            toggleFire(true);
+            fireStartingCount.current = count;
+          }
           if (platformsManager.scroll()) {
             toggleRerender(prev => prev + 1);
           }
+
           wordIndex.current += 1;
           score.increase();
         }
@@ -183,10 +208,12 @@ function Controller() {
         {game === "pop" ? gameObjects.current : (
           <>
             {platformsManager.renderAll()}
-            <Fire scrollCount={rerender} rate={count * 5}>
-              <FirePic src={firePng} />
-              <FirePit />
-            </Fire>
+            {showFire && (
+              <Fire scrollHeight={platformsManager.getScrollHeight()} rate={fireRate}>
+                <FirePic src={firePng} />
+                <FirePit />
+              </Fire>
+            )}
           </>
         )}
       </Display>
