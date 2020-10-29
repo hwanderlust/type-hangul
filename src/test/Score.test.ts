@@ -1,16 +1,6 @@
-import 'jest-styled-components';
-import renderer from 'react-test-renderer';
-
 import Score from "../components/game/Score";
 
 describe("<Score/>", () => {
-  it('renders correctly', () => {
-    const score = Score();
-    const tree = renderer
-      .create(score.render())
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
 
   describe("increase()", () => {
     const score = Score();

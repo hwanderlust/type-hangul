@@ -143,7 +143,7 @@ function Controller(props: GameProps) {
 
   useEffect(() => {
     if (isGameOver) {
-      history.push("/gameover");
+      history.push(`/gameover/${game}`);
     }
   }, [isGameOver]);
 

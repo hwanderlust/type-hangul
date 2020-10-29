@@ -36,7 +36,7 @@ function App() {
             <Route path="/game/:type">
               <Game score={score} />
             </Route>
-            <Route exact path="/gameover">
+            <Route exact path="/gameover/:type">
               <Gameover score={score} />
             </Route>
 
