@@ -3,16 +3,18 @@ import { BrowserRouter, Route, Switch, } from "react-router-dom";
 import styled from "styled-components";
 
 import { Page404 } from "./common";
-import Game from "./game";
-import Gameover from "./game/Gameover";
 import Score from "./game/Score";
 import Landing from './landing';
 
 // https://medium.com/hackernoon/lazy-loading-and-preloading-components-in-react-16-6-804de091c82d
 const preloadAbout = import("./static/About");
 const preloadContact = import("./static/Contact");
+const preloadGame = import("./game");
+const preloadGameover = import("./game/Gameover");
 const About = lazy(() => preloadAbout);
 const Contact = lazy(() => preloadContact);
+const Game = lazy(() => preloadGame);
+const Gameover = lazy(() => preloadGameover);
 
 const Background = styled.div`
   background-color: #FF7D7D;
