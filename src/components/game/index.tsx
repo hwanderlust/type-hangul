@@ -79,7 +79,7 @@ function Controller(props: GameProps) {
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
   const [rerender, toggleRerender] = useState(0);
-  const [rate, setRate] = useState(game === "pop" ? 3 : 1);
+  const [rate, setRate] = useState(game === "pop" ? 3 : 5);
   const [count, setCount] = useState(0);
   const [didMount, toggleDidMount] = useState(false);
   const [showFire, toggleFire] = useState(false);
@@ -87,32 +87,55 @@ function Controller(props: GameProps) {
   const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
   const fireStartingCount = useRef(0);
-  const fireRate = (count - fireStartingCount.current) * 5;
+  const fireRate = (count - fireStartingCount.current) * rate;
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
   }, []);
 
   useEffect(() => {
+    let timeout: number;
+
     if (didMount) {
-      const timeout = setTimeout(() => {
-        const nextWord = wordTracker.select();
-        setWords(prevWords => [...prevWords, nextWord]);
-        setCount(prev => {
-          if ((prev + 1) % 5 === 0) {
-            setRate(prev => {
-              if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
-                return prev;
+      switch (game) {
+        case "pop":
+          timeout = setTimeout(() => {
+            const nextWord = wordTracker.select();
+            setWords(prevWords => [...prevWords, nextWord]);
+            setCount(prev => {
+              if ((prev + 1) % 5 === 0) {
+                setRate(prev => {
+                  if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
+                    return prev;
+                  }
+                  return parseFloat((prev - 0.1).toFixed(1));
+                });
               }
-              return parseFloat((prev - 0.1).toFixed(1));
+              return prev + 1;
             });
-          }
-          return prev + 1;
-        });
-      }, rate * 1000);
+          }, rate * 1000);
+          break;
+
+        case "jump":
+          timeout = setTimeout(() => {
+            const nextWord = wordTracker.select();
+            setWords(prevWords => [...prevWords, nextWord]);
+            setCount(prev => {
+              if ((prev + 1 - fireStartingCount.current) % 5 === 0) {
+                setRate(prev => {
+                  return parseFloat((prev + 0.05).toFixed(2));;
+                });
+                return prev + 5;
+              }
+              return prev + 1;
+            });
+          }, 1000);
+          break;
+      }
 
       return () => clearTimeout(timeout);
     }
+
 
     if (!didMount) {
       toggleDidMount(true);
@@ -136,7 +159,8 @@ function Controller(props: GameProps) {
     const fireY = 0 - platformsManager.getScrollHeight() + fireRate;
     const displayHeight = window.innerHeight * 0.5;
     const activePlatform = platformsManager.getActivePlatform()?.y || 0;
-    const isRyanInFire = displayHeight - fireY - activePlatform === 100;
+    const calc = displayHeight - fireY - activePlatform;
+    const isRyanInFire = calc < 100;
 
     if (showFire && !!activePlatform && isRyanInFire) {
       toggleGameOver(true);
