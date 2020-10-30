@@ -15,17 +15,25 @@ const Body = styled.div`
   font-family: ${Fonts.roboto};
 `;
 
-function Landing() {
+interface LandingProps {
+  completed: React.MutableRefObject<boolean>;
+}
+
+function Landing(props: LandingProps) {
+  const { completed } = props;
   const [finishedLandingOne, triggerLandingTwo] = useState(false);
   const [finishedLandingTwo, triggerLandingThree] = useState(false);
 
   return (
     <Body>
-      {!finishedLandingOne && <LandingOne onFinish={triggerLandingTwo} />}
+      {!completed.current && !finishedLandingOne && <LandingOne onFinish={() => triggerLandingTwo(true)} />}
 
-      {finishedLandingOne && !finishedLandingTwo && <LandingTwo onFinish={triggerLandingThree} />}
+      {!completed.current && finishedLandingOne && !finishedLandingTwo && <LandingTwo onFinish={() => {
+        triggerLandingThree(true);
+        completed.current = true;
+      }} />}
 
-      {finishedLandingTwo && <LandingThree />}
+      {(completed.current || finishedLandingTwo) && <LandingThree />}
     </Body>
   );
 }

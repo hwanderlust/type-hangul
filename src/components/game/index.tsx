@@ -37,6 +37,14 @@ const Header = styled.section`
   align-self: flex-start;
   margin-left: 5vmin;
 `;
+const Title = styled.h1`
+  text-transform: capitalize;
+  margin-bottom: 0;
+`;
+const Description = styled.p`
+  color: white;
+  font-weight: 200;
+`;
 const MenuBtnFloating = styled(MenuBtn)`
   display: block;
   position: absolute;
@@ -48,9 +56,10 @@ const MenuBtnFloating = styled(MenuBtn)`
   }
 `;
 
-const Fire = styled.div<FireProps>`
+const Fire = styled.div.attrs<FireProps>((props) => ({
+  style: { bottom: `${0 - props.scrollHeight + props.rate}px`, }
+})) <FireProps>`
   position: absolute;
-  bottom: ${props => 0 - props.scrollHeight + props.rate}px;
   width: 100%;
 `;
 const FirePic = styled.img`
@@ -58,11 +67,6 @@ const FirePic = styled.img`
   height: 5px;
   transform: translateY(4px);
   animation: ${raiseFireImg} 1s ease-in forwards;
-`;
-const FirePit = styled.div`
-  width: 100%;
-  height: 0px; // TODO: after optimizing rendering of all platforms via virtualization or something
-  background-color: blue;
 `;
 
 const bubblesManager = Bubbles();
@@ -79,7 +83,7 @@ function Controller(props: GameProps) {
   const [prevGame, setGame] = useState(game);
   const [isGameOver, toggleGameOver] = useState(false);
   const [rerender, toggleRerender] = useState(0);
-  const [rate, setRate] = useState(game === "pop" ? 3 : 1);
+  const [rate, setRate] = useState(game === "pop" ? 3 : 5);
   const [count, setCount] = useState(0);
   const [didMount, toggleDidMount] = useState(false);
   const [showFire, toggleFire] = useState(false);
@@ -87,36 +91,58 @@ function Controller(props: GameProps) {
   const gameObjects = useRef<Array<JSX.Element>>([]);
   const wordIndex = useRef(0);
   const fireStartingCount = useRef(0);
-  const fireRate = (count - fireStartingCount.current) * 5;
+  const fireRate = (count - fireStartingCount.current) * rate;
 
   const ryanRef = useCallback((node) => {
     platformsManager.setRefs(node);
   }, []);
 
   useEffect(() => {
+    let timeout: number;
+
     if (didMount) {
-      const timeout = setTimeout(() => {
-        const nextWord = wordTracker.select();
-        setWords(prevWords => [...prevWords, nextWord]);
-        setCount(prev => {
-          if ((prev + 1) % 5 === 0) {
-            setRate(prev => {
-              if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
-                return prev;
+      switch (game) {
+        case "pop":
+          timeout = setTimeout(() => {
+            const nextWord = wordTracker.select();
+            setWords(prevWords => [...prevWords, nextWord]);
+            setCount(prev => {
+              if ((prev + 1) % 5 === 0) {
+                setRate(prev => {
+                  if (parseFloat((prev - 0.1).toFixed(1)) === 0.1) {
+                    return prev;
+                  }
+                  return parseFloat((prev - 0.1).toFixed(1));
+                });
               }
-              return parseFloat((prev - 0.1).toFixed(1));
+              return prev + 1;
             });
-          }
-          return prev + 1;
-        });
-      }, rate * 1000);
+          }, rate * 1000);
+          break;
+
+        case "jump":
+          timeout = setTimeout(() => {
+            const nextWord = wordTracker.select();
+            setWords(prevWords => [...prevWords, nextWord]);
+            setCount(prev => {
+              if ((prev + 1 - fireStartingCount.current) % 5 === 0) {
+                setRate(prev => parseFloat((prev + 0.05).toFixed(2)));
+                return prev + 5;
+              }
+              return prev + 1;
+            });
+          }, 1000);
+          break;
+      }
 
       return () => clearTimeout(timeout);
     }
 
+
     if (!didMount) {
       toggleDidMount(true);
       bubblesManager.setGameover(() => toggleGameOver(true));
+      score.reset();
     }
 
   }, [count, rate, didMount]);
@@ -136,7 +162,8 @@ function Controller(props: GameProps) {
     const fireY = 0 - platformsManager.getScrollHeight() + fireRate;
     const displayHeight = window.innerHeight * 0.5;
     const activePlatform = platformsManager.getActivePlatform()?.y || 0;
-    const isRyanInFire = displayHeight - fireY - activePlatform === 100;
+    const calc = displayHeight - fireY - activePlatform;
+    const isRyanInFire = calc < 100;
 
     if (showFire && !!activePlatform && isRyanInFire) {
       toggleGameOver(true);
@@ -145,6 +172,8 @@ function Controller(props: GameProps) {
 
   useEffect(() => {
     if (isGameOver) {
+      platformsManager.reset();
+      wordTracker.reset();
       history.push(`/gameover/${game}`);
     }
   }, [isGameOver]);
@@ -201,8 +230,12 @@ function Controller(props: GameProps) {
   return (
     <Container>
       <Header>
-        <h1>{params.type}</h1>
-        <p>Game Description</p>
+        <Title>{game}</Title>
+        <Description>
+          {game === "pop"
+            ? "Type the words that appear to pop the bubbles before they touch the ground to save Ryan, the Kakao bear character"
+            : "Type the words on the nearest platform to make Ryan, the Kakao bear character, jump up to make an escape from the engulfing fire"}
+        </Description>
       </Header>
       <Display game={params.type} ryanRef={ryanRef} >
         {game === "pop" ? gameObjects.current : (
@@ -211,7 +244,6 @@ function Controller(props: GameProps) {
             {showFire && (
               <Fire scrollHeight={platformsManager.getScrollHeight()} rate={fireRate}>
                 <FirePic src={firePng} />
-                <FirePit />
               </Fire>
             )}
           </>

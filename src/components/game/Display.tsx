@@ -8,8 +8,6 @@ import cloud2Png from "../../images/cloud2.png";
 import cloud3Png from "../../images/cloud3.png";
 import groundPng from "../../images/ground.png";
 
-// const ryansWidthToHeightRatio = 1.8;
-
 interface RyanProps {
   position: "left" | "center";
 }
