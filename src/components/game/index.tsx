@@ -56,9 +56,10 @@ const MenuBtnFloating = styled(MenuBtn)`
   }
 `;
 
-const Fire = styled.div<FireProps>`
+const Fire = styled.div.attrs<FireProps>((props) => ({
+  style: { bottom: `${0 - props.scrollHeight + props.rate}px`, }
+})) <FireProps>`
   position: absolute;
-  bottom: ${props => 0 - props.scrollHeight + props.rate}px;
   width: 100%;
 `;
 const FirePic = styled.img`
@@ -130,9 +131,7 @@ function Controller(props: GameProps) {
             setWords(prevWords => [...prevWords, nextWord]);
             setCount(prev => {
               if ((prev + 1 - fireStartingCount.current) % 5 === 0) {
-                setRate(prev => {
-                  return parseFloat((prev + 0.05).toFixed(2));;
-                });
+                setRate(prev => parseFloat((prev + 0.05).toFixed(2)));
                 return prev + 5;
               }
               return prev + 1;
@@ -148,6 +147,7 @@ function Controller(props: GameProps) {
     if (!didMount) {
       toggleDidMount(true);
       bubblesManager.setGameover(() => toggleGameOver(true));
+      score.reset();
     }
 
   }, [count, rate, didMount]);
@@ -177,14 +177,8 @@ function Controller(props: GameProps) {
 
   useEffect(() => {
     if (isGameOver) {
-      bubblesManager.reset();
       platformsManager.reset();
-      gameObjects.current = [];
       wordTracker.reset();
-      setGame(game);
-      setRate(game === "pop" ? 3 : 1);
-      setWords([wordTracker.select()]);
-      toggleDidMount(false);
       history.push(`/gameover/${game}`);
     }
   }, [isGameOver]);

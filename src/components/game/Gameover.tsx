@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, } from "react-router-dom";
 import styled from "styled-components";
 
 import { Fonts, Game, Sizes, fadeIn } from "../../helpers";
@@ -8,9 +8,6 @@ import { Score } from "./Score";
 
 interface GameoverProps {
   score: Score;
-}
-interface Params {
-  type: Game;
 }
 
 const Header = styled.header`
@@ -91,11 +88,8 @@ const ScoreText = styled.h2`
 
 function Gameover(props: GameoverProps) {
   const { score } = props;
-  const { type } = useParams() as Params;
   const btnRef = useRef<HTMLButtonElement>(null);
   const history = useHistory();
-  const prevGameScore = score.get();
-  score.reset();
 
   setTimeout(() => {
     btnRef.current?.focus();
@@ -111,7 +105,7 @@ function Gameover(props: GameoverProps) {
       <Box>
         <Title>Game Over</Title>
         <ScoreText>Your score</ScoreText>
-        <span>{prevGameScore}</span>
+        <span>{score.get()}</span>
       </Box>
 
       <SecondaryBox>
@@ -120,10 +114,7 @@ function Gameover(props: GameoverProps) {
           <Button
             id="tryAgain"
             ref={btnRef}
-            onClick={() => {
-              history.push(`/game/${type}`);
-              history.go(0);
-            }}>
+            onClick={() => { history.go(-1); }}>
             다시 해봐
             </Button>
         </Centered>
