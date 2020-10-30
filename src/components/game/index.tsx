@@ -169,6 +169,14 @@ function Controller(props: GameProps) {
 
   useEffect(() => {
     if (isGameOver) {
+      bubblesManager.reset();
+      platformsManager.reset();
+      gameObjects.current = [];
+      wordTracker.reset();
+      setGame(game);
+      setRate(game === "pop" ? 3 : 1);
+      setWords([wordTracker.select()]);
+      toggleDidMount(false);
       history.push(`/gameover/${game}`);
     }
   }, [isGameOver]);
