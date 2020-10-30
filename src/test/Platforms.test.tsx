@@ -33,6 +33,7 @@ describe("Platforms", () => {
     it("matches initialized values", () => {
       expect(manager.Test.getState()).toEqual({
         platforms: [],
+        queued: [],
         xSelection: expect.anything(),
         levels: expect.anything(),
         currentLevel: 0,
@@ -52,6 +53,10 @@ describe("Platforms", () => {
   describe("render()", () => {
     const manager = Platforms();
 
+    afterEach(() => {
+      manager.reset();
+    });
+
     it("appends the word along with its corresponding coordinates of where to render", () => {
       manager.render(words[0]);
       const state = manager.Test.getState();
@@ -62,6 +67,26 @@ describe("Platforms", () => {
         calcX: 0,
         calcY: 0,
       });
+    });
+
+    it("queues up the next platform if there are already 9 rendered platforms", () => {
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      manager.render(words[0]);
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(1);
+      expect(manager.Test.getState().queued[0].id).toBe(words[0].id);
+    });
+
+    it("references the last queued platform to calc the y when >9 rendered and we have queued platforms", () => {
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      manager.render(words[0]);
+      expect(manager.Test.getState().queued[0].y).toBe(-1116);
+      manager.render(words[1]);
+      expect(manager.Test.getState().queued[1].y).toBe(-1116 - 150);
     });
   });
 
@@ -118,6 +143,38 @@ describe("Platforms", () => {
       expect(before.platforms.length).toBe(1);
       expect(after.platforms.length).toBe(1);
     });
+
+    it("shifts a queued platform to be rendered if there are and if there are 9 rendered platforms", () => {
+      words.forEach(manager.render);
+      words.map(w => {
+        w.id += 4;
+        return w;
+      }).forEach(manager.render);
+      words.map(w => {
+        w.id += 8;
+        return w;
+      }).forEach(manager.render);
+      manager.render({
+        ...words[0],
+        id: "10",
+      });
+      manager.render({
+        ...words[1],
+        id: "11",
+      });
+
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(2);
+
+      manager.jump(words[0]);
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(2);
+
+      manager.jump(words[1]);
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(1);
+      expect(manager.Test.getState().platforms[8].id).toBe("10");
+    });
   });
 
   describe("scroll()", () => {
@@ -135,7 +192,7 @@ describe("Platforms", () => {
       before = manager.Test.getState();
     });
 
-    it("platforms' y coordinates have been increased by (# of levels * setMargin)", () => {
+    it("rendered platforms' y coordinates have been increased by (# of levels * setMargin)", () => {
       expect(before.platforms.map(platform => platform.y)).toEqual(beforePlatforms);
 
       const result = manager.scroll();
@@ -143,6 +200,20 @@ describe("Platforms", () => {
 
       expect(result).toBe(true);
       expect(after.platforms.map(platform => platform.y)).toEqual(beforePlatforms.map(y => y + (after.levels * setMargin)));
+    });
+
+    it("queued platforms' y coordinates have been increased by (# of levels * setMargin) if there are some", () => {
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      const before = [-1266, -1416];
+
+      expect(manager.Test.getState().queued.map(p => p.y)).toEqual(before);
+
+      const result = manager.scroll();
+      const after = manager.Test.getState(); // 384, 234, 84, -66, -216
+
+      expect(result).toBe(true);
+      expect(after.queued.map(platform => platform.y)).toEqual(before.map(y => y + (after.levels * setMargin)));
     });
 
     it("currentLevel is reset back to 0", () => {
@@ -160,6 +231,8 @@ describe("Platforms", () => {
     });
 
     it("clouds' startCycle is set to TRUE upon 5 scrolls", () => {
+      const manager = Platforms();
+      words.forEach(manager.render);
       words.forEach(manager.render);
       words.forEach(manager.render);
       words.forEach(manager.render);
@@ -167,26 +240,30 @@ describe("Platforms", () => {
       manager.jump(words[0]);
       manager.jump(words[1]);
       manager.scroll();
-      expect(manager.Test.getClouds().startCycle).toBe(false);
+      expect(manager.Test.getState().scrollCount).toBe(1);
 
       manager.jump(words[2]);
       manager.jump(words[0]);
       manager.scroll();
+      expect(manager.Test.getState().scrollCount).toBe(2);
       expect(manager.Test.getClouds().startCycle).toBe(false);
 
       manager.jump(words[1]);
       manager.jump(words[2]);
       manager.scroll();
+      expect(manager.Test.getState().scrollCount).toBe(3);
       expect(manager.Test.getClouds().startCycle).toBe(false);
 
       manager.jump(words[0]);
       manager.jump(words[1]);
       manager.scroll();
+      expect(manager.Test.getState().scrollCount).toBe(4);
       expect(manager.Test.getClouds().startCycle).toBe(false);
 
       manager.jump(words[2]);
       manager.jump(words[0]);
       manager.scroll();
+      expect(manager.Test.getState().scrollCount).toBe(5);
       expect(manager.Test.getClouds().startCycle).toBe(true);
     });
   });
@@ -197,12 +274,29 @@ describe("Platforms", () => {
       words.forEach(manager.render);
       expect(manager.renderAll()).toHaveLength(3);
     });
+
+    it("doesn't render any queued platforms", () => {
+      const manager = Platforms();
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      expect(manager.renderAll()).toHaveLength(9);
+      expect(manager.Test.getState().queued.length).toBe(3);
+    });
   });
 
   describe("reset()", () => {
     it("clears session state", () => {
       const manager = Platforms();
       words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+      words.forEach(manager.render);
+
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(6);
 
       manager.jump(words[0]);
       manager.jump(words[1]);
@@ -214,11 +308,14 @@ describe("Platforms", () => {
         initialPlatform: false,
         scrollCount: 1,
       });
+      expect(manager.Test.getState().platforms.length).toBe(9);
+      expect(manager.Test.getState().queued.length).toBe(4);
 
       manager.reset();
       expect(manager.Test.getState()).toMatchObject({
         currentLevel: 0,
         platforms: [],
+        queued: [],
         initialPlatform: true,
         scrollCount: 0,
       });

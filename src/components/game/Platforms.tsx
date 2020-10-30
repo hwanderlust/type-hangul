@@ -6,6 +6,7 @@ import { Coordinates, Word } from "./helpers";
 
 export interface PlatformsState {
   platforms: Array<PlatformProps>;
+  queued: Array<PlatformProps>;
   xSelection: Array<number>;
   levels: number;
   currentLevel: number;
@@ -81,6 +82,7 @@ function Platforms2(): PlatformsManager {
 
   const state: PlatformsState = {
     platforms: [],
+    queued: [],
     xSelection: [],
     levels: 0,
     currentLevel: 0,
@@ -117,9 +119,19 @@ function Platforms2(): PlatformsManager {
       const xIndex = Math.floor(Math.random() * (state.xSelection.length - 1));
 
       platform.x = state.xSelection[xIndex];
-      platform.y = state.platforms.length === 0 ? displayHeight - platformMargin : state.platforms[state.platforms.length - 1].y - platformMargin;
+      if (state.platforms.length === 0) {
+        platform.y = displayHeight - platformMargin;
+      } else if (state.platforms.length === 9 && state.queued.length) {
+        platform.y = state.queued[state.queued.length - 1].y - platformMargin;
+      } else {
+        platform.y = state.platforms[state.platforms.length - 1].y - platformMargin;
+      }
 
-      state.platforms.push(platform);
+      if (state.platforms.length === 9) {
+        state.queued.push(platform);
+      } else {
+        state.platforms.push(platform);
+      }
     },
     jump: function (word) {
       if (
@@ -152,11 +164,22 @@ function Platforms2(): PlatformsManager {
 
         if (state.initialPlatform) {
           state.initialPlatform = false;
-        } else {
-          state.platforms.shift();
+          state.currentLevel += 1;
+          return
         }
 
-        state.currentLevel += 1;
+        if (state.platforms.length <= 9 && !state.queued.length) {
+          state.platforms.shift();
+          state.currentLevel += 1;
+          return;
+        }
+
+        if (state.platforms.length === 9 && state.queued.length) {
+          state.platforms.shift();
+          const queued = state.queued.shift()!;
+          state.platforms.push(queued);
+          state.currentLevel += 1;
+        }
       }
     },
     scroll: function () {
@@ -197,6 +220,13 @@ function Platforms2(): PlatformsManager {
           c.calcY += scrollAmount;
           return c;
         });
+        if (state.queued.length) {
+          state.queued = state.queued.map(c => {
+            c.y += scrollAmount;
+            c.calcY += scrollAmount;
+            return c;
+          });
+        }
 
         state.currentLevel = 0;
         state.scrollCount += 1;
@@ -227,6 +257,7 @@ function Platforms2(): PlatformsManager {
     reset: function () {
       state.currentLevel = 0;
       state.platforms = [];
+      state.queued = [];
       state.initialPlatform = true;
       state.scrollCount = 0;
     },
