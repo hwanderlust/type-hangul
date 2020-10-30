@@ -37,6 +37,14 @@ const Header = styled.section`
   align-self: flex-start;
   margin-left: 5vmin;
 `;
+const Title = styled.h1`
+  text-transform: capitalize;
+  margin-bottom: 0;
+`;
+const Description = styled.p`
+  color: white;
+  font-weight: 200;
+`;
 const MenuBtnFloating = styled(MenuBtn)`
   display: block;
   position: absolute;
@@ -233,8 +241,12 @@ function Controller(props: GameProps) {
   return (
     <Container>
       <Header>
-        <h1>{params.type}</h1>
-        <p>Game Description</p>
+        <Title>{game}</Title>
+        <Description>
+          {game === "pop"
+            ? "Type the words that appear to pop the bubbles before they touch the ground to save Ryan, the Kakao bear character"
+            : "Type the words on the nearest platform to make Ryan, the Kakao bear character, jump up to make an escape from the engulfing fire"}
+        </Description>
       </Header>
       <Display game={params.type} ryanRef={ryanRef} >
         {game === "pop" ? gameObjects.current : (
