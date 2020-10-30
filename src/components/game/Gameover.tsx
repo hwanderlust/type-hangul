@@ -93,6 +93,8 @@ function Gameover(props: GameoverProps) {
   const { score } = props;
   const { type } = useParams() as Params;
   const history = useHistory();
+  const prevGameScore = score.get();
+  score.reset();
 
   return (
     <Container>
@@ -104,7 +106,7 @@ function Gameover(props: GameoverProps) {
       <Box>
         <Title>Game Over</Title>
         <ScoreText>Your score</ScoreText>
-        <span>{score.get()}</span>
+        <span>{prevGameScore}</span>
       </Box>
 
       <SecondaryBox>
@@ -113,7 +115,6 @@ function Gameover(props: GameoverProps) {
           <Button
             id="tryAgain"
             onClick={() => {
-              score.reset();
               history.push(`/game/${type}`);
               history.go(0);
             }}>
