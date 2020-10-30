@@ -68,11 +68,6 @@ const FirePic = styled.img`
   transform: translateY(4px);
   animation: ${raiseFireImg} 1s ease-in forwards;
 `;
-const FirePit = styled.div`
-  width: 100%;
-  height: 0px; // TODO: after optimizing rendering of all platforms via virtualization or something
-  background-color: blue;
-`;
 
 const bubblesManager = Bubbles();
 const platformsManager = Platforms();
@@ -249,7 +244,6 @@ function Controller(props: GameProps) {
             {showFire && (
               <Fire scrollHeight={platformsManager.getScrollHeight()} rate={fireRate}>
                 <FirePic src={firePng} />
-                <FirePit />
               </Fire>
             )}
           </>
