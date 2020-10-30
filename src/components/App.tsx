@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useRef } from 'react';
 import { BrowserRouter, Route, Switch, } from "react-router-dom";
 import styled from "styled-components";
 
@@ -24,15 +24,15 @@ const Background = styled.div`
 
 function App() {
   const score = Score();
+  const userSawLanding = useRef(false);
 
   return (
     <Background>
       <BrowserRouter>
-        {/* TODO add proper fallback */}
         <Suspense fallback={() => <>Loading...</>} >
           <Switch>
             <Route exact path="/">
-              <Landing />
+              <Landing completed={userSawLanding} />
             </Route>
 
             <Route path="/game/:type">

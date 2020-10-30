@@ -51,7 +51,7 @@ function LandingOne(props: NextProps) {
 
     if (subtitle.length === subtitleText.length) {
       setTimeout(() => {
-        props.onFinish(true);
+        props.onFinish();
       }, 500);
     }
   }, [props, leftText, rightText, subtitle]);

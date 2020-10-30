@@ -184,7 +184,6 @@ function Keyboard(props: KeyboardProps) {
     setWord("");
   }
 
-  // TODO: update when I update the design for the form input
   return (
     <Container className={props.className}>
       <form onSubmit={handleSubmit}>

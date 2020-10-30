@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Fonts } from "../../helpers";
 
 export interface NextProps {
-  onFinish: Dispatch<SetStateAction<boolean>>;
+  onFinish: () => void;
 }
 
 function typewriteByLetter(writeText: string, state: [string, Dispatch<SetStateAction<string>>]): void {

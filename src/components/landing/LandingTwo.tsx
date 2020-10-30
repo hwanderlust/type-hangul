@@ -33,13 +33,12 @@ const GameDesc = styled.p`
   margin-left: 16px;
 `;
 
-// TODO: skip altogether? or add a skip button or add a next button and remove timer
 function LandingTwo(props: NextProps) {
   const [title, setTitle] = useState("");
   typewriteByLetter(titleText, [title, setTitle]);
 
   setTimeout(() => {
-    props.onFinish(true);
+    props.onFinish();
   }, titleDuration + gameOptionTwoDelay + gameOptionThreeDelay);
 
   return (
