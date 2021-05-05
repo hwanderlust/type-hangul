@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { Fonts, KeyType, Sizes, StyledProps } from "../../helpers";
 
@@ -35,6 +35,36 @@ const botRow: Array<KeyType> = [
   { eng: "n", shift: "", kor: "ㅜ" },
   { eng: "m", shift: "", kor: "ㅡ" },
 ];
+
+function isEnglish(word: string): boolean {
+  if (!word?.length) {
+    return false;
+  }
+  if (isLowercaseEnglish(word)) return true;
+  if (isUppercaseEnglish(word)) return true;
+  return false;
+}
+function isUppercaseEnglish(word: string): boolean {
+  if (!word?.length) {
+    return false;
+  }
+  return word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90;
+}
+function isLowercaseEnglish(word: string): boolean {
+  if (!word?.length) {
+    return false;
+  }
+  return word.charCodeAt(0) >= 97 && word.charCodeAt(0) <= 122;
+}
+
+const slideInFromLeft = keyframes`
+  from {
+    transform: translateX(-100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -116,9 +146,7 @@ const LetterEng = styled(Letter)`
     display: none;
   }
 `;
-const TextInput = styled.input.attrs(_ => ({
-  type: "text",
-}))`
+const TextInput = styled.input`
   width: 50vw;
   border: none;
   background-color: #28748C;
@@ -134,6 +162,12 @@ const TextInput = styled.input.attrs(_ => ({
 `;
 const Tip = styled.p`
   font-size: ${Sizes.variable.font.xSmall};
+`;
+const WarningText = styled.p`
+  font-size: ${Sizes.variable.font.medium};
+  background-color: white;
+  max-width: 50vw;
+  animation: ${slideInFromLeft} 500ms forwards;
 `;
 
 // TODO: see if there's another way to implement this
@@ -173,9 +207,24 @@ interface KeyboardProps extends StyledProps {
 }
 function Keyboard(props: KeyboardProps) {
   const [word, setWord] = useState("");
+  const [isInvalidLanguage, toggleInvalidLanguage] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    setWord(e.target.value);
+    e.persist();
+
+    setWord(_ => {
+      toggleInvalidLanguage(_ => {
+        if (
+          !isInvalidLanguage && e.target?.value?.length
+          && isUppercaseEnglish(e.target?.value) || isLowercaseEnglish(e.target?.value)
+        ) {
+          return true;
+        }
+        return false;
+      });
+
+      return e.target?.value;
+    });
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
@@ -188,10 +237,17 @@ function Keyboard(props: KeyboardProps) {
     <Container className={props.className}>
       <form onSubmit={handleSubmit}>
         <TextInput
-          onChange={handleChange}
+          type="text"
           value={word}
+          onChange={handleChange}
           autoFocus />
       </form>
+
+      {isInvalidLanguage && (
+        <WarningText>
+          You need to use a Korean Hangul keyboard to play. You can change this with your computer's keyboard settings.
+        </WarningText>
+      )}
 
       <Tip>*Use your device's keyboard, this is just a visual guide</Tip>
 
@@ -203,3 +259,11 @@ function Keyboard(props: KeyboardProps) {
 }
 
 export default Keyboard;
+const Test = {
+  isEnglish,
+  isLowercaseEnglish,
+  isUppercaseEnglish,
+}
+export {
+  Test,
+}
